@@ -11,10 +11,10 @@ def leer_programas(archivo_principal):
     '''
     Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
     un diccionario ordenado con todos los datos de esos archivos con la forma:
-    datos_programas ---->funcion_1 ---->{"modulo": modulo_func_1, "parametros": param_func_1, "lineas":lineas_cod_func_1, "comentarios": coment_func_1}
-                    ---->funcion_2 ---->{"modulo": modulo_func_2, "parametros": param_func_2, "lineas":lineas_cod_func_2, "comentarios": coment_func_2}
+    datos_programas ---->funcion_1 ---->{"modulo": modulo_func_1, "parametros": param_func_1, "lineas":[lineas_cod_func_1], "comentarios": [coment_func_1]}
+                    ---->funcion_2 ---->{"modulo": modulo_func_2, "parametros": param_func_2, "lineas":[lineas_cod_func_2], "comentarios": [coment_func_2]}
                             ...
-                    ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":lineas_cod_func_n, "comentarios": coment_func_n}
+                    ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":[lineas_cod_func_n], "comentarios": [coment_func_n]}
     '''
     #Lista de ubicaciones de modulos de la aplicacion
     ubicaciones = leer_archivo_principal(archivo_principal)
@@ -73,8 +73,12 @@ def guardar_datos():
             for nombre_funcion in nombres_funciones:
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
                 if modulo == datos[nombre_funcion]["modulo"]:
+                    #Parametros de la funcion
+                    parametros = datos[nombre_funcion]["parametros"]
+                    #Lista de lineas de la funcion
+                    lineas = datos[nombre_funcion]["lineas"]
                     #Imprime una linea del .csv fuente correspondiente al modulo
-                    archivo_fuente.write(f'{nombre_funcion},{datos[nombre_funcion]["parametros"]},{datos[nombre_funcion]["modulo"]},{datos[nombre_funcion]["lineas"]}\n')
+                    archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(repr(linea) for linea in lineas)}\n')
                     #Si la funcion tiene comentarios:
                     if len(datos[nombre_funcion]["comentarios"]) > 0:
                         #Escribe una linea en el .csv de comentarios correspondiente al modulo
