@@ -1,0 +1,74 @@
+#****************
+#EL ZEN DE PYTHON
+#****************
+'''
+    Escribir programas que en verdad hagan lo que deben hacer es solo una parte de ser un buen programador
+de python. Tambien es importante escribir un codigo limpio que sea facil de entender, incluso semanas despues
+de que lo hayas escrito.
+    Una manera de hacerlo es siguiendo el Zen de Python, una serie de principios algo burlones que sirven
+como una guia para la programacion de la manera pitonica. Utilice el codigo import this para acceder al zen de
+python. Resultado: El zen de Python, por Tim Petes
+
+Hermoso es mejor que feo.
+Explicito es mejor que implicito.
+Simple es mejor que complejo.
+Complejo es mejor que complicado.
+Plano es mejor que anidado.
+Escaso es mejor que denso.
+La legibilidad cuenta.
+Los casos especiales no son lo suficientemente especial como para romper las reglas.
+Aunque el sentido practico supera la pureza.
+Los errores nunca deben pasar en silencio.
+A menos que sean explicitamente silenciados.
+Ante la ambigüedad, rechaza la tentacion de adivinar.
+Deberia haber una, y preferiblemente solo una, manera obvia de hacerlo.
+Aunque esa manera puede no ser obvia al principio a menos que seas holandes.
+Ahora es mejor que nunca.
+Aunque nunca es amenudo mejor que "justo" ahora.
+Si la implementacion es dificil de explicar, es una mala idea.
+Si la implementacion es facil de explicar, puede ser una buena idea.
+Los espacio de nombres son una gran idea de fanfarria.
+    
+    Algunas lineas del zen de python podrian necesitar mas detalles. Explicito es mejor que implicito:
+es mejor que digas exactamente lo que tu codigo esta haciendo. Esto se debe a que sumar una cadena numerica
+a un entero requiere una conversion explicita, en vez de que tenga que pasar detras de escenas, como pasa en
+otros lenguajes. Plano es mejor que anidado: estructuras fuertemente anidadas (listas de listas y asi 
+sucesivamente) deben evitarse. Los errores nunca deben pasar en silencio: en general, cuando un error ocurre,
+debes generar una salida de algun mensaje de error, en vez de ignorarlo. 
+    Hay 20 principios en el Zen de python, pero solo 19 lineas de texto. El 20vo principio es un asunto de 
+opinion, pero nuestra interpretacion es que la linea en blanco significa "Utilice espacios en blanco".
+La linea "Deberia haber una, y solamente una, manera obvia de hacerlo" hace referencia y contradice a la
+filosofia del lenguaje Perl que deberia haber mas de una manera de hacerlo.
+'''
+
+#***
+#PEP
+#***
+'''
+    Propuestas de Mejoras del Python (del ingles Python Enhancement Proposals, PEP) son sugerencias para mejoras
+al lenguaje, hechas por desarrolladores experimentados de Python. PEP 8 es una guia de estilo sobre el tema
+de escribir legible. Contiene una seria de directrices en referencia a los nombres de variables, que son resumidas
+de esta manera:
+-Los modulos deben tener nombres cortos y en minusculas;
+-Los nombres de calses deben estar en estilo CamelCase;
+-La mayoria de las variables y nombres de funciones deben estar en minusculas_con_subguiones;
+-Las constantes (variables que nunca cambian de valor) deben estar en MAYUSCULAS_CON_SUBGUIONES;
+-Los nombres que causarian conflicto con las palabras claves de python (como "class" o "if") deben tener guiones
+bajos al principio.
+    PEP 8 tambien recomienda utilizar espacio entre operadores y despues de las comas para hacerlo mas legible.
+    Sin embargo, los espacios en blanco no deben ser abusados. Por ejemplo, evite tener cualquier espacio justo
+despues de llaves o corchetes.
+    Otras sigerencias del PEP 8 son las siguientes:
+-Las lineas no deben ser mas largas que 80 caracteres.
+-Debe evitarse "from module import *";
+-Debe haber una sola sentencia por linea;
+    Tambien sugiere utilizar espacios, en vez de tabulador, para identa. Sin embargo, hasta cierto punto, esto
+es asunto de preferencia. Si utilizas espacios, solo usa 4 por linea. Es mas importante escoger una de las dos
+formas y mantenerla.
+    La recomendacion mas importante en el PEP es ignorarlo cuando tenga sentido hacerlo. No te molestes en seguir
+las sugerencias del PEP si ocasionaria que tu codigo sea menos legible; inconsistente con el codigo que lo rodea;
+o que no sea retrocompatible. Sin embargo, en general, seguir el PEP 8 mejorara considerablemente la calidad
+de tu codigo.
+    Otros PEPs importantes que cubren el estilo del codigo:
+-PEP 20: El zen de python.
+-PEP 257: Convenciones de estilo para Docstrings.
