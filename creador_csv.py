@@ -25,3 +25,17 @@ def leer_programas(archivo_principal):
                 linea = codigo.readline()
 
     return datos_programas
+
+def guardar_datos():
+    datos = leer_programas("programas.txt")
+    nombres_funciones = list(datos.keys())
+    modulos = list(set([datos[nombre_funcion]["modulo"] for nombre_funcion in nombres_funciones]))
+    for modulo in modulos:
+        with open(f'fuente_{modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{modulo}.csv', "w") as archivo_comentarios:
+            for nombre_funcion in nombres_funciones:
+                if modulo == datos[nombre_funcion]["modulo"]:
+                    archivo_fuente.write(f'{nombre_funcion},{datos[nombre_funcion]["parametros"]},{datos[nombre_funcion]["modulo"]},{datos[nombre_funcion]["lineas"]}\n')
+                    if len(datos[nombre_funcion]["comentarios"]) > 0:
+                        archivo_comentarios.write(f'{nombre_funcion},nombre de autor,ayuda,{datos[nombre_funcion]["comentarios"]}\n')
+
+guardar_datos()
