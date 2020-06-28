@@ -1,6 +1,0 @@
-create_title_array,(file),test.py,['array = file.values[:, 0]', 'arrayLength = array.shape[0]', 'return array']
-filter_data,(array),test.py,['seriesList = []', 'moviesList = []', 'shitList = []', 'for titleData in array:', 'if len(titleData.split(":")) >= 3:', 'seriesList.append(titleData.split(":"))', 'elif len(titleData.split(":")) < 3:', 'moviesList.append(titleData.split(":"))', 'else:', 'shitList.append(titleData.split(":"))', 'return seriesList, moviesList, shitList']
-create_dataframe,(list),test.py,['DataFrame = pd.DataFrame(list)', 'return DataFrame', '']
-sort_data,(array),test.py,['sortData = lambda l: sorted(list(set(list(zip(*l))[0])))', 'seriesData, moviesData, shitData = filter_data(array)', 'sorted_series = sortData(seriesData)', 'sorted_movies = sortData(moviesData)', 'return sorted_series, sorted_movies']
-create_csv,(file),test.py,['titleArray = create_title_array(file)', 'seriesNames, moviesNames = sort_data(titleArray)', 'dataframe1, dataframe2 = create_dataframe(seriesNames), create_dataframe(moviesNames)', 'dataframe1.to_csv(r"Series", index=False, header=True)', 'dataframe2.to_csv(r"Movies", index=False, header=True)']
-func,(par1, par2),test.py,['return']
