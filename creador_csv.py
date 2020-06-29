@@ -8,6 +8,16 @@ def obtener_ubicaciones(archivo_principal):
 
     return ubicaciones
 
+def separar_linea_funcion(linea):
+    #Deja solo el nombre de la funcion con su/sus parametro/s
+    recorte = linea.strip()[4:-1]
+    #Obtiene el nombre de la funcion del anterior recorte
+    nombre_funcion = recorte.split("(")[0]
+    #Obtiene los parametros de la funcion del anterior recorte
+    parametros = recorte.split("(")[1].split(")")[0]
+
+    return nombre_funcion, parametros
+
 def leer_programas(archivo_principal):
     '''
     Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
@@ -36,12 +46,7 @@ def leer_programas(archivo_principal):
             while linea:
                 #Si la linea empieza con def, entonces se trata de una funcion, por lo tanto:
                 if linea.startswith("def"):
-                    #Deja solo el nombre de la funcion con su/sus parametro/s
-                    recorte = linea.strip()[4:-1]
-                    #Obtiene el nombre de la funcion del anterior recorte
-                    nombre_funcion = recorte.split("(")[0]
-                    #Obtiene los parametros de la funcion del anterior recorte
-                    parametros = recorte.split("(")[1].split(")")[0]
+                    nombre_funcion, parametros = separar_linea_funcion(linea)
                     #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
                     datos_programas[nombre_funcion] = {"modulo": nombre_modulo, "parametros": f'({parametros})', "lineas": [], "comentarios": []}
                 #Filtra comentarios
@@ -97,10 +102,15 @@ def crear_archivos_csv(datos, modulos):
 
 #EN CONSTRUCCION
 def aparear_archivos(lista_archivos):
-    archivo_apareado = open("fuente_unico.csv", "w")
+    archivo_apareado = open(f'{"fuente_unico.csv" if "fuente" in lista_archivos[0] else "comentarios.csv"}', "w")
     for archivo in lista_archivos:
         with open(archivo, "r") as archivo_individual:
             linea = archivo_individual.readline()
+            while linea:
+                archivo_apareado.write(linea)
+                linea = archivo_individual.readline()
+    archivo_apareado.close()
+
 
 def main():
     '''
@@ -110,5 +120,7 @@ def main():
     datos, modulos = leer_programas(archivo_principal)
     nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos(modulos)
     crear_archivos_csv(datos, modulos)
+    aparear_archivos(nombres_archivos_fuente)
+    aparear_archivos(nombres_archivos_comentarios)
 
 main()
