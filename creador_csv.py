@@ -11,7 +11,7 @@ def obtener_ubicaciones(archivo_principal):
 def leer_programas(archivo_principal):
     '''
     Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
-    un diccionario ordenado con todos los datos de esos archivos con la forma:
+    una lista con los nombres de cada modulo un diccionario ordenado con todos los datos de esos archivos con la forma:
     datos_programas ---->funcion_1 ---->{"modulo": modulo_func_1, "parametros": param_func_1, "lineas":[lineas_cod_func_1], "comentarios": [coment_func_1]}
                     ---->funcion_2 ---->{"modulo": modulo_func_2, "parametros": param_func_2, "lineas":[lineas_cod_func_2], "comentarios": [coment_func_2]}
                             ...
@@ -82,14 +82,14 @@ def crear_archivos_csv(datos, modulos):
     Se crea un archivo de fuente y un archivo de comentarios, para cada archivo analizado en la funcion anterior
     '''
     #Lista de nombres de funciones
-    nombres_funciones = list(datos.keys())
+    nombres_funciones_ordenadas = sorted(list(datos.keys()))
 
     #Recorre cada modulo
     for modulo in modulos:
         #Crea 2 archivos .csv con el nombre del modulo
         with open(f'fuente_{modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{modulo}.csv', "w") as archivo_comentarios:
             #Recorre funcion por funcion
-            for nombre_funcion in nombres_funciones:
+            for nombre_funcion in nombres_funciones_ordenadas:
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
                 if modulo == datos[nombre_funcion]["modulo"]:
                     grabar_fuente_individual(archivo_fuente, nombre_funcion, datos[nombre_funcion]["parametros"], modulo, datos[nombre_funcion]["lineas"])
