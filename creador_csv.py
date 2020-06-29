@@ -9,12 +9,20 @@ def obtener_ubicaciones(archivo_principal):
     return ubicaciones
 
 def separar_linea_funcion(linea):
-    #Deja solo el nombre de la funcion con su/sus parametro/s
+    #Recorta la linea de la funcion y queda con la forma: func(param_1, param_2, ..., param_n)
     recorte = linea.strip()[4:-1]
     #Obtiene el nombre de la funcion del anterior recorte
     nombre_funcion = recorte.split("(")[0]
-    #Obtiene los parametros de la funcion del anterior recorte
-    parametros = recorte.split("(")[1].split(")")[0]
+    #Guarda caracteres entre parentesis incluyendo a los mismos
+    bandera = 0
+    parametros = ""
+    for caracter in recorte:
+        if caracter == "(":
+            bandera = 1
+        if bandera == 1:
+            parametros += caracter
+        if caracter == ")":
+            bandera = 0
 
     return nombre_funcion, parametros
 
@@ -48,13 +56,13 @@ def leer_programas(archivo_principal):
                 if linea.startswith("def"):
                     nombre_funcion, parametros = separar_linea_funcion(linea)
                     #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
-                    datos_programas[nombre_funcion] = {"modulo": nombre_modulo, "parametros": f'({parametros})', "lineas": [], "comentarios": []}
+                    datos_programas[nombre_funcion] = {"modulo": nombre_modulo, "parametros": parametros, "lineas": [], "comentarios": []}
                 #Filtra comentarios
                 if (len(datos_programas) > 0) and linea.startswith("    ") and ("#" not in linea or "'''" not in linea):
-                    datos_programas[nombre_funcion]["lineas"].append(linea.strip())
+                    datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
                 #Filtra las lineas de codigo
                 elif linea.strip().startswith("#") or linea.strip().startswith("'''"):
-                    datos_programas[nombre_funcion]["comentarios"].append(linea.strip())
+                    datos_programas[nombre_funcion]["comentarios"].append(f'"{linea.strip()}"')
                 #Lee la siguiente linea del codigo
                 linea = codigo.readline()
     #Devuelve el diccionario, con la forma que se explica al principio de la funcion
@@ -62,11 +70,11 @@ def leer_programas(archivo_principal):
 
 def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros, modulo, lineas):
     #Escribe una linea en el archivo de fuente del modulo correspondiente
-    archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(repr(linea) for linea in lineas)}\n')
+    archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(linea for linea in lineas)}\n')
 
 def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, nombre_autor, ayuda, comentarios):
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},{",".join(repr(comentario) for comentario in comentarios)}\n')
+    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},"{",".join(comentario for comentario in comentarios)}"\n')
 
 def obtener_nombres_archivos(modulos):
     '''
