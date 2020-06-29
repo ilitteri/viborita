@@ -1,11 +1,12 @@
-def leer_archivo_principal(archivo_principal):
+def obtener_ubicaciones(archivo_principal):
     '''
     Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las lineas 
     de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a a anlizar).
     '''
     with open(archivo_principal, "r") as archivo:
-        lineas = archivo.read().splitlines()
-    return lineas
+        ubicaciones = archivo.read().splitlines()
+
+    return ubicaciones
 
 def leer_programas(archivo_principal):
     '''
@@ -17,15 +18,16 @@ def leer_programas(archivo_principal):
                     ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":[lineas_cod_func_n], "comentarios": [coment_func_n]}
     '''
     #Lista de ubicaciones de modulos de la aplicacion
-    ubicaciones = leer_archivo_principal(archivo_principal)
-    #Ubicacion del modulo principal
-    u_programa_principal = ubicaciones[0]
+    ubicaciones = obtener_ubicaciones(archivo_principal)
     datos_programas = {}
+    modulos = []
 
     #Recorre la lista de ubicaciones de cada archivo de la aplicacion
     for ubicacion in ubicaciones:
         #Nombre del modulo
         nombre_modulo = ubicacion.split("\\")[-1]
+        if nombre_modulo not in modulos:
+            modulos.append(nombre_modulo)
         #Abro el archivo con la ubicacion en la que se encuentra en la iteracion
         with open(ubicacion, "r") as codigo:
             #Lee la primer linea del archivo que abri
@@ -51,20 +53,33 @@ def leer_programas(archivo_principal):
                 #Lee la siguiente linea del codigo
                 linea = codigo.readline()
     #Devuelve el diccionario, con la forma que se explica al principio de la funcion
-    return datos_programas
+    return datos_programas, modulos
 
-def guardar_datos():
+def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros, modulo, lineas):
+    archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(repr(linea) for linea in lineas)}\n')
+
+def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, nombre_autor, ayuda, comentarios):
+    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},{",".join(repr(comentario) for comentario in comentarios)}\n')
+
+def obtener_nombres_archivos(modulos):
+    nombres_archivos_fuente = []
+    nombres_archivos_comentarios = []
+
+    for modulo in modulos:
+        nombres_archivos_fuente.append(f'fuente_{modulo}.csv')
+        nombres_archivos_comentarios.append(f'comentarios_{modulo}.csv')
+
+    return nombres_archivos_fuente, nombres_archivos_comentarios
+
+def crear_archivos_csv(datos, modulos):
     '''
     Imprime los datos en un archivo .csv que creamon en la misma. Los datos se imprimen en la forma que se pide en
     la consigna.
     Se crea un archivo de fuente y un archivo de comentarios, para cada archivo analizado en la funcion anterior
     '''
-    #Diccionario con los datos de todos los programas
-    datos = leer_programas("programas.txt")
     #Lista de nombres de funciones
     nombres_funciones = list(datos.keys())
-    #Lista de todos los modulos
-    modulos = list(set([datos[nombre_funcion]["modulo"] for nombre_funcion in nombres_funciones]))
+
     #Recorre cada modulo
     for modulo in modulos:
         #Crea 2 archivos .csv con el nombre del modulo
@@ -73,15 +88,13 @@ def guardar_datos():
             for nombre_funcion in nombres_funciones:
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
                 if modulo == datos[nombre_funcion]["modulo"]:
-                    #Parametros de la funcion
-                    parametros = datos[nombre_funcion]["parametros"]
-                    #Lista de lineas de la funcion
-                    lineas = datos[nombre_funcion]["lineas"]
-                    #Imprime una linea del .csv fuente correspondiente al modulo
-                    archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(repr(linea) for linea in lineas)}\n')
-                    #Si la funcion tiene comentarios:
-                    if len(datos[nombre_funcion]["comentarios"]) > 0:
-                        #Escribe una linea en el .csv de comentarios correspondiente al modulo
-                        archivo_comentarios.write(f'{nombre_funcion},nombre de autor,ayuda,{datos[nombre_funcion]["comentarios"]}\n')
+                    grabar_fuente_individual(archivo_fuente, nombre_funcion, datos[nombre_funcion]["parametros"], modulo, datos[nombre_funcion]["lineas"])
+                    grabar_comentarios_individual(archivo_comentarios, nombre_funcion, "nombre_autor", "ayuda", datos[nombre_funcion]["comentarios"])
 
-guardar_datos()
+def main():
+    archivo_principal = "programas.txt"
+    datos, modulos = leer_programas(archivo_principal)
+    nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos(modulos)
+    crear_archivos_csv(datos, modulos)
+
+main()
