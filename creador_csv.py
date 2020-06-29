@@ -56,19 +56,23 @@ def leer_programas(archivo_principal):
     return datos_programas, modulos
 
 def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros, modulo, lineas):
+    #Escribe una linea en el archivo de fuente del modulo correspondiente
     archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(repr(linea) for linea in lineas)}\n')
 
 def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, nombre_autor, ayuda, comentarios):
+    #Escribe una linea en el archivo de comentarios del modulo correspondiente
     archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},{",".join(repr(comentario) for comentario in comentarios)}\n')
 
 def obtener_nombres_archivos(modulos):
-    nombres_archivos_fuente = []
-    nombres_archivos_comentarios = []
+    '''
+    Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios)
+    '''
+    #Lista de todos los nombres de los archivos fuente
+    nombres_archivos_fuente = [f'fuente_{modulo}.csv' for modulo in modulos]
+    #Lista de todos los nombres de los archivos de comentarios
+    nombres_archivos_comentarios = [f'comentarios_{modulo}.csv' for modulo in modulos]
 
-    for modulo in modulos:
-        nombres_archivos_fuente.append(f'fuente_{modulo}.csv')
-        nombres_archivos_comentarios.append(f'comentarios_{modulo}.csv')
-
+    #Retorna las listas
     return nombres_archivos_fuente, nombres_archivos_comentarios
 
 def crear_archivos_csv(datos, modulos):
@@ -99,6 +103,9 @@ def aparear_archivos(lista_archivos):
             linea = archivo_individual.readline()
 
 def main():
+    '''
+    Funcion principal del modulo
+    '''
     archivo_principal = "programas.txt"
     datos, modulos = leer_programas(archivo_principal)
     nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos(modulos)
