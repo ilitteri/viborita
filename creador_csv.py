@@ -9,18 +9,18 @@ def obtener_ubicaciones(archivo_principal):
     return ubicaciones
 
 def separar_linea_funcion(linea):
-    #Recorta la linea de la funcion y queda con la forma: "func(param_1, param_2, ..., param_n)"
-    recorte = linea.strip()[4:-1]
-    #Guarda caracteres entre parentesis incluyendo a los mismos
+    '''
+    Recorre la linea de la funcion y separa el nombre de los parametros de la misma
+    '''
     bandera = False
     nombre_funcion = ""
     parametros = ""
-    for caracter in recorte:
+    for caracter in linea[3:-1]:
         if caracter == "(":
             bandera = True
         if bandera:
             parametros += caracter
-        else:
+        elif not caracter.isspace():
             nombre_funcion += caracter
         if caracter == ")":
             bandera = False
