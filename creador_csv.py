@@ -30,6 +30,47 @@ def separar_linea_funcion(linea):
 
     return nombre_funcion, parametros
 
+def leer_lineas(codigo, datos_actuales, nombre_modulo, imports):
+    #Lee la primer linea del archivo que abri
+    linea = codigo.readline()
+    #Entra al while siempre y cuando no llegue a la ultima linea del codigo del archivo
+    while linea:
+        #Si la linea empieza con def, entonces se trata de una funcion, por lo tanto:
+        if linea.startswith("def"):
+            nombre_funcion, parametros = separar_linea_funcion(linea)
+            #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
+            datos_actuales[nombre_funcion] = {"modulo": nombre_modulo, 
+                                                "parametros": parametros, 
+                                                "lineas": [], 
+                                                "comentarios": {"autor": None, 
+                                                                "ayuda": None,
+                                                                "otros comentarios": None
+                                                                }
+                                                }
+        #Almaceno las lineas de imports
+        if linea.startswith("import"):
+            if nombre_modulo not in imports:
+                imports[nombre_modulo] = []
+            imports[nombre_modulo].append(linea)
+        #Filtra comentarios
+        if linea.startswith("    "):
+            #Filtra las lineas de codigo y los comentarios con "#"
+            if ("'''" in linea):
+                if "Ayuda" in linea:
+                    datos_actuales[nombre_funcion]["comentarios"]["ayuda"] = f'"{linea.strip()}"'
+                elif "Autor" in linea:     
+                    datos_programas[nombre_funcion]["comentarios"]["autor"] = f'"{linea.strip()}"'
+            elif ("#" in linea):
+                if datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"] == None:
+                    datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"] = []
+                datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea.strip()}"')
+            else:
+                datos_actuales[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
+        #Lee la siguiente linea del codigo
+        linea = codigo.readline()
+
+    return datos_actuales
+
 def obtener_datos_programas(archivo_principal):
     '''
     Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
@@ -54,44 +95,8 @@ def obtener_datos_programas(archivo_principal):
             modulos.append(nombre_modulo)
         #Abro el archivo con la ubicacion en la que se encuentra en la iteracion
         with open(ubicacion, "r") as codigo:
-            #Lee la primer linea del archivo que abri
-            linea = codigo.readline()
-            #Entra al while siempre y cuando no llegue a la ultima linea del codigo del archivo
-            while linea:
-                #Si la linea empieza con def, entonces se trata de una funcion, por lo tanto:
-                if linea.startswith("def"):
-                    nombre_funcion, parametros = separar_linea_funcion(linea)
-                    #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
-                    datos_programas[nombre_funcion] = {"modulo": nombre_modulo, 
-                                                       "parametros": parametros, 
-                                                       "lineas": [], 
-                                                       "comentarios": {"autor": None, 
-                                                                       "ayuda": None,
-                                                                       "otros comentarios": None
-                                                                       }
-                                                        }
-                #Almaceno las lineas de imports
-                if linea.startswith("import"):
-                    if nombre_modulo not in imports:
-                        imports[nombre_modulo] = []
-                    imports[nombre_modulo].append(linea)
-                #Filtra comentarios
-                if linea.startswith("    "):
-                    #Filtra las lineas de codigo y los comentarios con "#"
-                    if ("'''" in linea):
-                        if "Ayuda" in linea:
-                            datos_programas[nombre_funcion]["comentarios"]["ayuda"] = f'"{linea.strip()}"'
-                        elif "Autor" in linea:     
-                            datos_programas[nombre_funcion]["comentarios"]["autor"] = f'"{linea.strip()}"'
-                    elif ("#" in linea):
-                        if datos_programas[nombre_funcion]["comentarios"]["otros comentarios"] == None:
-                            datos_programas[nombre_funcion]["comentarios"]["otros comentarios"] = []
-                        datos_programas[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea.strip()}"')
-                    else:
-                        datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
-                #Lee la siguiente linea del codigo
-                linea = codigo.readline()
-
+            #Esta funcion actualiza el diccionario de datos
+           leer_lineas(codigo, datos_programas, nombre_modulo, imports)
     #Devuelve el diccionario, con la forma que se explica al principio de la funcion
     return datos_programas, modulos
 
