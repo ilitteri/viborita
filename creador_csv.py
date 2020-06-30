@@ -15,13 +15,14 @@ def separar_linea_funcion(linea):
     bandera = False
     nombre_funcion = ""
     parametros = ""
-    for caracter in linea[3:-1]:
+    for caracter in linea[3:-2]:
         if caracter == "(":
             bandera = True
-        if bandera:
-            parametros += caracter
-        elif not caracter.isspace():
-            nombre_funcion += caracter
+        if not caracter.isspace():
+            if bandera:
+                parametros += caracter
+            else:
+                nombre_funcion += caracter
         if caracter == ")":
             bandera = False
 
@@ -39,6 +40,7 @@ def leer_programas(archivo_principal):
     #Lista de ubicaciones de modulos de la aplicacion
     ubicaciones = obtener_ubicaciones(archivo_principal)
     datos_programas = {}
+    imports = {}
     modulos = []
 
     #Recorre la lista de ubicaciones de cada archivo de la aplicacion
@@ -57,13 +59,32 @@ def leer_programas(archivo_principal):
                 if linea.startswith("def"):
                     nombre_funcion, parametros = separar_linea_funcion(linea)
                     #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
-                    datos_programas[nombre_funcion] = {"modulo": nombre_modulo, "parametros": parametros, "lineas": [], "comentarios": []}
+                    datos_programas[nombre_funcion] = {"modulo": nombre_modulo, 
+                                                       "parametros": parametros, 
+                                                       "lineas": [], 
+                                                       "comentarios": {"autor": None, 
+                                                                       "ayuda": None,
+                                                                       "otros comentarios": None
+                                                                       }
+                                                        }
+                if linea.startswith("import"):
+                    if nombre_modulo not in imports:
+                        imports[nombre_modulo] = []
+                    imports[nombre_modulo].append(linea)
                 #Filtra comentarios
-                if linea.startswith("    ") and ("#" not in linea or "'''" not in linea):
-                    datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
-                #Filtra las lineas de codigo
-                elif linea.strip().startswith("#") or linea.strip().startswith("'''"):
-                    datos_programas[nombre_funcion]["comentarios"].append(f'"{linea.strip()}"')
+                if linea.startswith("    "):
+                    if ("#" not in linea) and ("'''" not in linea):
+                        datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
+                    #Filtra las lineas de codigo y los comentarios con "#"
+                    elif ("'''" in linea):
+                        if "Ayuda" in linea:
+                            datos_programas[nombre_funcion]["comentarios"]["ayuda"] = f'"{linea.strip()}"'
+                        elif "Autor" in linea:     
+                            datos_programas[nombre_funcion]["comentarios"]["autor"] = f'"{linea.strip()}"'
+                    elif ("#" in linea):
+                        if datos_programas[nombre_funcion]["comentarios"]["otros comentarios"] == None:
+                            datos_programas[nombre_funcion]["comentarios"]["otros comentarios"] = []
+                        datos_programas[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea.strip()}"')
                 #Lee la siguiente linea del codigo
                 linea = codigo.readline()
     #Devuelve el diccionario, con la forma que se explica al principio de la funcion
@@ -73,9 +94,12 @@ def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros, modulo,
     #Escribe una linea en el archivo de fuente del modulo correspondiente
     archivo_fuente.write(f'{nombre_funcion},{parametros},{modulo},{",".join(linea for linea in lineas)}\n')
 
-def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, nombre_autor, ayuda, comentarios):
+def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentarios):
+    nombre_autor = comentarios["autor"]
+    ayuda = comentarios["ayuda"]
+    otros_comentarios = comentarios["otros comentarios"]
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},"{",".join(comentario for comentario in comentarios)}"\n')
+    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
 
 def obtener_nombres_archivos(modulos):
     '''
@@ -97,17 +121,17 @@ def crear_archivos_csv(datos, modulos):
     '''
     #Lista de nombres de funciones
     nombres_funciones_ordenadas = sorted(list(datos.keys()))
-
     #Recorre cada modulo
     for modulo in modulos:
         #Crea 2 archivos .csv con el nombre del modulo
         with open(f'fuente_{modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{modulo}.csv', "w") as archivo_comentarios:
             #Recorre funcion por funcion
             for nombre_funcion in nombres_funciones_ordenadas:
+                print(datos[nombre_funcion]["comentarios"])
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
                 if modulo == datos[nombre_funcion]["modulo"]:
                     grabar_fuente_individual(archivo_fuente, nombre_funcion, datos[nombre_funcion]["parametros"], modulo, datos[nombre_funcion]["lineas"])
-                    grabar_comentarios_individual(archivo_comentarios, nombre_funcion, "nombre_autor", "ayuda", datos[nombre_funcion]["comentarios"])
+                    grabar_comentarios_individual(archivo_comentarios, nombre_funcion, datos[nombre_funcion]["comentarios"])
 
 #EN CONSTRUCCION
 def aparear_archivos(lista_archivos):
