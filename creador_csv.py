@@ -28,7 +28,7 @@ def separar_linea_funcion(linea):
 
     return nombre_funcion, parametros
 
-def leer_programas(archivo_principal):
+def obtener_datos_programas(archivo_principal):
     '''
     Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
     una lista con los nombres de cada modulo un diccionario ordenado con todos los datos de esos archivos con la forma:
@@ -37,6 +37,7 @@ def leer_programas(archivo_principal):
                             ...
                     ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":[lineas_cod_func_n], "comentarios": [coment_func_n]}
     '''
+
     #Lista de ubicaciones de modulos de la aplicacion
     ubicaciones = obtener_ubicaciones(archivo_principal)
     datos_programas = {}
@@ -67,16 +68,15 @@ def leer_programas(archivo_principal):
                                                                        "otros comentarios": None
                                                                        }
                                                         }
+                #Almaceno las lineas de imports
                 if linea.startswith("import"):
                     if nombre_modulo not in imports:
                         imports[nombre_modulo] = []
                     imports[nombre_modulo].append(linea)
                 #Filtra comentarios
                 if linea.startswith("    "):
-                    if ("#" not in linea) and ("'''" not in linea):
-                        datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
                     #Filtra las lineas de codigo y los comentarios con "#"
-                    elif ("'''" in linea):
+                    if ("'''" in linea):
                         if "Ayuda" in linea:
                             datos_programas[nombre_funcion]["comentarios"]["ayuda"] = f'"{linea.strip()}"'
                         elif "Autor" in linea:     
@@ -85,8 +85,11 @@ def leer_programas(archivo_principal):
                         if datos_programas[nombre_funcion]["comentarios"]["otros comentarios"] == None:
                             datos_programas[nombre_funcion]["comentarios"]["otros comentarios"] = []
                         datos_programas[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea.strip()}"')
+                    else:
+                        datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
                 #Lee la siguiente linea del codigo
                 linea = codigo.readline()
+
     #Devuelve el diccionario, con la forma que se explica al principio de la funcion
     return datos_programas, modulos
 
@@ -127,7 +130,6 @@ def crear_archivos_csv(datos, modulos):
         with open(f'fuente_{modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{modulo}.csv', "w") as archivo_comentarios:
             #Recorre funcion por funcion
             for nombre_funcion in nombres_funciones_ordenadas:
-                print(datos[nombre_funcion]["comentarios"])
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
                 if modulo == datos[nombre_funcion]["modulo"]:
                     grabar_fuente_individual(archivo_fuente, nombre_funcion, datos[nombre_funcion]["parametros"], modulo, datos[nombre_funcion]["lineas"])
@@ -150,7 +152,7 @@ def main():
     Funcion principal del modulo
     '''
     archivo_principal = "programas.txt"
-    datos, modulos = leer_programas(archivo_principal)
+    datos, modulos = obtener_datos_programas(archivo_principal)
     nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos(modulos)
     crear_archivos_csv(datos, modulos)
     aparear_archivos(nombres_archivos_fuente)
