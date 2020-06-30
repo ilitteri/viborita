@@ -13,6 +13,7 @@ def separar_linea_funcion(linea):
     Recorre la linea de la funcion y separa el nombre de los parametros de la misma
     '''
     messi = 10
+    neymar = 10
     bandera = False
     nombre_funcion = ""
     parametros = ""
