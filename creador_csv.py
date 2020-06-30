@@ -9,20 +9,21 @@ def obtener_ubicaciones(archivo_principal):
     return ubicaciones
 
 def separar_linea_funcion(linea):
-    #Recorta la linea de la funcion y queda con la forma: func(param_1, param_2, ..., param_n)
+    #Recorta la linea de la funcion y queda con la forma: "func(param_1, param_2, ..., param_n)"
     recorte = linea.strip()[4:-1]
-    #Obtiene el nombre de la funcion del anterior recorte
-    nombre_funcion = recorte.split("(")[0]
     #Guarda caracteres entre parentesis incluyendo a los mismos
-    bandera = 0
+    bandera = False
+    nombre_funcion = ""
     parametros = ""
     for caracter in recorte:
         if caracter == "(":
-            bandera = 1
-        if bandera == 1:
+            bandera = True
+        if bandera:
             parametros += caracter
+        else:
+            nombre_funcion += caracter
         if caracter == ")":
-            bandera = 0
+            bandera = False
 
     return nombre_funcion, parametros
 
@@ -58,7 +59,7 @@ def leer_programas(archivo_principal):
                     #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
                     datos_programas[nombre_funcion] = {"modulo": nombre_modulo, "parametros": parametros, "lineas": [], "comentarios": []}
                 #Filtra comentarios
-                if (len(datos_programas) > 0) and linea.startswith("    ") and ("#" not in linea or "'''" not in linea):
+                if linea.startswith("    ") and ("#" not in linea or "'''" not in linea):
                     datos_programas[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
                 #Filtra las lineas de codigo
                 elif linea.strip().startswith("#") or linea.strip().startswith("'''"):
