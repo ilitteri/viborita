@@ -114,7 +114,7 @@ def obtener_datos_programas(archivo_principal):
 
 def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
     #Escribe una linea en el archivo de fuente del modulo correspondiente
-    archivo_fuente.write(f'{nombre_funcion},{parametros_funcion},{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
+    archivo_fuente.write(f'{nombre_funcion},"{parametros_funcion}",{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
 
 def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentarios):
     nombre_autor = comentarios["autor"]
@@ -159,14 +159,18 @@ def crear_archivos_csv_individuales(datos_programas, nombres_modulos):
 
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
-    archivo_apareado = open(f'{"fuente_unico.csv" if "fuente" in nombres_archivos_csv_individuales[0] else "comentarios.csv"}', "w")
+    lineas_archivos_csv = []
     for nombre_archivo_csv_individual in nombres_archivos_csv_individuales:
         with open(nombre_archivo_csv_individual, "r") as archivo_individual:
             linea_csv = archivo_individual.readline()
             while linea_csv:
-                archivo_apareado.write(linea_csv)
+                lineas_archivos_csv.append(linea_csv)
                 linea_csv = archivo_individual.readline()
-    archivo_apareado.close()
+    lineas_ordenadas_archivos_csv = sorted(lineas_archivos_csv)
+    with open(f'{"fuente_unico.csv" if "fuente" in nombres_archivos_csv_individuales[0] else "comentarios.csv"}', "w") as archivo_final:
+        for linea in lineas_ordenadas_archivos_csv:
+            archivo_final.write(linea)
+    
 
 def obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
