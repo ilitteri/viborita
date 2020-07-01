@@ -31,13 +31,12 @@ def separar_linea_funcion(linea_codigo):
             bandera = False
 
     return nombre_funcion, parametros
-
-def leer_lineas_codigo(codigo, datos_actuales, nombre_modulo, imports):
+    
+def leer_lineas_codigo(codigo, datos_actuales, nombre_modulo, imports, bandera_comentario = False, contador_comillas_triples = 0):
     '''
     Lee linea por linea el codigo, y actualiza con los datos procesados al diccionario de datos_actuales y tambien
     el diccionario de imports
     '''
-
     #Lee la primer linea del archivo que abri
     linea_codigo = codigo.readline()
     #Entra al while siempre y cuando no llegue a la ultima linea del codigo del archivo
@@ -49,9 +48,9 @@ def leer_lineas_codigo(codigo, datos_actuales, nombre_modulo, imports):
             datos_actuales[nombre_funcion] = {"modulo": nombre_modulo, 
                                                 "parametros": parametros, 
                                                 "lineas": [], 
-                                                "comentarios": {"autor": None, 
-                                                                "ayuda": None,
-                                                                "otros comentarios": None
+                                                "comentarios": {"autor": "", 
+                                                                "ayuda": "",
+                                                                "otros comentarios": []
                                                                 }
                                                 }
         #Almaceno las lineas de imports
@@ -60,23 +59,22 @@ def leer_lineas_codigo(codigo, datos_actuales, nombre_modulo, imports):
             if nombre_modulo not in imports:
                 imports[nombre_modulo] = []
             imports[nombre_modulo].append(linea_codigo)
-        #Filtra comentarios
         if linea_codigo.startswith("    "):
-            #Filtra las lineas de codigo y los comentarios con "#"
-            if ("'''" in linea_codigo):
-                if "Ayuda" in linea_codigo:
-                    datos_actuales[nombre_funcion]["comentarios"]["ayuda"] = f'"{linea_codigo.strip()}"'
-                elif "Autor" in linea_codigo:     
-                    datos_programas[nombre_funcion]["comentarios"]["autor"] = f'"{linea_codigo.strip()}"'
-            #Filtra las lineas de codigo y los comentarios con tres comillas
-            elif ("#" in linea_codigo):
-                #Si aun no hay otros comentarios, entonces cambia el estado de None a una lista vacia para poder agregar el comentario (Esto ocurre una sola vez)
-                if datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"] == None:
-                    datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"] = []
-                datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea_codigo.strip()}"')
-            #Entran solo las lineas
-            else:
-                datos_actuales[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
+                if "#" not in linea_codigo and "'''" not in linea_codigo and not bandera_comentario:
+                    datos_actuales[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
+                else:
+                    if linea_codigo.startswith(" ") and linea_codigo.strip().startswith("'''") and linea_codigo.count("'''") == 1:
+                        contador_comillas_triples += 1
+                        bandera_comentario = True
+                        if contador_comillas_triples == 2:
+                            contador_comillas_triples = 0
+                            bandera_comentario = False
+                    elif linea_codigo.startswith(" ") and linea_codigo.count("'''") == 2:
+                        datos_actuales[nombre_funcion]["comentarios"]["autor"] = f'"{linea_codigo.strip()[3:-3]}"'
+                    elif linea_codigo.strip().startswith("#"):
+                        datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea_codigo.strip()}"')
+                    if bandera_comentario and contador_comillas_triples < 2:
+                        datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'
         #Lee la siguiente linea del codigo
         linea_codigo = codigo.readline()
 
@@ -121,7 +119,7 @@ def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentari
     ayuda = comentarios["ayuda"]
     otros_comentarios = comentarios["otros comentarios"]
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},{ayuda},{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
+    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},"{ayuda[3:]}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
 
 def obtener_nombres_archivos_csv_individuales(nombres_modulos):
     '''
