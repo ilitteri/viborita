@@ -3,6 +3,7 @@ def obtener_ubicaciones(archivo_principal):
     Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las lineas 
     de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a a anlizar).
     '''
+
     with open(archivo_principal, "r") as archivo:
         ubicaciones = archivo.read().splitlines()
 
@@ -12,8 +13,7 @@ def separar_linea_funcion(linea):
     '''
     Recorre la linea de la funcion y separa el nombre de los parametros de la misma
     '''
-    messi = 10
-    neymar = 10
+
     bandera = False
     nombre_funcion = ""
     parametros = ""
@@ -31,6 +31,11 @@ def separar_linea_funcion(linea):
     return nombre_funcion, parametros
 
 def leer_lineas(codigo, datos_actuales, nombre_modulo, imports):
+    '''
+    Lee linea por linea el codigo, y actualiza con los datos procesados al diccionario de datos_actuales y tambien
+    el diccionario de imports
+    '''
+
     #Lee la primer linea del archivo que abri
     linea = codigo.readline()
     #Entra al while siempre y cuando no llegue a la ultima linea del codigo del archivo
@@ -49,6 +54,7 @@ def leer_lineas(codigo, datos_actuales, nombre_modulo, imports):
                                                 }
         #Almaceno las lineas de imports
         if linea.startswith("import"):
+            #Si el nombre del modulo no esta como key, entonces lo agrega (Esto ocurre una vez sola)
             if nombre_modulo not in imports:
                 imports[nombre_modulo] = []
             imports[nombre_modulo].append(linea)
@@ -60,25 +66,28 @@ def leer_lineas(codigo, datos_actuales, nombre_modulo, imports):
                     datos_actuales[nombre_funcion]["comentarios"]["ayuda"] = f'"{linea.strip()}"'
                 elif "Autor" in linea:     
                     datos_programas[nombre_funcion]["comentarios"]["autor"] = f'"{linea.strip()}"'
+            #Filtra las lineas de codigo y los comentarios con tres comillas
             elif ("#" in linea):
+                #Si aun no hay otros comentarios, entonces cambia el estado de None a una lista vacia para poder agregar el comentario (Esto ocurre una sola vez)
                 if datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"] == None:
                     datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"] = []
                 datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea.strip()}"')
+            #Entran solo las lineas
             else:
                 datos_actuales[nombre_funcion]["lineas"].append(f'"{linea.strip()}"')
         #Lee la siguiente linea del codigo
         linea = codigo.readline()
 
-    return datos_actuales
+    return datos_actuales, imports
 
 def obtener_datos_programas(archivo_principal):
     '''
     Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
     una lista con los nombres de cada modulo un diccionario ordenado con todos los datos de esos archivos con la forma:
-    datos_programas ---->funcion_1 ---->{"modulo": modulo_func_1, "parametros": param_func_1, "lineas":[lineas_cod_func_1], "comentarios": [coment_func_1]}
-                    ---->funcion_2 ---->{"modulo": modulo_func_2, "parametros": param_func_2, "lineas":[lineas_cod_func_2], "comentarios": [coment_func_2]}
+    datos_programas ---->funcion_1 ---->{"modulo": modulo_func_1, "parametros": param_func_1, "lineas":[lineas_cod_func_1], "comentarios": {"autor": "autor_func_1", "ayuda": "ayuda_func_1", "otros comentarios": [otros_comentarios_func_1]}}
+                    ---->funcion_2 ---->{"modulo": modulo_func_2, "parametros": param_func_2, "lineas":[lineas_cod_func_2], "comentarios": {"autor": "autor_func_2", "ayuda": "ayuda_func_2", "otros comentarios": [otros_comentarios_func_2]}}
                             ...
-                    ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":[lineas_cod_func_n], "comentarios": [coment_func_n]}
+                    ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":[lineas_cod_func_n], "comentarios": {"autor": "autor_func_n", "ayuda": "ayuda_func_n", "otros comentarios": [otros_comentarios_func_n]}}
     '''
 
     #Lista de ubicaciones de modulos de la aplicacion
@@ -96,7 +105,8 @@ def obtener_datos_programas(archivo_principal):
         #Abro el archivo con la ubicacion en la que se encuentra en la iteracion
         with open(ubicacion, "r") as codigo:
             #Esta funcion actualiza el diccionario de datos
-           leer_lineas(codigo, datos_programas, nombre_modulo, imports)
+            leer_lineas(codigo, datos_programas, nombre_modulo, imports)
+            
     #Devuelve el diccionario, con la forma que se explica al principio de la funcion
     return datos_programas, modulos
 
@@ -115,6 +125,7 @@ def obtener_nombres_archivos(modulos):
     '''
     Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios)
     '''
+
     #Lista de todos los nombres de los archivos fuente
     nombres_archivos_fuente = [f'fuente_{modulo}.csv' for modulo in modulos]
     #Lista de todos los nombres de los archivos de comentarios
@@ -129,6 +140,7 @@ def crear_archivos_csv(datos, modulos):
     la consigna.
     Se crea un archivo de fuente y un archivo de comentarios, para cada archivo analizado en la funcion anterior
     '''
+
     #Lista de nombres de funciones
     nombres_funciones_ordenadas = sorted(list(datos.keys()))
     #Recorre cada modulo
@@ -153,11 +165,11 @@ def aparear_archivos(lista_archivos):
                 linea = archivo_individual.readline()
     archivo_apareado.close()
 
-
 def main():
     '''
     Funcion principal del modulo
     '''
+
     archivo_principal = "programas.txt"
     datos, modulos = obtener_datos_programas(archivo_principal)
     nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos(modulos)
