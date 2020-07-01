@@ -169,13 +169,20 @@ def aparear_archivos(nombres_archivos_csv_individuales):
     archivo_apareado.close()
 
 def obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
 def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    '''
+    Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
+    de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales
+    '''
+
+    #Obtengo las ubicaciones
     ubicaciones_archivos_csv_individuales = obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales)
     for ubicacion_archivo_csv_individual in ubicaciones_archivos_csv_individuales:
+        #Borro el archivo que se encuentra en esa ubicacion
         os.remove(ubicacion_archivo_csv_individual)
-    return "Archivos .csv individuales borrados"    
 
 def main():
     '''
