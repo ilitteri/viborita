@@ -31,8 +31,8 @@ def separar_linea_funcion(linea_codigo):
             bandera = False
 
     return nombre_funcion, parametros
-    
-def leer_lineas_codigo(codigo, datos_actuales, nombre_modulo, imports, bandera_comentario = False, contador_comillas_triples = 0):
+
+def leer_codigo(codigo, datos_actuales, nombre_modulo, imports, bandera_comentario = False, contador_comillas_triples = 0):
     '''
     Lee linea por linea el codigo, y actualiza con los datos procesados al diccionario de datos_actuales y tambien
     el diccionario de imports
@@ -80,52 +80,27 @@ def leer_lineas_codigo(codigo, datos_actuales, nombre_modulo, imports, bandera_c
 
     return datos_actuales, imports
 
-def obtener_datos_programas(archivo_principal):
-    '''
-    Analiza cada uno de los archivos que se encuentran en el archivo principal (que se pasa por parametro) y devuelve
-    una lista con los nombres de cada modulo un diccionario ordenado con todos los datos de esos archivos con la forma:
-    datos_programas ---->funcion_1 ---->{"modulo": modulo_func_1, "parametros": param_func_1, "lineas":[lineas_cod_func_1], "comentarios": {"autor": "autor_func_1", "ayuda": "ayuda_func_1", "otros comentarios": [otros_comentarios_func_1]}}
-                    ---->funcion_2 ---->{"modulo": modulo_func_2, "parametros": param_func_2, "lineas":[lineas_cod_func_2], "comentarios": {"autor": "autor_func_2", "ayuda": "ayuda_func_2", "otros comentarios": [otros_comentarios_func_2]}}
-                            ...
-                    ---->funcion_n ---->{"modulo": modulo_func_n, "parametros": param_func_n, "lineas":[lineas_cod_func_n], "comentarios": {"autor": "autor_func_n", "ayuda": "ayuda_func_n", "otros comentarios": [otros_comentarios_func_n]}}
-    '''
-
-    #Lista de ubicaciones de modulos de la aplicacion
-    ubicaciones_modulos = obtener_ubicaciones_modulos(archivo_principal)
-    datos_modulos = {}
-    imports = {}
-    nombres_modulos = []
-
-    #Recorre la lista de ubicaciones de cada archivo de la aplicacion
-    for ubicacion_modulo in ubicaciones_modulos:
-        #Nombre del modulo
-        nombre_modulo = ubicacion_modulo.split("\\")[-1]
-        if nombre_modulo not in nombres_modulos:
-            nombres_modulos.append(nombre_modulo)
-        #Abro el archivo con la ubicacion en la que se encuentra en la iteracion
-        with open(ubicacion_modulo, "r") as codigo:
-            #Esta funcion actualiza el diccionario de datos
-            leer_lineas_codigo(codigo, datos_modulos, nombre_modulo, imports)
-            
-    #Devuelve el diccionario, con la forma que se explica al principio de la funcion
-    return datos_modulos, nombres_modulos
-
 def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
     #Escribe una linea en el archivo de fuente del modulo correspondiente
     archivo_fuente.write(f'{nombre_funcion},"{parametros_funcion}",{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
 
 def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentarios):
+    #Extraigo el nombre del autor del diccionario comentarios
     nombre_autor = comentarios["autor"]
+    #Extraigo la ayuda de funcion del diccionario comentarios
     ayuda = comentarios["ayuda"]
+    #Extraigo otros comentrios del diccionario comentarios
     otros_comentarios = comentarios["otros comentarios"]
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
     archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},"{ayuda[3:]}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
 
-def obtener_nombres_archivos_csv_individuales(nombres_modulos):
+def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
     '''
     Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios)
     '''
 
+    #lista de nombres de modulos
+    nombres_modulos = [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
     #Lista de todos los nombres de los archivos fuente
     nombres_archivos_fuente_individuales = [f'fuente_{nombre_modulo}.csv' for nombre_modulo in nombres_modulos]
     #Lista de todos los nombres de los archivos de comentarios
@@ -135,25 +110,31 @@ def obtener_nombres_archivos_csv_individuales(nombres_modulos):
     return nombres_archivos_fuente_individuales, nombres_archivos_comentarios_individuales
 
 
-def crear_archivos_csv_individuales(datos_programas, nombres_modulos):
-    '''
-    Imprime los datos en un archivo .csv que creamon en la misma. Los datos se imprimen en la forma que se pide en
-    la consigna.
-    Se crea un archivo de fuente y un archivo de comentarios, para cada archivo analizado en la funcion anterior
+def crear_archivos_csv_individuales(ubicaciones_modulos):
+    ''' 
+    Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, el archivo fuente y comentario especifico del modulo, y en
+    paralelo, analiza el codigo del modulo con la funcion leer_codigo que devuelve un diccionario con los datos de los codigos, datos que luego se utilizan para
+    imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar todo, cierra los archivos y repite.
     '''
 
-    #Lista de nombres de funciones
-    nombres_funciones_ordenadas = sorted(list(datos_programas.keys()))
-    #Recorre cada modulo
-    for nombre_modulo in nombres_modulos:
-        #Crea 2 archivos .csv con el nombre del modulo
-        with open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
+    datos_modulos = {}
+    imports = {}
+
+    #Recorro las ubicaciones de los modulos
+    for ubicacion_modulo in ubicaciones_modulos:
+        #Nombre del modulo
+        nombre_modulo = ubicacion_modulo.split("\\")[-1]
+        #Abre un archivo para leer y dos para escribir, al mismo tiempo
+        with open(ubicacion_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
+            datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
+            #Lista de nombres de funciones
+            nombres_funciones_ordenadas = sorted(list(datos_modulos.keys()))
             #Recorre funcion por funcion
             for nombre_funcion in nombres_funciones_ordenadas:
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
-                if nombre_modulo == datos_programas[nombre_funcion]["modulo"]:
-                    grabar_fuente_individual(archivo_fuente, nombre_funcion, datos_programas[nombre_funcion]["parametros"], nombre_modulo, datos_programas[nombre_funcion]["lineas"])
-                    grabar_comentarios_individual(archivo_comentarios, nombre_funcion, datos_programas[nombre_funcion]["comentarios"])
+                if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
+                    grabar_fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
+                    grabar_comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
 
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
@@ -192,10 +173,10 @@ def main():
     '''
 
     archivo_principal = "programas.txt"
-    datos_modulos, nombres_modulos = obtener_datos_programas(archivo_principal)
-    nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos_csv_individuales(nombres_modulos)
+    ubicaciones_modulos = obtener_ubicaciones_modulos(archivo_principal)
+    nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos_csv_individuales(ubicaciones_modulos)
     nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
-    crear_archivos_csv_individuales(datos_modulos, nombres_modulos)
+    crear_archivos_csv_individuales(ubicaciones_modulos)
     aparear_archivos(nombres_archivos_fuente)
     aparear_archivos(nombres_archivos_comentarios)
     borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
