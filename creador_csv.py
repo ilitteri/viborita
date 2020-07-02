@@ -32,17 +32,26 @@ def separar_linea_funcion(linea_codigo):
 
     return nombre_funcion, parametros
 
-def leer_codigo(codigo, datos_actuales, nombre_modulo, imports, bandera_comentario = False, contador_comillas_triples = 0):
+def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
     '''
-    Lee linea por linea el codigo, y actualiza con los datos procesados al diccionario de datos_actuales y tambien
-    el diccionario de imports
+    Lee el codigo que le llega por parametro, lo analiza y actualiza el diccionario donde se guardan los datos 
+    analizados cada vez que se llama.
     '''
+    bandera_comentario = False
+    bandera_funcion = False
+    contador_comillas_triples = 0
+    contador_def = 0
+
     #Lee la primer linea del archivo que abri
     linea_codigo = codigo.readline()
     #Entra al while siempre y cuando no llegue a la ultima linea del codigo del archivo
     while linea_codigo:
+        if linea_codigo.strip().startswith("return") or contador_def == 2:
+            contador_def = 0
+            bandera_funcion = False
         #Si la linea empieza con def, entonces se trata de una funcion, por lo tanto:
         if linea_codigo.startswith("def"):
+            bandera_funcion = True
             nombre_funcion, parametros = separar_linea_funcion(linea_codigo)
             #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
             datos_actuales[nombre_funcion] = {"modulo": nombre_modulo, 
@@ -58,23 +67,22 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports, bandera_comentar
             #Si el nombre del modulo no esta como key, entonces lo agrega (Esto ocurre una vez sola)
             if nombre_modulo not in imports:
                 imports[nombre_modulo] = []
+        if bandera_funcion:
             imports[nombre_modulo].append(linea_codigo)
-        if linea_codigo.startswith("    "):
-                if "#" not in linea_codigo and "'''" not in linea_codigo and not bandera_comentario:
-                    datos_actuales[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
-                else:
-                    if linea_codigo.startswith(" ") and linea_codigo.strip().startswith("'''") and linea_codigo.count("'''") == 1:
-                        contador_comillas_triples += 1
-                        bandera_comentario = True
-                        if contador_comillas_triples == 2:
-                            contador_comillas_triples = 0
-                            bandera_comentario = False
-                    elif linea_codigo.startswith(" ") and linea_codigo.count("'''") == 2:
-                        datos_actuales[nombre_funcion]["comentarios"]["autor"] = f'"{linea_codigo.strip()[3:-3]}"'
-                    elif linea_codigo.strip().startswith("#"):
-                        datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea_codigo.strip()}"')
-                    if bandera_comentario and contador_comillas_triples < 2:
-                        datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'
+            if "#" not in linea_codigo and "'''" not in linea_codigo and not bandera_comentario:
+                datos_actuales[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
+            elif linea_codigo.startswith(" ") and linea_codigo.strip().startswith("'''") and linea_codigo.count("'''") == 1:
+                contador_comillas_triples += 1
+                bandera_comentario = True
+                if contador_comillas_triples == 2:
+                    contador_comillas_triples = 0
+                    bandera_comentario = False
+            elif linea_codigo.startswith(" ") and linea_codigo.count("'''") == 2:
+                datos_actuales[nombre_funcion]["comentarios"]["autor"] = f'"{linea_codigo.strip()[3:-3]}"'
+            elif linea_codigo.strip().startswith("#"):
+                datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea_codigo.strip()}"')
+            if bandera_comentario and contador_comillas_triples < 2:
+                datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'
         #Lee la siguiente linea del codigo
         linea_codigo = codigo.readline()
 
@@ -112,9 +120,11 @@ def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
 
 def crear_archivos_csv_individuales(ubicaciones_modulos):
     ''' 
-    Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, el archivo fuente y comentario especifico del modulo, y en
-    paralelo, analiza el codigo del modulo con la funcion leer_codigo que devuelve un diccionario con los datos de los codigos, datos que luego se utilizan para
-    imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar todo, cierra los archivos y repite.
+    Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, el archivo 
+    fuente y comentario especifico del modulo, y en paralelo, analiza el codigo del modulo con la funcion 
+    leer_codigo que devuelve un diccionario con los datos de los codigos, datos que luego se utilizan para imprimirse 
+    de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar todo, cierra los 
+    archivos y repite.
     '''
 
     datos_modulos = {}
