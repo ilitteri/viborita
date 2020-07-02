@@ -50,6 +50,7 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
     bandera_funcion = False
     contador_comillas_triples = 0
     contador_def = 0
+    nombre_funcion =""
 
     #Lee la primer linea del archivo que abri
     linea_codigo = codigo.readline()
@@ -59,25 +60,6 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
         if linea_codigo.strip().startswith("return") or contador_def == 2:
             contador_def = 0
             bandera_funcion = False
-        #Si la linea empieza con def, entonces se trata de una funcion, entonces habilita la bandera y obtiene el nombre de la funcion y sus parametros
-        if linea_codigo.startswith("def"):
-            bandera_funcion = True
-            nombre_funcion, parametros = separar_linea_funcion(linea_codigo)
-            #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
-            datos_actuales[nombre_funcion] = {"modulo": nombre_modulo, 
-                                                "parametros": parametros, 
-                                                "lineas": [], 
-                                                "comentarios": {"autor": "", 
-                                                                "ayuda": "",
-                                                                "otros comentarios": []
-                                                                }
-                                                }
-        #Almaceno las lineas de imports
-        if linea_codigo.startswith("import"):
-            #Si el nombre del modulo no esta como key, entonces lo agrega (Esto ocurre una vez sola)
-            if nombre_modulo not in imports:
-                imports[nombre_modulo] = []
-            imports[nombre_modulo].append(linea_codigo)
         #Si la bandera esta habilitada (estoy dentro de una funcion)
         if bandera_funcion:
             #Filtro las lineas que puedan llegar a tratarse de diccionarios
@@ -102,6 +84,25 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
             #Si la bandera esta habilitada y aun no se encontraron las comillas que cierran el comentario, sumo las lineas al string de ayuda de la funcion
             if bandera_comentario and contador_comillas_triples < 2:
                 datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'
+        #Si la linea empieza con def, entonces se trata de una funcion, entonces habilita la bandera y obtiene el nombre de la funcion y sus parametros
+        if linea_codigo.startswith("def"):
+            bandera_funcion = True
+            nombre_funcion, parametros = separar_linea_funcion(linea_codigo)
+            #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
+            datos_actuales[nombre_funcion] = {"modulo": nombre_modulo, 
+                                                "parametros": parametros, 
+                                                "lineas": [], 
+                                                "comentarios": {"autor": "", 
+                                                                "ayuda": "",
+                                                                "otros comentarios": []
+                                                                }
+                                                }
+        #Almaceno las lineas de imports
+        if linea_codigo.startswith("import"):
+            #Si el nombre del modulo no esta como key, entonces lo agrega (Esto ocurre una vez sola)
+            if nombre_modulo not in imports:
+                imports[nombre_modulo] = []
+            imports[nombre_modulo].append(linea_codigo)
         #Lee la siguiente linea del codigo
         linea_codigo = codigo.readline()
 
