@@ -1,5 +1,3 @@
-import os
-
 def obtener_ubicaciones_modulos(archivo_principal):
     '''
     Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las lineas 
@@ -83,7 +81,7 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
                 datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea_codigo.strip()}"')
             #Si la bandera esta habilitada y aun no se encontraron las comillas que cierran el comentario, sumo las lineas al string de ayuda de la funcion
             if bandera_comentario and contador_comillas_triples < 2:
-                datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'
+                datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'  
         #Si la linea empieza con def, entonces se trata de una funcion, entonces habilita la bandera y obtiene el nombre de la funcion y sus parametros
         if linea_codigo.startswith("def"):
             bandera_funcion = True
@@ -183,10 +181,12 @@ def aparear_archivos(nombres_archivos_csv_individuales):
     
 
 def obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    import os
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
 def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    import os
     '''
     Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
     de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales
