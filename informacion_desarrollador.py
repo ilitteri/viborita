@@ -55,12 +55,13 @@ def guardar_datos_archivo_comentarios(datos_por_autor, datos_archivo_comentarios
         comentarios_funcion = datos_comentarios_funcion[3:]
         #Crea el diccionario que pertenece al autor si no esta el nombre en el diccionario (solo sucede una vez)
         if autor not in datos_por_autor:
-            datos_por_autor[autor] = {}
+            datos_por_autor[autor] = {"lineas totales": 0}
         #Crea la key y le da un value si no esta el nombre en el diccionario (solo sucede una vez)
-        if nombre_funcion not in datos_por_autor[autor]:
+        if nombre_funcion not in datos_por_autor[autor] and nombre_funcion != "lineas totales":
             datos_por_autor[autor][nombre_funcion] = 0
         #Una vez creado el lugar a guardar, guarda la cantidad de lineas de comentarios que pertenecen a cada funcion
         datos_por_autor[autor][nombre_funcion] += len(comentarios_funcion)
+        datos_por_autor[autor]["lineas totales"] += len(comentarios_funcion)
 
 def guardar_datos_archivo_fuente(datos_por_autor, datos_archivo_fuente):
     '''[Autor: Ivan Litteri]
@@ -82,6 +83,7 @@ def guardar_datos_archivo_fuente(datos_por_autor, datos_archivo_fuente):
                 datos_por_autor[autor][nombre_funcion] = 0
             #Una vez creado el lugar a guardar, guarda la cantidad de lineas de fuente que pertenecen a cada funcion
             datos_por_autor[autor][nombre_funcion] += len(lineas_funcion)
+            datos_por_autor[autor]["lineas totales"] += len(lineas_funcion)
 
 def obtener_datos_por_autor(datos_archivo_fuente, datos_archivo_comentarios):
     datos_por_autor = {}
@@ -91,16 +93,21 @@ def obtener_datos_por_autor(datos_archivo_fuente, datos_archivo_comentarios):
 
     return datos_por_autor
 
+def obtener_porcentaje_lineas_codigo(total_lineas, lineas):
+    return (lineas / total_lineas) * 100
+
 def imprimir_datos(datos_por_autor):
     lineas_totales = 0
     print("\t\t\tInformacion de Desarrollo Por Autor\n")
     for autor in datos_por_autor:
-        lineas_totales = 0
+        lineas_totales_modulo = 0
         print(f'{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
         for funcion, lineas in datos_por_autor[autor].items():
-            lineas_totales += lineas
-            print(f'\t{funcion}{" " * (50-len(funcion))}{lineas}')
-        print(f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales}')
+            if funcion != "lineas totales":
+                lineas_totales_modulo += lineas
+                print(f'\t{funcion}{" " * (50-len(funcion))}{lineas}')
+        porcentaje_lineas_modulo = round(obtener_porcentaje_lineas_codigo(datos_por_autor[autor]["lineas totales"], lineas_totales_modulo))
+        print(f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%')
 
 
 def main():
