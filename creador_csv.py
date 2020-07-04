@@ -119,7 +119,7 @@ def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentari
     #Extraigo otros comentrios del diccionario comentarios
     otros_comentarios = comentarios["otros comentarios"]
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor},"{ayuda[3:]}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
+    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor[2:-2]},"{ayuda[3:]}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
 
 def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
     '''
