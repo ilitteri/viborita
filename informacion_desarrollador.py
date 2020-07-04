@@ -92,11 +92,15 @@ def obtener_datos_por_autor(datos_archivo_fuente, datos_archivo_comentarios):
     return datos_por_autor
 
 def imprimir_datos(datos_por_autor):
+    lineas_totales = 0
     print("\t\t\tInformacion de Desarrollo Por Autor\n")
     for autor in datos_por_autor:
-        print(f'{autor}\n\n\tFuncion\t\t\t\t\t\t\t\tLineas\n\n\t======================================================================\n')
+        lineas_totales = 0
+        print(f'{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
         for funcion, lineas in datos_por_autor[autor].items():
-            print(f'\t{funcion}\t{lineas}')
+            lineas_totales += lineas
+            print(f'\t{funcion}{" " * (50-len(funcion))}{lineas}')
+        print(f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales}')
 
 
 def main():
