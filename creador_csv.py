@@ -6,7 +6,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     #Importo las funciones del modulo m_analizar_linea.py
     import m_analizar_linea as analizar
 
-    linea_codigo = codigo.readline()
+    linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
         #Se habilita esta bandera cuando en el codigo a leer empieza una funcion, se deshabilita cuando termina o empieza otra
         if bandera_funcion:
@@ -59,7 +59,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                 imports[nombre_modulo] = []
             imports[nombre_modulo].append(linea_codigo)
         #Lee la siguiente linea del codigo
-        linea_codigo = codigo.readline()
+        linea_codigo = codigo.readline().replace('"', "'")
 
     #Devuelvo un diccionario de datos de todos los modulos, y uno de imports
     return datos_ordenados, imports
@@ -117,10 +117,10 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
 
     import os
     #Importo las funciones del modulo obtener.py
-    import m_obtener as obtener
+    from m_obtener import ubicaciones_archivos_csv_individuales
 
     #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella
-    for ubicacion_archivo_csv_individual in obtener.ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    for ubicacion_archivo_csv_individual in ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
         #Borro el archivo que se encuentra en esa ubicacion
         os.remove(ubicacion_archivo_csv_individual)
 
@@ -128,15 +128,15 @@ def main():
     '''[Autor: Ivan Litteri]'''
 
     #Importo las funciones del modulo obtener.py
-    import m_obtener as obtener
+    from m_obtener import ubicaciones_modulos, nombres_archivos_csv_individuales
 
     #Crea los archivos csv individuales
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
+    ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
     #Aparea los archivos csv individuales en uno general
-    nombres_archivos_fuente, nombres_archivos_comentarios = obtener.nombres_archivos_csv_individuales(ubicaciones_modulos)
+    nombres_archivos_fuente, nombres_archivos_comentarios = nombres_archivos_csv_individuales(ubicaciones_modulos)
     aparear_archivos(nombres_archivos_fuente)
     aparear_archivos(nombres_archivos_comentarios)
 
