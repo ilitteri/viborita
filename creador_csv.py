@@ -27,24 +27,29 @@ def analizar_linea_funcion(line, bandera_nombre = True, bandera_parametro = Fals
 
     return nombre_funcion, parametros_funcion
 
-def analizar_comentario_tres_comillas(linea_codigo, bandera_ayuda, bandera_autor = False):
+def analizar_linea_autor(linea_codigo, bandera_autor = False):
     autor_funcion = ""
-    ayuda_funcion = ""
     for caracter in linea_codigo.strip():
-        if caracter == "]" and bandera_autor and not bandera_ayuda:
+        if caracter == "]" and bandera_autor:
             bandera_autor = False
-        elif caracter == "]" and not bandera_autor and bandera_ayuda:
-            bandera_ayuda = False
-        if bandera_autor and not bandera_ayuda:
+        if bandera_autor:
             autor_funcion += caracter
-        elif not bandera_autor and bandera_ayuda:
-            ayuda_funcion += caracter
         if caracter == "[" and "Autor" in linea_codigo:
             bandera_autor = True
-        elif caracter == "[" and "Ayuda" in linea_codigo:
+
+    return autor_funcion
+
+def analizar_linea_ayuda(linea_codigo, bandera_ayuda):
+    ayuda_funcion = ""
+    for caracter in linea_codigo.strip():
+        if caracter == "]" and bandera_ayuda:
+            bandera_ayuda = False
+        if bandera_ayuda:
+            ayuda_funcion += caracter
+        if caracter == "[" and "Ayuda" in linea_codigo:
             bandera_ayuda = True
 
-    return autor_funcion, ayuda_funcion, bandera_ayuda
+    return ayuda_funcion, bandera_ayuda
 
 def analizar_comentario_numeral(linea_codigo, bandera_otro_comentario = False):
     otro_comentario = ""
@@ -62,9 +67,10 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     while linea_codigo:
         if bandera_funcion:
             if bandera_comentario:
-                autor_funcion, ayuda_funcion, bandera_ayuda = analizar_comentario_tres_comillas(linea_codigo, bandera_ayuda)
-                datos_ordenados[nombre_funcion]["comentarios"]["autor"] += autor_funcion
+                ayuda_funcion, bandera_ayuda = analizar_linea_ayuda(linea_codigo, bandera_ayuda)
                 datos_ordenados[nombre_funcion]["comentarios"]["ayuda"] += ayuda_funcion
+                if "'''" in linea_codigo:
+                    bandera_comentario = False
             elif "#" in linea_codigo:
                 if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
                     datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
@@ -72,6 +78,10 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                 datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
             elif linea_codigo.count("'''") == 2:
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = linea_codigo.strip()[4:-4]
+            elif linea_codigo.strip().startswith("'''"):
+                bandera_comentario = True
+                autor_funcion = analizar_linea_autor(linea_codigo)
+                datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
             else:    
                 datos_ordenados[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
 
