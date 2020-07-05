@@ -10,88 +10,82 @@ def obtener_ubicaciones_modulos(archivo_principal):
     #Devuelvo la lista de lineas 
     return ubicaciones
 
-def separar_linea_funcion(linea_codigo):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: Recorre la linea de la funcion y separa el nombre de los parametros de la misma.]'''
-
-    bandera = False
+def analizar_linea_funcion(line, bandera_nombre = True, bandera_parametro = False):
     nombre_funcion = ""
-    parametros = ""
+    parametros_funcion = ""
+    for caracter in line[3:]:
+        if bandera_parametro:
+            parametros_funcion += caracter
+        if not caracter.isspace() and caracter != "(" and bandera_nombre:
+            nombre_funcion += caracter
+        elif caracter == "(":
+            parametros_funcion += caracter
+            bandera_nombre = False
+            bandera_parametro = True
+        elif caracter == ")":
+            bandera_parametro = False
 
-    #Recorro caracter por caracter la linea que me llega por parametro
-    for caracter in linea_codigo[3:-2]:
-        #Cuando el caracter es "(" se habilita la bandera para guardar los caracteres en el string parametros 
-        if caracter == "(":
-            bandera = True
-        #Filtra caracteres que corresponden a espacios
-        if not caracter.isspace():
-            #Si la bandera esta habilitada, se guradan los caracteres en parametros
-            if bandera:
-                parametros += caracter
-            #Si la bandera no esta habilitada, se guardan los caracteres en nombre_funcion
-            else:
-                nombre_funcion += caracter
-        #Cuando el caracter es ")" se deshabilita la bandera
-        if caracter == ")":
-            bandera = False
+    return nombre_funcion, parametros_funcion
 
-    #Devuelvo el nombre de la funcion y sus parametros
-    return nombre_funcion, parametros
+def analizar_comentario_tres_comillas(linea_codigo, bandera_ayuda, bandera_autor = False):
+    autor_funcion = ""
+    ayuda_funcion = ""
+    for caracter in linea_codigo.strip():
+        if caracter == "]" and bandera_autor and not bandera_ayuda:
+            bandera_autor = False
+        elif caracter == "]" and not bandera_autor and bandera_ayuda:
+            bandera_ayuda = False
+        if bandera_autor and not bandera_ayuda:
+            autor_funcion += caracter
+        elif not bandera_autor and bandera_ayuda:
+            ayuda_funcion += caracter
+        if caracter == "[" and "Autor" in linea_codigo:
+            bandera_autor = True
+        elif caracter == "[" and "Ayuda" in linea_codigo:
+            bandera_ayuda = True
 
-def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: Lee el codigo que le llega por parametro, lo analiza y actualiza el diccionario donde se guardan los datos 
-    analizados cada vez que se llama.]'''
+    return autor_funcion, ayuda_funcion, bandera_ayuda
 
-    bandera_comentario = False
-    bandera_funcion = False
-    contador_comillas_triples = 0
-    contador_def = 0
-    nombre_funcion =""
+def analizar_comentario_numeral(linea_codigo, bandera_otro_comentario = False):
+    otro_comentario = ""
+    for caracter in linea_codigo.strip():
+        if caracter == "#":
+            bandera_otro_comentario = True
+        if bandera_otro_comentario:
+            otro_comentario += caracter
 
-    #Lee la primer linea del archivo que abri
+    return otro_comentario
+
+def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion = False, bandera_comentario = False, bandera_ayuda = False):
+    nombre_funcion = None
     linea_codigo = codigo.readline()
-    #Entra al while siempre y cuando no llegue a la ultima linea del codigo del archivo
     while linea_codigo:
-        #SI la linea empieza con un return o si encuentro otro def, significa que termino la funcion anterior, entonces resetea la bandera y el contador
-        if linea_codigo.strip().startswith("return") or contador_def == 2:
-            contador_def = 0
-            bandera_funcion = False
-        #Si la bandera esta habilitada (estoy dentro de una funcion)
         if bandera_funcion:
-            #Filtro las lineas que puedan llegar a tratarse de diccionarios
-            if "#" not in linea_codigo and "'''" not in linea_codigo and not bandera_comentario:
-                datos_actuales[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
-            #Filtro los comentarios del tipo "#" y las lineas que no sean comentarios para analizar los comentarios de comillas triples
-            #Entran las lineas si se comienza un comentario de comillas triples y no se cierra en la misma lina
-            elif linea_codigo.startswith(" ") and linea_codigo.strip().startswith("'''") and linea_codigo.count("'''") == 1:
-                contador_comillas_triples += 1
-                #Habilita la bandera que hara que se guarden las lineas siguientes hasta que se deshabilite la bandera (cuando se encuentran las comillas que cierran el comentario)
-                bandera_comentario = True
-                #Cuando se cierra el comentario de comillas triples se deshabilita la bandera y se vuelve el contador a 0 en caso de que haya otro comentario de este estilo
-                if contador_comillas_triples == 2:
-                    contador_comillas_triples = 0
-                    bandera_comentario = False
-            #Se guarda la linea si se empieza y termina un comentario de comillas triples en la misma linea y ademas se trate de la linea con la informacion del autor de la funcion
-            elif linea_codigo.startswith(" ") and linea_codigo.count("'''") == 2 and "Autor" in linea_codigo:
-                datos_actuales[nombre_funcion]["comentarios"]["autor"] = f'"{linea_codigo.strip()[3:-3]}"'
-            #Se guardan las lineas que corresponden a comentarios que comienzan con "#"
-            elif linea_codigo.strip().startswith("#"):
-                datos_actuales[nombre_funcion]["comentarios"]["otros comentarios"].append(f'"{linea_codigo.strip()}"')
-            #Si la bandera esta habilitada y aun no se encontraron las comillas que cierran el comentario, sumo las lineas al string de ayuda de la funcion
-            if bandera_comentario and contador_comillas_triples < 2:
-                datos_actuales[nombre_funcion]["comentarios"]["ayuda"] += f'{linea_codigo.strip()}'  
-        #Si la linea empieza con def, entonces se trata de una funcion, entonces habilita la bandera y obtiene el nombre de la funcion y sus parametros
+            if bandera_comentario:
+                autor_funcion, ayuda_funcion, bandera_ayuda = analizar_comentario_tres_comillas(linea_codigo, bandera_ayuda)
+                datos_ordenados[nombre_funcion]["comentarios"]["autor"] += autor_funcion
+                datos_ordenados[nombre_funcion]["comentarios"]["ayuda"] += ayuda_funcion
+            elif "#" in linea_codigo:
+                if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
+                    datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
+                otro_comentario = analizar_comentario_numeral(linea_codigo)
+                datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
+            elif linea_codigo.count("'''") == 2:
+                datos_ordenados[nombre_funcion]["comentarios"]["autor"] = linea_codigo.strip()[4:-4]
+            else:    
+                datos_ordenados[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
+
+        if linea_codigo.strip().startswith("return"):
+            bandera_funcion = False
         if linea_codigo.startswith("def"):
             bandera_funcion = True
-            nombre_funcion, parametros = separar_linea_funcion(linea_codigo)
-            #Guarda los datos en un diccionario general, cada funcion es una key y su value son "sus caracteristicas"
-            datos_actuales[nombre_funcion] = {"modulo": nombre_modulo, 
-                                                "parametros": parametros, 
+            nombre_funcion, parametros_funcion = analizar_linea_funcion(linea_codigo)
+            datos_ordenados[nombre_funcion] = {"modulo": nombre_modulo, 
+                                                "parametros": parametros_funcion, 
                                                 "lineas": [], 
                                                 "comentarios": {"autor": "", 
                                                                 "ayuda": "",
-                                                                "otros comentarios": []
+                                                                "otros": None
                                                                 }
                                                 }
         #Almaceno las lineas de imports
@@ -104,7 +98,7 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
         linea_codigo = codigo.readline()
 
     #Devuelvo un diccionario de datos de todos los modulos, y uno de imports
-    return datos_actuales, imports
+    return datos_ordenados, imports
 
 def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
     '''[Autor: Ivan Litteri]'''
@@ -120,9 +114,9 @@ def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentari
     #Extraigo la ayuda de funcion del diccionario comentarios
     ayuda = comentarios["ayuda"]
     #Extraigo otros comentrios del diccionario comentarios
-    otros_comentarios = comentarios["otros comentarios"]
+    otros_comentarios = comentarios["otros"]
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},{nombre_autor[2:-2]},"{ayuda[3:]}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
+    archivo_comentarios.write(f'{nombre_funcion},"{nombre_autor}","{ayuda}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else ""}\n')
 
 def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
     '''[Autor: Ivan Litteri]
@@ -165,6 +159,7 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
                 if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
                     grabar_fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
                     grabar_comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
+                print(datos_modulos[nombre_funcion]["lineas"])
 
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
