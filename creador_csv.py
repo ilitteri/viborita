@@ -130,13 +130,18 @@ def main():
     #Importo las funciones del modulo obtener.py
     import obtener
 
+    #Crea los archivos csv individuales
     archivo_principal = "programas.txt"
     ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
-    nombres_archivos_fuente, nombres_archivos_comentarios = obtener.nombres_archivos_csv_individuales(ubicaciones_modulos)
-    nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
     crear_archivos_csv_individuales(ubicaciones_modulos)
+
+    #Aparea los archivos csv individuales en uno general
+    nombres_archivos_fuente, nombres_archivos_comentarios = obtener.nombres_archivos_csv_individuales(ubicaciones_modulos)
     aparear_archivos(nombres_archivos_fuente)
     aparear_archivos(nombres_archivos_comentarios)
+
+    #Borra los archivos individuales
+    nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
     borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
 
 main()
