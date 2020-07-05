@@ -3,14 +3,14 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
     diccionario donde se guardan los datos analizados cada vez que se llama.]'''
 
-    #Importo las funciones del modulo m_analizar_linea.py
+    #Importo las funciones del modulo m_analizar_linea.py.
     import m_analizar_linea as analizar
 
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
-        #Se habilita esta bandera cuando en el codigo a leer empieza una funcion, se deshabilita cuando termina o empieza otra
+        #Se habilita esta bandera cuando en el codigo a leer empieza una funcion, se deshabilita cuando termina o empieza otra.
         if bandera_funcion:
-            #Se habilita esta bandera cuando se detecta un comentario multilinea que no se cierra en la misma linea
+            #Se habilita esta bandera cuando se detecta un comentario multilinea que no se cierra en la misma linea.
             if bandera_comentario:
                 ayuda_funcion, bandera_ayuda = analizar.ayuda_funcion(linea_codigo, bandera_ayuda)
                 datos_ordenados[nombre_funcion]["comentarios"]["ayuda"] += ayuda_funcion
@@ -28,14 +28,14 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
             elif linea_codigo.count("'''") == 2:
                 autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
-            #Si la linea empieza con un comentario multilinea, y no se cierra en la misma linea, se analiza esta primera linea que corresponde 
-            #al autor, y luego habilita la bandera de comentario multilinea para que se analicen las lineas siguientes hasta que se cierre 
+            #Si la linea empieza con un comentario multilinea, y no se cierra en la misma linea, se analiza esta primera linea que corresponde
+            #al autor, y luego habilita la bandera de comentario multilinea para que se analicen las lineas siguientes hasta que se cierre
             #el comentario multilinea.
             elif linea_codigo.strip().startswith("'''"):
                 bandera_comentario = True
                 autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
-            #Si ninguna linea es un comentario guarda la linea en lineas de codigo
+            #Si ninguna linea es un comentario guarda la linea en lineas de codigo.
             else:    
                 datos_ordenados[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
 
@@ -52,16 +52,16 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                                                                 "otros": None
                                                                 }
                                                 }
-        #Almaceno las lineas de imports
+        #Almaceno las lineas de imports.
         if linea_codigo.startswith("import"):
-            #Si el nombre del modulo no esta como key, entonces lo agrega (Esto ocurre una vez sola)
+            #Si el nombre del modulo no esta como key, entonces lo agrega (Esto ocurre una vez sola).
             if nombre_modulo not in imports:
                 imports[nombre_modulo] = []
             imports[nombre_modulo].append(linea_codigo)
-        #Lee la siguiente linea del codigo
+        #Lee la siguiente linea del codigo.
         linea_codigo = codigo.readline().replace('"', "'")
 
-    #Devuelvo un diccionario de datos de todos los modulos, y uno de imports
+    #Devuelvo un diccionario de datos de todos los modulos, y uno de imports.
     return datos_ordenados, imports
 
 def crear_archivos_csv_individuales(ubicaciones_modulos):
@@ -72,24 +72,24 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar 
     todo, cierra los archivos y repite.]'''
 
-    #Importo las funciones del modulo grabar.py
+    #Importo las funciones del modulo grabar.py.
     import m_grabar as grabar
 
     datos_modulos = {}
     imports = {}
 
-    #Recorro las ubicaciones de los modulos
+    #Recorro las ubicaciones de los modulos.
     for ubicacion_modulo in ubicaciones_modulos:
-        #Nombre del modulo
+        #Nombre del modulo.
         nombre_modulo = ubicacion_modulo.split("\\")[-1]
-        #Abre un archivo para leer y dos para escribir, al mismo tiempo
+        #Abre un archivo para leer y dos para escribir, al mismo tiempo.
         with open(ubicacion_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
             datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
-            #Lista de nombres de funciones
+            #Lista de nombres de funciones.
             nombres_funciones_ordenadas = sorted(list(datos_modulos.keys()))
-            #Recorre funcion por funcion
+            #Recorre funcion por funcion.
             for nombre_funcion in nombres_funciones_ordenadas:
-                #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
+                #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual.
                 if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
                     grabar.fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
                     grabar.comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
@@ -116,31 +116,31 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
     de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales.]'''
 
     import os
-    #Importo las funciones del modulo obtener.py
+    #Importo las funciones del modulo obtener.py.
     from m_obtener import ubicaciones_archivos_csv_individuales
 
-    #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella
+    #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella.
     for ubicacion_archivo_csv_individual in ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
-        #Borro el archivo que se encuentra en esa ubicacion
+        #Borro el archivo que se encuentra en esa ubicacion.
         os.remove(ubicacion_archivo_csv_individual)
 
 def main():
     '''[Autor: Ivan Litteri]'''
 
-    #Importo las funciones del modulo obtener.py
+    #Importo las funciones del modulo obtener.py.
     from m_obtener import ubicaciones_modulos, nombres_archivos_csv_individuales
 
-    #Crea los archivos csv individuales
+    #Crea los archivos csv individuales.
     archivo_principal = "programas.txt"
     ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
-    #Aparea los archivos csv individuales en uno general
+    #Aparea los archivos csv individuales en uno general.
     nombres_archivos_fuente, nombres_archivos_comentarios = nombres_archivos_csv_individuales(ubicaciones_modulos)
     aparear_archivos(nombres_archivos_fuente)
     aparear_archivos(nombres_archivos_comentarios)
 
-    #Borra los archivos individuales
+    #Borra los archivos individuales.
     nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
     borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
 
