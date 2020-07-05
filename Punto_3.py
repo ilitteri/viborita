@@ -1,37 +1,24 @@
-#Abro el .csv generado en creador_csv.py y tomo los nombres de las funciones
-def desempaquetado(archivo_fuente):
-    with open ("archivo_fuente", "r") as informacion:
-        funciones = informacion.splitlines()
-        Nombres = list(zip(informacion))
-
-    return funciones, Nombres
 """
-def analisis_funciones(archivo_fuente):
-    funciones , Nombres = desempaquetado(archivo_fuente)
-    numero = 0
-    lista =  []
-    Nombres = []
-    for funcion in funciones:
-        lista[numero] =  funciones[funcion].split(",")
-        numero += 1
-"""    
-# Creo funcion para buscar invocaciones
-def busqueda_invocaciones (archivo_fuente):
-    funciones , Nombres = desempaquetado (archivo_fuente)
-    count = 0
-    invocacion = {}
-    Busqueda = funciones.splitline("import")
-    
-    """for linea in funciones :
-        if "import" in linea : 
-            invocado = linea.split(" ")[1]
-            invocador = Nombres[count]
-            invocacion [invocador][count] += invocado
-            count += 1
-    return invocacion"""
+ Abro el .csv generado en creador_csv.py y creo un diccionario 
+  que contiene una lista de las invocaciones de cada fincion
+"""
+def obtencion_datos(archivo_fuente):
+    with open ("archivo_fuente", "r") as informacion:
+        funcion = informacion.splitline()
+        diccionario_invocaciones = {}
+        while funcion :
+            nombre = funcion.splitline(",")[0]
+            diccionario_invocaciones[nombre] = []
+            for linea in funcion :
+                if "import" in linea :   
+                    invocado = linea.splitline("import")[1]
+                    diccionario_invocaciones[nombre].append(invocado)                  
+            funciones = informacion.readline()
+    return diccionario_invocaciones
+
 
 def imprimir_ej3(archivo_fuente):
-    funciones , Nombres = desempaquetado(archivo_fuente)
+    
     largo_nombre = 0
     valores = ""
     for i in range(len(Nombres)):
