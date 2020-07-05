@@ -1,8 +1,8 @@
 def obtener_ubicaciones_modulos(archivo_principal):
-    '''
-    Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las lineas 
-    de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a a anlizar).
-    '''
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las 
+    lineas de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a 
+    anlizar).]'''
     #Abro el archivo y obtengo una lista de todas sus lineas
     with open(archivo_principal, "r") as archivo:
         ubicaciones = archivo.read().splitlines()
@@ -11,9 +11,8 @@ def obtener_ubicaciones_modulos(archivo_principal):
     return ubicaciones
 
 def separar_linea_funcion(linea_codigo):
-    '''
-    Recorre la linea de la funcion y separa el nombre de los parametros de la misma
-    '''
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Recorre la linea de la funcion y separa el nombre de los parametros de la misma.]'''
 
     bandera = False
     nombre_funcion = ""
@@ -40,10 +39,10 @@ def separar_linea_funcion(linea_codigo):
     return nombre_funcion, parametros
 
 def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
-    '''
-    Lee el codigo que le llega por parametro, lo analiza y actualiza el diccionario donde se guardan los datos 
-    analizados cada vez que se llama.
-    '''
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Lee el codigo que le llega por parametro, lo analiza y actualiza el diccionario donde se guardan los datos 
+    analizados cada vez que se llama.]'''
+
     bandera_comentario = False
     bandera_funcion = False
     contador_comillas_triples = 0
@@ -108,10 +107,14 @@ def leer_codigo(codigo, datos_actuales, nombre_modulo, imports):
     return datos_actuales, imports
 
 def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
+    '''[Autor: Ivan Litteri]'''
+
     #Escribe una linea en el archivo de fuente del modulo correspondiente
     archivo_fuente.write(f'{nombre_funcion},"{parametros_funcion}",{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
 
 def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentarios):
+    '''[Autor: Ivan Litteri]'''
+
     #Extraigo el nombre del autor del diccionario comentarios
     nombre_autor = comentarios["autor"]
     #Extraigo la ayuda de funcion del diccionario comentarios
@@ -122,9 +125,8 @@ def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentari
     archivo_comentarios.write(f'{nombre_funcion},{nombre_autor[2:-2]},"{ayuda[3:]}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else None}\n')
 
 def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
-    '''
-    Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios)
-    '''
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios).]'''
 
     #lista de nombres de modulos
     nombres_modulos = [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
@@ -138,13 +140,12 @@ def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
 
 
 def crear_archivos_csv_individuales(ubicaciones_modulos):
-    ''' 
-    Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, el archivo 
-    fuente y comentario especifico del modulo, y en paralelo, analiza el codigo del modulo con la funcion 
-    leer_codigo que devuelve un diccionario con los datos de los codigos, datos que luego se utilizan para imprimirse 
-    de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar todo, cierra los 
-    archivos y repite.
-    '''
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, 
+    el archivo fuente y comentario especifico del modulo, y en paralelo, analiza el codigo del modulo con la 
+    funcion leer_codigo que devuelve un diccionario con los datos de los codigos, datos que luego se utilizan para 
+    imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar 
+    todo, cierra los archivos y repite.]'''
 
     datos_modulos = {}
     imports = {}
@@ -167,6 +168,8 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
 
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
+    '''[Autor: Ivan Litteri]'''
+
     lineas_archivos_csv = []
     for nombre_archivo_csv_individual in nombres_archivos_csv_individuales:
         with open(nombre_archivo_csv_individual, "r") as archivo_individual:
@@ -181,16 +184,19 @@ def aparear_archivos(nombres_archivos_csv_individuales):
     
 
 def obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    '''[Autor: Ivan Litteri]'''
+
     import os
+    
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
 def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
+    de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales.]'''
+
     import os
-    '''
-    Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
-    de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales
-    '''
 
     #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella
     for ubicacion_archivo_csv_individual in obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
@@ -198,9 +204,7 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
         os.remove(ubicacion_archivo_csv_individual)
 
 def main():
-    '''
-    Funcion principal del modulo
-    '''
+    '''[Autor: Ivan Litteri]'''
 
     archivo_principal = "programas.txt"
     ubicaciones_modulos = obtener_ubicaciones_modulos(archivo_principal)
