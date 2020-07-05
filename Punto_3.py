@@ -3,6 +3,7 @@ def desempaquetado(archivo_fuente):
     with open ("archivo_fuente", "r") as informacion:
         funciones = informacion.splitlines()
         Nombres = list(zip(informacion))
+
     return funciones, Nombres
 """
 def analisis_funciones(archivo_fuente):
@@ -14,7 +15,21 @@ def analisis_funciones(archivo_fuente):
         lista[numero] =  funciones[funcion].split(",")
         numero += 1
 """    
+# Creo funcion para buscar invocaciones
+def busqueda_invocaciones (archivo_fuente):
+    funciones , Nombres = desempaquetado (archivo_fuente)
+    count = 0
+    invocacion = {}
+    Busqueda = funciones.splitline("import")
     
+    """for linea in funciones :
+        if "import" in linea : 
+            invocado = linea.split(" ")[1]
+            invocador = Nombres[count]
+            invocacion [invocador][count] += invocado
+            count += 1
+    return invocacion"""
+
 def imprimir_ej3(archivo_fuente):
     funciones , Nombres = desempaquetado(archivo_fuente)
     largo_nombre = 0
