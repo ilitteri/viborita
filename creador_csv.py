@@ -92,8 +92,8 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
             for nombre_funcion in nombres_funciones_ordenadas:
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual.
                 if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
-                    grabar.fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
-                    grabar.comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
+                    grabar.fuente(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
+                    grabar.comentarios(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
                 print(datos_modulos[nombre_funcion]["lineas"])
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
