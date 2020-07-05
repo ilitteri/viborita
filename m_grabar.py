@@ -1,10 +1,10 @@
-def fuente_individual(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
+def fuente(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
     '''[Autor: Ivan Litteri]'''
 
     #Escribe una linea en el archivo de fuente del modulo correspondiente
     archivo_fuente.write(f'{nombre_funcion},"{parametros_funcion}",{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
 
-def comentarios_individual(archivo_comentarios, nombre_funcion, comentarios):
+def comentarios(archivo_comentarios, nombre_funcion, comentarios):
     '''[Autor: Ivan Litteri]'''
 
     #Extraigo el nombre del autor del diccionario comentarios
