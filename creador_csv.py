@@ -3,8 +3,8 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
     diccionario donde se guardan los datos analizados cada vez que se llama.]'''
 
-    #Importo las funciones del modulo analizar_linea.py
-    import analizar_linea
+    #Importo las funciones del modulo m_analizar_linea.py
+    import m_analizar_linea as analizar
 
     linea_codigo = codigo.readline()
     while linea_codigo:
@@ -12,7 +12,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
         if bandera_funcion:
             #Se habilita esta bandera cuando se detecta un comentario multilinea que no se cierra en la misma linea
             if bandera_comentario:
-                ayuda_funcion, bandera_ayuda = analizar_linea.ayuda_funcion(linea_codigo, bandera_ayuda)
+                ayuda_funcion, bandera_ayuda = analizar.ayuda_funcion(linea_codigo, bandera_ayuda)
                 datos_ordenados[nombre_funcion]["comentarios"]["ayuda"] += ayuda_funcion
                 #Se deshabilita la bandera cuando se detecta que se cierra el comentario multilinea.
                 if "'''" in linea_codigo:
@@ -22,18 +22,18 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                 #Si es None, cambia su valor a una lista vacia para que se pueda hacer append.
                 if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
                     datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
-                otro_comentario = analizar_linea.comentario_numeral(linea_codigo)
+                otro_comentario = analizar.comentario_numeral(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
             #Si un comentario multilinea se abre y cierra en la misma linea, analiza la linea y guarda los datos del autor.
             elif linea_codigo.count("'''") == 2:
-                autor_funcion = analizar_linea.autor_funcion(linea_codigo)
+                autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
             #Si la linea empieza con un comentario multilinea, y no se cierra en la misma linea, se analiza esta primera linea que corresponde 
             #al autor, y luego habilita la bandera de comentario multilinea para que se analicen las lineas siguientes hasta que se cierre 
             #el comentario multilinea.
             elif linea_codigo.strip().startswith("'''"):
                 bandera_comentario = True
-                autor_funcion = analizar_linea.autor_funcion(linea_codigo)
+                autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
             #Si ninguna linea es un comentario guarda la linea en lineas de codigo
             else:    
@@ -43,7 +43,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
             bandera_funcion = False
         if linea_codigo.startswith("def"):
             bandera_funcion = True
-            nombre_funcion, parametros_funcion = analizar_linea.declaracion_funcion(linea_codigo)
+            nombre_funcion, parametros_funcion = analizar.declaracion_funcion(linea_codigo)
             datos_ordenados[nombre_funcion] = {"modulo": nombre_modulo, 
                                                 "parametros": parametros_funcion, 
                                                 "lineas": [], 
@@ -73,7 +73,7 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     todo, cierra los archivos y repite.]'''
 
     #Importo las funciones del modulo grabar.py
-    import grabar
+    import m_grabar as grabar
 
     datos_modulos = {}
     imports = {}
@@ -117,7 +117,7 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
 
     import os
     #Importo las funciones del modulo obtener.py
-    import obtener
+    import m_obtener as obtener
 
     #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella
     for ubicacion_archivo_csv_individual in obtener.ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
@@ -128,7 +128,7 @@ def main():
     '''[Autor: Ivan Litteri]'''
 
     #Importo las funciones del modulo obtener.py
-    import obtener
+    import m_obtener as obtener
 
     #Crea los archivos csv individuales
     archivo_principal = "programas.txt"
