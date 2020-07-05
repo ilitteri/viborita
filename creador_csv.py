@@ -15,6 +15,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
     diccionario donde se guardan los datos analizados cada vez que se llama.]'''
 
+    #Importo las funciones del modulo analizar_linea.py
     import analizar_linea
 
     linea_codigo = codigo.readline()
@@ -75,24 +76,6 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     #Devuelvo un diccionario de datos de todos los modulos, y uno de imports
     return datos_ordenados, imports
 
-def grabar_fuente_individual(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, lineas_codigo):
-    '''[Autor: Ivan Litteri]'''
-
-    #Escribe una linea en el archivo de fuente del modulo correspondiente
-    archivo_fuente.write(f'{nombre_funcion},"{parametros_funcion}",{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
-
-def grabar_comentarios_individual(archivo_comentarios, nombre_funcion, comentarios):
-    '''[Autor: Ivan Litteri]'''
-
-    #Extraigo el nombre del autor del diccionario comentarios
-    nombre_autor = comentarios["autor"]
-    #Extraigo la ayuda de funcion del diccionario comentarios
-    ayuda = comentarios["ayuda"]
-    #Extraigo otros comentrios del diccionario comentarios
-    otros_comentarios = comentarios["otros"]
-    #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},"{nombre_autor}","{ayuda}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else ""}\n')
-
 def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
     '''[Autor: Ivan Litteri]
     [Ayuda: Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios).]'''
@@ -116,6 +99,9 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar 
     todo, cierra los archivos y repite.]'''
 
+    #Importo las funciones del modulo grabar.py
+    import grabar
+
     datos_modulos = {}
     imports = {}
 
@@ -132,8 +118,8 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
             for nombre_funcion in nombres_funciones_ordenadas:
                 #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:
                 if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
-                    grabar_fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
-                    grabar_comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
+                    grabar.fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
+                    grabar.comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
 
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
