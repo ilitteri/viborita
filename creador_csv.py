@@ -36,8 +36,9 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                 autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
             #Si ninguna linea es un comentario guarda la linea en lineas de codigo.
-            else:    
-                datos_ordenados[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
+            else:
+                if not linea_codigo.isspace():
+                    datos_ordenados[nombre_funcion]["lineas"].append(f'"{linea_codigo.strip()}"')
 
         if linea_codigo.strip().startswith("return"):
             bandera_funcion = False
@@ -93,7 +94,7 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
                 if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
                     grabar.fuente_individual(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
                     grabar.comentarios_individual(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
-
+                print(datos_modulos[nombre_funcion]["lineas"])
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
