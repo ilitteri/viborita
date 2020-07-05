@@ -60,8 +60,8 @@ def guardar_datos_archivo_comentarios(datos_por_autor, datos_archivo_comentarios
         if nombre_funcion not in datos_por_autor[autor] and nombre_funcion != "lineas totales":
             datos_por_autor[autor][nombre_funcion] = 0
         #Una vez creado el lugar a guardar, guarda la cantidad de lineas de comentarios que pertenecen a cada funcion
-        datos_por_autor[autor][nombre_funcion] += len(comentarios_funcion)
-        datos_por_autor[autor]["lineas totales"] += len(comentarios_funcion)
+        #datos_por_autor[autor][nombre_funcion] += len(comentarios_funcion)
+        #datos_por_autor[autor]["lineas totales"] += len(comentarios_funcion)
 
 def guardar_datos_archivo_fuente(datos_por_autor, datos_archivo_fuente):
     '''[Autor: Ivan Litteri]
@@ -86,6 +86,8 @@ def guardar_datos_archivo_fuente(datos_por_autor, datos_archivo_fuente):
             datos_por_autor[autor]["lineas totales"] += len(lineas_funcion)
 
 def obtener_datos_por_autor(datos_archivo_fuente, datos_archivo_comentarios):
+    '''[Autor: Ivan Litteri]'''
+    
     datos_por_autor = {}
 
     guardar_datos_archivo_comentarios(datos_por_autor, datos_archivo_comentarios)
@@ -94,31 +96,42 @@ def obtener_datos_por_autor(datos_archivo_fuente, datos_archivo_comentarios):
     return datos_por_autor
 
 def obtener_porcentaje_lineas_codigo(total_lineas, lineas):
+    '''[Autor: Ivan Litteri]'''
     return (lineas / total_lineas) * 100
 
 def grabar_linea(archivo_datos, linea):
+    '''[Autor: Ivan Litteri]'''
     archivo_datos.write(linea)
 
 def imprimir_datos(datos_por_autor, nombre_archivo_participacion):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: imprime una tabla con la informacion de desarrollo por cada autor en la consola y en un archivo de texto]'''
     archivo_datos = open(nombre_archivo_participacion, "w")
     lineas_totales = 0
+
     print("\t\t\tInformacion de Desarrollo Por Autor\n")
     grabar_linea(archivo_datos, "\t\t\tInformacion de Desarrollo Por Autor\n\n")
+
     for autor in datos_por_autor:
         lineas_totales_modulo = 0
         print(f'{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
         grabar_linea(archivo_datos, f'{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
+        
         for funcion, lineas in datos_por_autor[autor].items():
             if funcion != "lineas totales":
                 lineas_totales_modulo += lineas
                 print(f'\t{funcion}{" " * (50-len(funcion))}{lineas}')
                 grabar_linea(archivo_datos, f'\t{funcion}{" " * (50-len(funcion))}{lineas}\n')
+        
         porcentaje_lineas_modulo = round(obtener_porcentaje_lineas_codigo(datos_por_autor[autor]["lineas totales"], lineas_totales_modulo))
         print(f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%')
         grabar_linea(archivo_datos, f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%\n')
+    
     archivo_datos.close()
 
 def main():
+    '''[Autor: Ivan Litteri]'''
+
     nombre_archivo_participacion = "participacion.txt"
     nombre_archivo_comentarios = "comentarios.csv"
     nombre_archivo_fuente = "fuente_unico.csv"
