@@ -24,6 +24,10 @@ def nombres_archivos_csv_individuales(ubicaciones_modulos):
     #Retorna las listas
     return nombres_archivos_fuente_individuales, nombres_archivos_comentarios_individuales
 
+def nombres_modulos(ubicaciones_modulos):
+    '''[Autor: Ivan Litteri]'''
+    return [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
+
 def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
 
