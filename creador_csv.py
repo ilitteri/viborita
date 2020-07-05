@@ -1,15 +1,3 @@
-def obtener_ubicaciones_modulos(archivo_principal):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las 
-    lineas de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a 
-    anlizar).]'''
-    #Abro el archivo y obtengo una lista de todas sus lineas
-    with open(archivo_principal, "r") as archivo:
-        ubicaciones = archivo.read().splitlines()
-
-    #Devuelvo la lista de lineas 
-    return ubicaciones
-
 def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion = False, bandera_comentario = False, bandera_ayuda = False, nombre_funcion = None):
     '''[Autor: Ivan Litteri]
     [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
@@ -76,21 +64,6 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     #Devuelvo un diccionario de datos de todos los modulos, y uno de imports
     return datos_ordenados, imports
 
-def obtener_nombres_archivos_csv_individuales(ubicaciones_modulos):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios).]'''
-
-    #lista de nombres de modulos
-    nombres_modulos = [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
-    #Lista de todos los nombres de los archivos fuente
-    nombres_archivos_fuente_individuales = [f'fuente_{nombre_modulo}.csv' for nombre_modulo in nombres_modulos]
-    #Lista de todos los nombres de los archivos de comentarios
-    nombres_archivos_comentarios_individuales = [f'comentarios_{nombre_modulo}.csv' for nombre_modulo in nombres_modulos]
-
-    #Retorna las listas
-    return nombres_archivos_fuente_individuales, nombres_archivos_comentarios_individuales
-
-
 def crear_archivos_csv_individuales(ubicaciones_modulos):
     '''[Autor: Ivan Litteri]
     [Ayuda: Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, 
@@ -136,15 +109,6 @@ def aparear_archivos(nombres_archivos_csv_individuales):
     with open(f'{"fuente_unico.csv" if "fuente" in nombres_archivos_csv_individuales[0] else "comentarios.csv"}', "w") as archivo_final:
         for linea in lineas_ordenadas_archivos_csv:
             archivo_final.write(linea)
-    
-
-def obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
-    '''[Autor: Ivan Litteri]'''
-
-    import os
-    
-    #Retorna una lista de ubicaciones de todos los archivos .csv individuales
-    return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
 def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]
@@ -152,18 +116,23 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
     de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales.]'''
 
     import os
+    #Importo las funciones del modulo obtener.py
+    import obtener
 
     #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella
-    for ubicacion_archivo_csv_individual in obtener_ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    for ubicacion_archivo_csv_individual in obtener.ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
         #Borro el archivo que se encuentra en esa ubicacion
         os.remove(ubicacion_archivo_csv_individual)
 
 def main():
     '''[Autor: Ivan Litteri]'''
 
+    #Importo las funciones del modulo obtener.py
+    import obtener
+
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = obtener_ubicaciones_modulos(archivo_principal)
-    nombres_archivos_fuente, nombres_archivos_comentarios = obtener_nombres_archivos_csv_individuales(ubicaciones_modulos)
+    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
+    nombres_archivos_fuente, nombres_archivos_comentarios = obtener.nombres_archivos_csv_individuales(ubicaciones_modulos)
     nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
     crear_archivos_csv_individuales(ubicaciones_modulos)
     aparear_archivos(nombres_archivos_fuente)
