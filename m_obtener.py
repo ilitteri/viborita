@@ -24,6 +24,10 @@ def nombres_archivos_csv_individuales(ubicaciones_modulos):
     #Retorna las listas
     return nombres_archivos_fuente_individuales, nombres_archivos_comentarios_individuales
 
+def nombres_modulos(ubicaciones_modulos):
+    '''[Autor: Ivan Litteri]'''
+    return [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
+
 def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
 
@@ -31,3 +35,25 @@ def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
+
+def cantidad_declaraciones(datos_fuente, lineas_funciones, nombre_funcion):
+    '''[Autor: Santiago Vaccarelli]
+    [Ayuda: esta funcion recibe un diccionario, una lista de lineas, un nombre de funcion; en donde
+    sera analizada la lista de lineas para contar la cantidad de declaraciones, y estas cantidades una vez
+    obtenidas, ser actualizadas en el diccionario con nombre de funcion como key]'''
+
+    for linea_funcion in lineas_funciones:
+            if "for" in linea_funcion:
+                datos_fuente[nombre_funcion]["for"] += linea_funcion.count("for")
+            if "return" in linea_funcion:
+                datos_fuente[nombre_funcion]["returns"] += 1
+            if "if" in linea_funcion:
+                datos_fuente[nombre_funcion]["if/elif"] += 1
+            elif "elif" in linea_funcion:
+                datos_fuente[nombre_funcion]["if/elif"] += 1
+            elif "while" in linea_funcion:
+                datos_fuente[nombre_funcion]["while"] += 1
+            elif "break" in linea_funcion:
+                datos_fuente[nombre_funcion]["break"] += 1
+            elif "exit" in linea_funcion:
+                datos_fuente[nombre_funcion]["exit"] += 1
