@@ -2,7 +2,7 @@ def fuente(archivo_fuente, nombre_funcion, parametros_funcion, nombre_modulo, li
     '''[Autor: Ivan Litteri]'''
 
     #Escribe una linea en el archivo de fuente del modulo correspondiente
-    archivo_fuente.write(f'{nombre_funcion},"{parametros_funcion}",{nombre_modulo},{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
+    archivo_fuente.write(f'"{nombre_funcion}","{parametros_funcion}","{nombre_modulo}",{",".join(linea_codigo for linea_codigo in lineas_codigo)}\n')
 
 def comentarios(archivo_comentarios, nombre_funcion, comentarios):
     '''[Autor: Ivan Litteri]'''
@@ -14,4 +14,4 @@ def comentarios(archivo_comentarios, nombre_funcion, comentarios):
     #Extraigo otros comentrios del diccionario comentarios
     otros_comentarios = comentarios["otros"]
     #Escribe una linea en el archivo de comentarios del modulo correspondiente
-    archivo_comentarios.write(f'{nombre_funcion},"{nombre_autor}","{ayuda}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else ""}\n')
+    archivo_comentarios.write(f'"{nombre_funcion}","{nombre_autor}","{ayuda}",{",".join(comentario for comentario in otros_comentarios) if otros_comentarios is not None else ""}\n')
