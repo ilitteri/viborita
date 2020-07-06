@@ -21,36 +21,20 @@ Este punto también debe generar el archivo “panel_general.csv”, en el cual 
 archivo contenga la información descripta en cada uno de los puntos.
 La primera línea del archivo, debe contener los nombres que figuran entre paréntesis.'''
 
+def main():
+    from m_organizar_datos import por_cantidad_declaraciones_funcion
+    with open ("fuente_unico.csv", "r") as fuente_unico, open ("comentarios.csv", "r") as comentarios: 
+        diccionario = por_cantidad_declaraciones_funcion(fuente_unico, comentarios)
+    grabar(diccionario)
 
 
 
 
 
-def contar_declaraciones():
-    from m_obtener import datos_csv
-    dicc_declaraciones = {}
-    dicc_funciones = datos_csv()
-    for keys in dicc_funciones:
-        dicc_declaraciones[keys] = {"return": 0, "ifelif": 0, "for": 0, "while": 0, "break": 0,"exit": 0}
-        for linea in dicc_funciones[keys]["lineas"]:
-            if "return" in linea:
-                dicc_declaraciones[keys]["return"] += 1
-            if "if" in linea:
-                dicc_declaraciones[keys]["ifelif"] += 1
-            if "elif" in linea:
-                dicc_declaraciones[keys]["ifelif"] += 1
-            if "for" in linea:
-                dicc_declaraciones[keys]["for"] += 1
-            if "while" in linea:
-                dicc_declaraciones[keys]["while"] += 1
-            if "break" in linea:
-                dicc_declaraciones[keys]["break"] += 1
-            if "exit" in linea:
-                dicc_declaraciones[keys]["exit"] += 1
-    return dicc_declaraciones
 
 
-'''def grabar_general(panel_general, nombre_funcion, modulo_funcion ,cant_parametros, cant_invocaciones, returns, ifelif, cant_for, cant_while, cant_break, cant_exit, cant_comentarios, ayuda, autor):
+
+'''def grabar(datos_ordenados_cantidad_declaraciones):
     with open("panel_general.csv", "w") as panel_general
         panel_general.write("funcion, parametros, lineas, invocaciones, returns, if/elif, for, while, break, exit, coment, ayuda, autor \n")
         panel_general.write(f'{nombre_funcion}.{modulo_funcion},{cant_parametros},{cant_invocaciones},{returns},{ifelif},{cant_for},{cant_while},{cant_break},{cant_exit},{cant_comentarios},{ayuda},{autor}')
