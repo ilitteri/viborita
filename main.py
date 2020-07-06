@@ -25,7 +25,8 @@ def menu_interactivo():
             print("\n¡LA OPCION INGRESADA ES INCORRECTA!\n")
 
 def main():
-    '''[Ayuda: Importamos el modulo para crear los archivos csv, y así correrlo antes del menú]'''
+    '''[Autor: Andres Kubler]
+    [Ayuda: Importamos el modulo para crear los archivos csv, y así correrlo antes del menú]'''
     import creador_csv_v2
 
     creador_csv_v2.main()
