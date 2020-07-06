@@ -23,23 +23,35 @@ La primera línea del archivo, debe contener los nombres que figuran entre paré
 
 
 
-'''def contar():
-    with open("fuente_unico.csv", "r") as fuente_unico:
-        for linea in a:
-            print (linea)
-contar()'''
 
-with open("panel_general.csv", "w") as panel_general, open("fuente_unico.csv", "r") as fuente_unico:
-    panel_general.write("funcion, parametros, lineas, invocaciones, returns, if/elif, for, while, break, exit, coment, ayuda, autor \n")
-    linea_de_fuente = fuente_unico.readline()
-    while linea_de_fuente:
-        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_de_fuente.split('","')
-        panel_general.write(f'{nombre_funcion}.{modulo_funcion}\n')
-        linea_de_fuente = fuente_unico.readline()
 
-'''def a():
-    with open("comentarios.csv", "r") as comentarios:
-        b = reader(comentarios)
-        for linea in b:
-             print(linea)
-a()'''
+
+def contar_declaraciones():
+    from m_obtener import datos_csv
+    dicc_declaraciones = {}
+    dicc_funciones = datos_csv()
+    for keys in dicc_funciones:
+        dicc_declaraciones[keys] = {"return": 0, "ifelif": 0, "for": 0, "while": 0, "break": 0,"exit": 0}
+        for linea in dicc_funciones[keys]["lineas"]:
+            if "return" in linea:
+                dicc_declaraciones[keys]["return"] += 1
+            if "if" in linea:
+                dicc_declaraciones[keys]["ifelif"] += 1
+            if "elif" in linea:
+                dicc_declaraciones[keys]["ifelif"] += 1
+            if "for" in linea:
+                dicc_declaraciones[keys]["for"] += 1
+            if "while" in linea:
+                dicc_declaraciones[keys]["while"] += 1
+            if "break" in linea:
+                dicc_declaraciones[keys]["break"] += 1
+            if "exit" in linea:
+                dicc_declaraciones[keys]["exit"] += 1
+    return dicc_declaraciones
+
+
+'''def grabar_general(panel_general, nombre_funcion, modulo_funcion ,cant_parametros, cant_invocaciones, returns, ifelif, cant_for, cant_while, cant_break, cant_exit, cant_comentarios, ayuda, autor):
+    with open("panel_general.csv", "w") as panel_general
+        panel_general.write("funcion, parametros, lineas, invocaciones, returns, if/elif, for, while, break, exit, coment, ayuda, autor \n")
+        panel_general.write(f'{nombre_funcion}.{modulo_funcion},{cant_parametros},{cant_invocaciones},{returns},{ifelif},{cant_for},{cant_while},{cant_break},{cant_exit},{cant_comentarios},{ayuda},{autor}')
+'''

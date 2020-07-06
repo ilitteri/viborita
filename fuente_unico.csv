@@ -1,1 +1,2 @@
-nombre_funcion,parametros_formales,archivo_funcion,linea_1,linea_2,linea_n
+"nombre_funcion","parametros_formales","archivo_funcion","linea_1","linea_2","linea_n"
+"contar","a,b","modulo.py","exit","linea_2","linea_n"

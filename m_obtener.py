@@ -35,3 +35,11 @@ def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
+
+def datos_csv():
+    '''[Autor: Santiago Vaccarelli]
+    [Ayuda: Devuelve un diccionario con los datos de cada funcion]'''
+    import m_organizar_datos
+    with open("fuente_unico.csv", "r") as fuente_unico, open("comentarios.csv", "r") as comentarios:
+        datos_archivos_csv = m_organizar_datos.por_funciones(fuente_unico, comentarios)
+    return datos_archivos_csv
