@@ -36,10 +36,24 @@ def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
-def datos_csv():
+def cantidad_declaraciones(datos_fuente, lineas_funciones, nombre_funcion):
     '''[Autor: Santiago Vaccarelli]
-    [Ayuda: Devuelve un diccionario con los datos de cada funcion]'''
-    import m_organizar_datos
-    with open("fuente_unico.csv", "r") as fuente_unico, open("comentarios.csv", "r") as comentarios:
-        datos_archivos_csv = m_organizar_datos.por_funciones(fuente_unico, comentarios)
-    return datos_archivos_csv
+    [Ayuda: esta funcion recibe un diccionario, una lista de lineas, un nombre de funcion; en donde
+    sera analizada la lista de lineas para contar la cantidad de declaraciones, y estas cantidades una vez
+    obtenidas, ser actualizadas en el diccionario con nombre de funcion como key]'''
+
+    for linea_funcion in lineas_funciones:
+            if "for" in linea_funcion:
+                datos_fuente[nombre_funcion]["for"] += linea_funcion.count("for")
+            if "return" in linea_funcion:
+                datos_fuente[nombre_funcion]["returns"] += 1
+            if "if" in linea_funcion:
+                datos_fuente[nombre_funcion]["if/elif"] += 1
+            elif "elif" in linea_funcion:
+                datos_fuente[nombre_funcion]["if/elif"] += 1
+            elif "while" in linea_funcion:
+                datos_fuente[nombre_funcion]["while"] += 1
+            elif "break" in linea_funcion:
+                datos_fuente[nombre_funcion]["break"] += 1
+            elif "exit" in linea_funcion:
+                datos_fuente[nombre_funcion]["exit"] += 1
