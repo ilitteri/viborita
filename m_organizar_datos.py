@@ -118,6 +118,7 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
         nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
         if nombre_funcion not in datos_ordenados_cantidad_declaraciones:
             datos_ordenados_cantidad_declaraciones[nombre_funcion] = {"modulo": modulo_funcion,
+                                                                        "parametros": 0,
                                                                         "lineas": len(lineas_funcion),
                                                                         "invocaciones": 0,
                                                                         "returns": 0,
