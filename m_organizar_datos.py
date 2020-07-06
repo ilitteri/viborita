@@ -48,7 +48,7 @@ def por_funciones(archivo_fuente, archivo_comentarios):
 
     return datos_ordenados_por_funcion
 
-def por_modulo(archivo_fuente, archivo_comentarios):
+def por_modulos(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: esta funcion recibe los archivos fuente y comentarios (csv) por parametro, los analiza y devuelve
     sus datos en funcion de los modulos. Esto quiere decir que cada archivo modulo (key del diccionario
