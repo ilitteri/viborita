@@ -98,5 +98,3 @@ def main():
     archivo_principal = "programas.txt"
     ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
-
-main()
