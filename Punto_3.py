@@ -7,10 +7,10 @@ def obtencion_datos(archivo_fuente):
         diccionario_invocaciones = {}
         #Creo un diccionario que contiene una lista de las invocaciones de cada funcion
         while funciones :
-            nombre = funciones.splitline("','")[0]
+            nombre = funciones.splitline('","')[0]
             diccionario_invocaciones[nombre] = []
             #Filtro las lineas que no son de codigo
-            lineas = funciones.splitline("','")[3:]
+            lineas = funciones.splitline('","')[3:]
             for linea in lineas :
                 for funcion in linea :
                     if "import" in funcion :
