@@ -5,17 +5,21 @@ def obtencion_datos(archivo_fuente):
     que contiene una lista de las invocaciones de cada fincion
     """
     with open ("archivo_fuente", "r") as informacion:
-        funcion = informacion.splitline()
+        funciones = informacion.readline()
         diccionario_invocaciones = {}
-        while funcion :
-            nombre = funcion.splitline(",")[0]
+        while funciones :
+            nombre = funciones.splitline(",")[0]
             diccionario_invocaciones[nombre] = []
-            for linea in funcion :
-                if "import" in linea :   
-                    invocado = linea.splitline("import")[1]
-                    if "," in invocado :
-                        invocaciones = invocado.split(",")
-                    diccionario_invocaciones[nombre].append(invocado)                  
+            lineas = funciones.splitline(",")[3:]
+            for linea in lineas :
+                for funcion in linea :
+                    if "import" in funcion :   
+                        invocado = linea.splitline("import")[1]
+                        if "," in invocado :
+                            invocaciones = invocado.split(",")
+                        else :
+                            invocaciones = invocado
+                        diccionario_invocaciones[nombre].append(invocaciones)                  
             funciones = informacion.readline()
     return diccionario_invocaciones
 
