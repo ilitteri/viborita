@@ -1,10 +1,11 @@
+import m_analizar_linea as analizar
+import m_grabar as grabar
+import m_obtener as obtener
+
 def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion = False, bandera_comentario = False, bandera_ayuda = False, nombre_funcion = None):
     '''[Autor: Ivan Litteri]
     [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
     diccionario donde se guardan los datos analizados cada vez que se llama.]'''
-
-    #Importo las funciones del modulo m_analizar_linea.py.
-    import m_analizar_linea as analizar
 
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
@@ -71,9 +72,6 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     a esa ubicacion, lo lee, extrae los datos, y los guarda en un diccionario para que luego se graben de la
     forma en la que se pide en cada uno de los csv, luego se cierran.]'''
 
-    #Importo las funciones del modulo grabar.py.
-    import m_grabar as grabar
-
     datos_modulos = {}
     imports = {}
 
@@ -91,12 +89,9 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
 def main():
     '''[Autor: Ivan Litteri]'''
 
-    #Importo las funciones del modulo obtener.py.
-    from m_obtener import ubicaciones_modulos
-
     #Crea los archivos csv.
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
+    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
 main()
