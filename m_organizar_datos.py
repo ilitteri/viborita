@@ -234,9 +234,8 @@ def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
         #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
         for autor_funcion in datos_ordenados_cantidad_lineas_autor:
-            if nombre_funcion not in datos_ordenados_cantidad_lineas_autor[autor_funcion]:
-                datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = -1
-            datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = len(lineas_funcion)
+            if nombre_funcion in datos_ordenados_cantidad_lineas_autor[autor_funcion]:
+                datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = len(lineas_funcion)
         #Cargo la siguiente linea en el archivo en caso de que haya
         linea_fuente = archivo_fuente.readline()
     
