@@ -111,11 +111,16 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
     #Importo la funcion que necesito del modulo 
     from m_obtener import cantidad_declaraciones
 
+    #Inicializo el diccionario final en vacio
     datos_ordenados_cantidad_declaraciones = {}
 
+    #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
+    #Mientras haya lineas para leer del archivo fuente entra al while
     while linea_fuente:
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
+        #Le doy forma al diccionario 
         if nombre_funcion not in datos_ordenados_cantidad_declaraciones:
             datos_ordenados_cantidad_declaraciones[nombre_funcion] = {"modulo": modulo_funcion,
                                                                         "parametros": 0,
@@ -130,28 +135,45 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
                                                                         "coment": 0,
                                                                         "ayuda": None,
                                                                         "autor": None
-                                                                        } 
+                                                                        }
+        #Llamo a una funcion de otro modulo la cual actualiza mi diccionario con los datos que me itneresan
         cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_fuente, nombre_funcion)
+        #Avanzo de linea en el archivo que estoy leyendo para a siguiente iteracion
         linea_fuente = archivo_fuente.readline()
     
+    #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
+    #Mientras haya lineas para leer del archivo comentarios entra al while
     while linea_comentarios:
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
         if nombre_funcion not in datos_ordenados_cantidad_declaraciones:
             datos_ordenados_cantidad_declaraciones[nombre_funcion] = {}
+        #Agrego los datos al diccionario
         datos_ordenados_cantidad_declaraciones[nombre_funcion]["coment"] = len(otros)
         datos_ordenados_cantidad_declaraciones[nombre_funcion]["ayuda"] = ("Ayuda" in ayuda_funcion)
         datos_ordenados_cantidad_declaraciones[nombre_funcion]["autor"] = autor_funcion
+        #Cargo la siguiente linea en el archivo en caso de que haya
         linea_comentarios = archivo_comentarios.readline()
 
     return datos_ordenados_cantidad_declaraciones
 
 def por_autor(archivo_fuente, archivo_comentarios):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: esta funcion recibe por parametro los datos de los archivos fuente y comentarios (csv) y los 
+    lee secuencialmente para organizar los datos, en este caso, por autor y cada autor tiene las funciones
+    que desarrollo y cada funcion sus datos.]'''
+
+    #Inicializo el diccionario en vacio
     datos_ordenados_por_autor = {}
 
+    #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
+    #Mientras haya lineas para leer del archivo comentarios entra al while
     while linea_comentarios:
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
+        #Le doy forma al diccionario 
         if autor_funcion not in datos_ordenados_por_autor:
             datos_ordenados_por_autor[autor_funcion] = {}
         if nombre_funcion not in datos_ordenados_por_autor[autor_funcion]:
@@ -159,44 +181,66 @@ def por_autor(archivo_fuente, archivo_comentarios):
                                                                                         "otros": None,
                                                                                         }
                                                                         }
+        #Agrego los datos al diccionario
         datos_ordenados_por_autor[autor_funcion][nombre_funcion]["comentarios"]["ayuda"] =  ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
         datos_ordenados_por_autor[autor_funcion][nombre_funcion]["comentarios"]["otros"] =  otros if len(otros) > 0 else None
+        #Cargo la siguiente linea en el archivo en caso de que haya
         linea_comentarios = archivo_comentarios.readline()
 
+    #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
+    #Mientras haya lineas para leer del archivo comentarios entra al while
     while linea_fuente:
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
+        #Le doy forma al diccionario por cada autor
         for autor_funcion in datos_ordenados_por_autor:
             if nombre_funcion not in datos_ordenados_por_autor[autor_funcion]:
                 datos_ordenados_por_autor[autor_funcion][nombre_funcion] = {"modulo": None,
                                                                             "parametros": None,
                                                                             "lineas": None}
+            #Agrego los datos al diccionario por cada autor
             datos_ordenados_por_autor[autor_funcion][nombre_funcion]["modulo"] = modulo_funcion
             datos_ordenados_por_autor[autor_funcion][nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
             datos_ordenados_por_autor[autor_funcion][nombre_funcion]["lineas"] = lineas_funcion
+        #Cargo la siguiente linea en el archivo en caso de que haya
         linea_fuente = archivo_fuente.readline()
     
     return datos_ordenados_por_autor
 
 def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: esta funcion recibe por parametro los datos de los archivos fuente y comentarios (csv) y los 
+    lee secuencialmente para organizar los datos, en este caso tambien por autor pero por cada funcion
+    los datos que tengo son la cantidad de lineas de esa funcion.]'''
+
+    #Inicializo el diccionario en vacio
     datos_ordenados_cantidad_lineas_autor = {}
 
+    #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
+    #Mientras haya lineas para leer del archivo comentarios entra al while
     while linea_comentarios:
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
         if autor_funcion not in datos_ordenados_cantidad_lineas_autor:
             datos_ordenados_cantidad_lineas_autor[autor_funcion] = {}
         if nombre_funcion not in datos_ordenados_cantidad_lineas_autor[autor_funcion]:
             datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = -1
+        #Cargo la siguiente linea en el archivo en caso de que haya
         linea_comentarios = archivo_comentarios.readline()
     
+    #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
+    #Mientras haya lineas para leer del archivo comentarios entra al while
     while linea_fuente:
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
         for autor_funcion in datos_ordenados_cantidad_lineas_autor:
             if nombre_funcion not in datos_ordenados_cantidad_lineas_autor[autor_funcion]:
                 datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = -1
             datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = len(lineas_funcion)
+        #Cargo la siguiente linea en el archivo en caso de que haya
         linea_fuente = archivo_fuente.readline()
     
     return datos_ordenados_cantidad_lineas_autor
