@@ -1,3 +1,5 @@
+import m_obtener as obtener
+
 def por_funciones(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: esta funcion recibe los archivos fuente y comentarios (csv) y los analiza y devuelve sus datos
@@ -108,9 +110,6 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
     con los datos organizados por funcion y cada funcion (key) tiene como caracteristicas (value) los datos
     como se piden en el punto 1.]'''
 
-    #Importo la funcion que necesito del modulo 
-    from m_obtener import cantidad_declaraciones
-
     datos_ordenados_cantidad_declaraciones = {}
 
     linea_fuente = archivo_fuente.readline()
@@ -131,7 +130,7 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
                                                                         "ayuda": None,
                                                                         "autor": None
                                                                         } 
-        cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_fuente, nombre_funcion)
+        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_fuente, nombre_funcion)
         linea_fuente = archivo_fuente.readline()
     
     linea_comentarios = archivo_comentarios.readline()

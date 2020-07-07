@@ -1,10 +1,12 @@
+import os
+import m_analizar_linea as analizar
+import m_grabar as grabar
+import m_obtener as obtener
+
 def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion = False, bandera_comentario = False, bandera_ayuda = False, nombre_funcion = None):
     '''[Autor: Ivan Litteri]
     [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
     diccionario donde se guardan los datos analizados cada vez que se llama.]'''
-
-    #Importo las funciones del modulo m_analizar_linea.py.
-    import m_analizar_linea as analizar
 
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
@@ -73,9 +75,6 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar 
     todo, cierra los archivos y repite.]'''
 
-    #Importo las funciones del modulo grabar.py.
-    import m_grabar as grabar
-
     datos_modulos = {}
     imports = {}
 
@@ -94,7 +93,6 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
                 if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
                     grabar.fuente(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
                     grabar.comentarios(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
-                print(datos_modulos[nombre_funcion]["lineas"])
 #EN CONSTRUCCION
 def aparear_archivos(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
@@ -116,12 +114,8 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
     [Ayuda: Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
     de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales.]'''
 
-    import os
-    #Importo las funciones del modulo obtener.py.
-    from m_obtener import ubicaciones_archivos_csv_individuales
-
     #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella.
-    for ubicacion_archivo_csv_individual in ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
+    for ubicacion_archivo_csv_individual in obtener.ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
         #Borro el archivo que se encuentra en esa ubicacion.
         os.remove(ubicacion_archivo_csv_individual)
 
@@ -129,15 +123,14 @@ def main():
     '''[Autor: Ivan Litteri]'''
 
     #Importo las funciones del modulo obtener.py.
-    from m_obtener import ubicaciones_modulos, nombres_archivos_csv_individuales
 
     #Crea los archivos csv individuales.
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
+    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
     #Aparea los archivos csv individuales en uno general.
-    nombres_archivos_fuente, nombres_archivos_comentarios = nombres_archivos_csv_individuales(ubicaciones_modulos)
+    nombres_archivos_fuente, nombres_archivos_comentarios = obtener.nombres_archivos_csv_individuales(ubicaciones_modulos)
     aparear_archivos(nombres_archivos_fuente)
     aparear_archivos(nombres_archivos_comentarios)
 
