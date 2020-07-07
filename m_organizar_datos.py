@@ -177,3 +177,26 @@ def por_autor(archivo_fuente, archivo_comentarios):
         linea_fuente = archivo_fuente.readline()
     
     return datos_ordenados_por_autor
+
+def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
+    datos_ordenados_cantidad_lineas_autor = {}
+
+    linea_comentarios = archivo_comentarios.readline()
+    while linea_comentarios:
+        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
+        if autor_funcion not in datos_ordenados_cantidad_lineas_autor:
+            datos_ordenados_cantidad_lineas_autor[autor_funcion] = {}
+        if nombre_funcion not in datos_ordenados_cantidad_lineas_autor[autor_funcion]:
+            datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = -1
+        linea_comentarios = archivo_comentarios.readline()
+    
+    linea_fuente = archivo_fuente.readline()
+    while linea_fuente:
+        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
+        for autor_funcion in datos_ordenados_cantidad_lineas_autor:
+            if nombre_funcion not in datos_ordenados_cantidad_lineas_autor[autor_funcion]:
+                datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = -1
+            datos_ordenados_cantidad_lineas_autor[autor_funcion][nombre_funcion] = len(lineas_funcion)
+        linea_fuente = archivo_fuente.readline()
+    
+    return datos_ordenados_cantidad_lineas_autor
