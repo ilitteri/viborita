@@ -1,10 +1,11 @@
-import m_obtener
-import m_grabar
-import m_analizar_linea
+import m_analizar_linea as analizar
+import m_grabar as grabar
+import m_obtener as obtener
 
 def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion = False, bandera_comentario = False, bandera_ayuda = False, nombre_funcion = None):
-    '''Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
-    diccionario donde se guardan los datos analizados cada vez que se llama.'''
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Lee el codigo que le llega por parametro, lo analiza con distintas funciones y actualiza el 
+    diccionario donde se guardan los datos analizados cada vez que se llama.]'''
 
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
@@ -12,7 +13,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
         if bandera_funcion:
             #Se habilita esta bandera cuando se detecta un comentario multilinea que no se cierra en la misma linea.
             if bandera_comentario:
-                ayuda_funcion, bandera_ayuda = m_analizar_linea.ayuda_funcion(linea_codigo, bandera_ayuda)
+                ayuda_funcion, bandera_ayuda = analizar.ayuda_funcion(linea_codigo, bandera_ayuda)
                 datos_ordenados[nombre_funcion]["comentarios"]["ayuda"] += ayuda_funcion
                 #Se deshabilita la bandera cuando se detecta que se cierra el comentario multilinea.
                 if "'''" in linea_codigo:
@@ -22,18 +23,18 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                 #Si es None, cambia su valor a una lista vacia para que se pueda hacer append.
                 if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
                     datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
-                otro_comentario = m_analizar_linea.comentario_numeral(linea_codigo)
+                otro_comentario = analizar.comentario_numeral(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
             #Si un comentario multilinea se abre y cierra en la misma linea, analiza la linea y guarda los datos del autor.
             elif linea_codigo.count("'''") == 2:
-                autor_funcion = m_analizar_linea.autor_funcion(linea_codigo)
+                autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
             #Si la linea empieza con un comentario multilinea, y no se cierra en la misma linea, se analiza esta primera linea que corresponde
             #al autor, y luego habilita la bandera de comentario multilinea para que se analicen las lineas siguientes hasta que se cierre
             #el comentario multilinea.
             elif linea_codigo.strip().startswith("'''"):
                 bandera_comentario = True
-                autor_funcion = m_analizar_linea.autor_funcion(linea_codigo)
+                autor_funcion = analizar.autor_funcion(linea_codigo)
                 datos_ordenados[nombre_funcion]["comentarios"]["autor"] = autor_funcion
             #Si ninguna linea es un comentario guarda la linea en lineas de codigo.
             else:
@@ -44,7 +45,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
             bandera_funcion = False
         if linea_codigo.startswith("def"):
             bandera_funcion = True
-            nombre_funcion, parametros_funcion = m_analizar_linea.declaracion_funcion(linea_codigo)
+            nombre_funcion, parametros_funcion = analizar.declaracion_funcion(linea_codigo)
             datos_ordenados[nombre_funcion] = {"modulo": nombre_modulo, 
                                                 "parametros": parametros_funcion, 
                                                 "lineas": [], 
@@ -66,9 +67,10 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     return datos_ordenados, imports
 
 def crear_archivos_csv_individuales(ubicaciones_modulos):
-    '''Abre los archivos a crear (los csv finales), y para cada ubicacion abre el archivo perteneciente
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Abre los archivos a crear (los csv finales), y para cada ubicacion abre el archivo perteneciente
     a esa ubicacion, lo lee, extrae los datos, y los guarda en un diccionario para que luego se graben de la
-    forma en la que se pide en cada uno de los csv, luego se cierran.'''
+    forma en la que se pide en cada uno de los csv, luego se cierran.]'''
 
     datos_modulos = {}
     imports = {}
@@ -81,14 +83,13 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
                 datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
         nombres_funcion_ordenados = sorted(list(datos_modulos.keys()))
         for nombre_funcion in nombres_funcion_ordenados:
-            m_grabar.fuente(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], datos_modulos[nombre_funcion]["modulo"], datos_modulos[nombre_funcion]["lineas"])
-            m_grabar.comentarios(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
+            grabar.fuente(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], datos_modulos[nombre_funcion]["modulo"], datos_modulos[nombre_funcion]["lineas"])
+            grabar.comentarios(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
 
 def main():
+    '''[Autor: Ivan Litteri]'''
 
     #Crea los archivos csv.
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = m_obtener.ubicaciones_modulos(archivo_principal)
+    ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
-
-main()
