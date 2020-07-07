@@ -1,4 +1,3 @@
-import os
 import m_analizar_linea as analizar
 import m_grabar as grabar
 import m_obtener as obtener
@@ -69,73 +68,28 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
 
 def crear_archivos_csv_individuales(ubicaciones_modulos):
     '''[Autor: Ivan Litteri]
-    [Ayuda: Abre el modulo con su ubicacion especifica (obtenida de el archivo principal) en forma de lectura, 
-    el archivo fuente y comentario especifico del modulo, y en paralelo, analiza el codigo del modulo con la 
-    funcion leer_codigo que devuelve un diccionario con los datos de los codigos, datos que luego se utilizan para 
-    imprimirse de la forma que se pide sobre los archivos especificos del modulo. Una vez que termina de grabar 
-    todo, cierra los archivos y repite.]'''
+    [Ayuda: Abre los archivos a crear (los csv finales), y para cada ubicacion abre el archivo perteneciente
+    a esa ubicacion, lo lee, extrae los datos, y los guarda en un diccionario para que luego se graben de la
+    forma en la que se pide en cada uno de los csv, luego se cierran.]'''
 
     datos_modulos = {}
     imports = {}
 
-    #Recorro las ubicaciones de los modulos.
-    for ubicacion_modulo in ubicaciones_modulos:
-        #Nombre del modulo.
-        nombre_modulo = ubicacion_modulo.split("\\")[-1]
-        #Abre un archivo para leer y dos para escribir, al mismo tiempo.
-        with open(ubicacion_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
-            datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
-            #Lista de nombres de funciones.
-            nombres_funciones_ordenadas = sorted(list(datos_modulos.keys()))
-            #Recorre funcion por funcion.
-            for nombre_funcion in nombres_funciones_ordenadas:
-                #Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual.
-                if nombre_modulo == datos_modulos[nombre_funcion]["modulo"]:
-                    grabar.fuente(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], nombre_modulo, datos_modulos[nombre_funcion]["lineas"])
-                    grabar.comentarios(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
-#EN CONSTRUCCION
-def aparear_archivos(nombres_archivos_csv_individuales):
-    '''[Autor: Ivan Litteri]'''
-
-    lineas_archivos_csv = []
-    for nombre_archivo_csv_individual in nombres_archivos_csv_individuales:
-        with open(nombre_archivo_csv_individual, "r") as archivo_individual:
-            linea_csv = archivo_individual.readline()
-            while linea_csv:
-                lineas_archivos_csv.append(linea_csv)
-                linea_csv = archivo_individual.readline()
-    lineas_ordenadas_archivos_csv = sorted(lineas_archivos_csv)
-    with open(f'{"fuente_unico.csv" if "fuente" in nombres_archivos_csv_individuales[0] else "comentarios.csv"}', "w") as archivo_final:
-        for linea in lineas_ordenadas_archivos_csv:
-            archivo_final.write(linea)
-
-def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
-    de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales.]'''
-
-    #Obtengo las ubicaciones y las recorro para borrar el archivo que se encuentra en ella.
-    for ubicacion_archivo_csv_individual in obtener.ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
-        #Borro el archivo que se encuentra en esa ubicacion.
-        os.remove(ubicacion_archivo_csv_individual)
+    with open(f'fuente_unico.csv', "w") as archivo_fuente, open(f'comentarios.csv', "w") as archivo_comentarios:
+        for ubicacion_modulo in ubicaciones_modulos:
+            nombre_modulo = ubicacion_modulo.split("\\")[-1]
+            #Abre un archivo para leer y dos para escribir, al mismo tiempo.
+            with open(ubicacion_modulo, "r") as codigo:
+                datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
+        nombres_funcion_ordenados = sorted(list(datos_modulos.keys()))
+        for nombre_funcion in nombres_funcion_ordenados:
+            grabar.fuente(archivo_fuente, nombre_funcion, datos_modulos[nombre_funcion]["parametros"], datos_modulos[nombre_funcion]["modulo"], datos_modulos[nombre_funcion]["lineas"])
+            grabar.comentarios(archivo_comentarios, nombre_funcion, datos_modulos[nombre_funcion]["comentarios"])
 
 def main():
     '''[Autor: Ivan Litteri]'''
 
-    #Importo las funciones del modulo obtener.py.
-
-    #Crea los archivos csv individuales.
+    #Crea los archivos csv.
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
+    ubicaciones_modulos = ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
-
-    #Aparea los archivos csv individuales en uno general.
-    nombres_archivos_fuente, nombres_archivos_comentarios = obtener.nombres_archivos_csv_individuales(ubicaciones_modulos)
-    aparear_archivos(nombres_archivos_fuente)
-    aparear_archivos(nombres_archivos_comentarios)
-
-    #Borra los archivos individuales.
-    nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
-    borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
-
-main()
