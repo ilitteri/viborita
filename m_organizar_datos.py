@@ -19,7 +19,7 @@ def por_funciones(archivo_fuente, archivo_comentarios):
                                                             "modulo": None,
                                                             "lineas": None}
         #Agrego los datos a sus respectivos lugares
-        datos_ordenados_por_funcion[nombre_funcion]["parametros"] = parametros_funcion
+        datos_ordenados_por_funcion[nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
         datos_ordenados_por_funcion[nombre_funcion]["modulo"] = modulo_funcion
         datos_ordenados_por_funcion[nombre_funcion]["lineas"] = lineas_funcion
         #Avanzo de linea en el archivo
@@ -42,7 +42,7 @@ def por_funciones(archivo_fuente, archivo_comentarios):
         #Agrego los datos a sus respectivos lugares
         datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["autor"] = autor_funcion
         datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["ayuda"] = ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
-        datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["otros"] = otros if len(otros) > 1 else None
+        datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["otros"] = otros if len(otros) > 0 else None
         #Avanzo de linea en el archivo
         linea_comentarios = archivo_comentarios.readline()
 
@@ -72,7 +72,7 @@ def por_modulos(archivo_fuente, archivo_comentarios):
                                                                             "lineas": None
                                                                         }
         #Agrego los datos a sus respectivos lugares
-        datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["parametros"] = parametros_funcion
+        datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
         datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["lineas"] = lineas_funcion
         #Avanzo a la siguiente linea
         linea_fuente = archivo_fuente.readline()
@@ -95,7 +95,7 @@ def por_modulos(archivo_fuente, archivo_comentarios):
             #Agrego los datos a sus respectivos lugares
             datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["autor"] = autor_funcion
             datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["ayuda"] = ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
-            datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["otros"] = otros if len(otros) > 1 else None
+            datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["otros"] = otros if len(otros) > 0 else None
         #Avanzo a la siguiente linea del archivo
         linea_comentarios = archivo_comentarios.readline()
 
@@ -145,3 +145,35 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
         linea_comentarios = archivo_comentarios.readline()
 
     return datos_ordenados_cantidad_declaraciones
+
+def por_autor(archivo_fuente, archivo_comentarios):
+    datos_ordenados_por_autor = {}
+
+    linea_comentarios = archivo_comentarios.readline()
+    while linea_comentarios:
+        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
+        if autor_funcion not in datos_ordenados_por_autor:
+            datos_ordenados_por_autor[autor_funcion] = {}
+        if nombre_funcion not in datos_ordenados_por_autor[autor_funcion]:
+            datos_ordenados_por_autor[autor_funcion][nombre_funcion] = {"comentarios": {"ayuda": None,
+                                                                                        "otros": None,
+                                                                                        }
+                                                                        }
+        datos_ordenados_por_autor[autor_funcion][nombre_funcion]["comentarios"]["ayuda"] =  ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
+        datos_ordenados_por_autor[autor_funcion][nombre_funcion]["comentarios"]["otros"] =  otros if len(otros) > 0 else None
+        linea_comentarios = archivo_comentarios.readline()
+
+    linea_fuente = archivo_fuente.readline()
+    while linea_fuente:
+        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
+        for autor_funcion in datos_ordenados_por_autor:
+            if nombre_funcion not in datos_ordenados_por_autor[autor_funcion]:
+                datos_ordenados_por_autor[autor_funcion][nombre_funcion] = {"modulo": None,
+                                                                            "parametros": None,
+                                                                            "lineas": None}
+            datos_ordenados_por_autor[autor_funcion][nombre_funcion]["modulo"] = modulo_funcion
+            datos_ordenados_por_autor[autor_funcion][nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
+            datos_ordenados_por_autor[autor_funcion][nombre_funcion]["lineas"] = lineas_funcion
+        linea_fuente = archivo_fuente.readline()
+    
+    return datos_ordenados_por_autor
