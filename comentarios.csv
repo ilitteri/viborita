@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 aparear_archivos,"Autor: Ivanli","",
 borrar_archivos_csv_individuales,"Autor: Ivanli","Ayuda: Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienende una funcion a la que le llega por parametro los nombres de los archivos .csv individuales","#Obtengo las ubicaciones","#Borro el archivo que se encuentra en esa ubicacion"
 crear_archivos_csv_individuales,"Autor: Ivanli","Ayuda: Imprime los datos en un archivo .csv que creamon en la misma. Los datos se imprimen en la forma que se pide enla consigna. Se crea un archivo de fuente y un archivo de comentarios, para cada archivo analizado en la funcion anterior","#Lista de nombres de funciones","#Recorre cada modulo","#Crea 2 archivos .csv con el nombre del modulo","#Recorre funcion por funcion","#Si el modulo de la iteracion actual corresponde al modulo de la funcion de la iteracion actual:","#EN CONSTRUCCION"
@@ -10,3 +11,18 @@ obtener_nombres_archivos_csv_individuales,"Autor: Ivanli","Ayuda: Obtiene 2 list
 obtener_ubicaciones_archivos_csv_individuales,"Autor: Ivanli","","#Retorna una lista de ubicaciones de todos los archivos .csv individuales"
 obtener_ubicaciones_modulos,"Autor: Ivanli","Ayuda: Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las lineasde ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a a anlizar).",
 separar_linea_funcion,"Autor: Ivanli","Ayuda: Recorre la linea de la funcion y separa el nombre de los parametros de la misma",
+=======
+"es_primo","Autor: Juan Perez","Ayuda: Evlua si el numero recibido es primo o no, devolviendo True encaso de serlo, y False en caso contrario.","# Evaluacion de si el numero es primo"
+"factorial","Autor: Juan Perez","Ayuda: Calcula el factorial de el numero recibido, que debe sermayor o igual a cero",
+"mcd","Autor: Ana Garcia","Ayuda: Calcula el MCD entre los dos numeros recibidos, utilizando elmetodo de Euclides. En caso de no existir MCD, devolverá -1.","# Si ambos iguales a 0 no es posible mcd","# Implementacion del algoritmo de Euclides"
+"mcm","Autor: Ana Garcia","Ayuda: Calcula el MCM (minimo comun multiplo) entre los dos numerosrecibidos. En caso de no existir, devolverá -1.Para el calculo se utiliza mcm(a,b) = (a*b)/MCD(a,b)",
+"menu_MCD","Autor: Juan Perez","Ayuda: submenu de la opcion mcd",
+"menu_MCM","Autor: Juan Perez","Ayuda: submenu de la opcion mcm",
+"menu_elegir","","",
+"menu_factorial","Autor: Alan Gonzalez","Ayuda: submenu de la opcion factorial",
+"menu_opciones","Autor: Alan Gonzalez","Ayuda: Menu de opciones",
+"menu_potencia","Autor: Juan Perez","Ayuda: submenu de la opcion Potencia",
+"menu_primo","Autor: Alan Gonzalez","Ayuda: submenu de la opcion primo",
+"potencia","Autor: Ana Garcia","Ayuda: Calcula la potencia de la base elevada al exponente reibidopor parametros",
+"solicitar_valor","Autor: Juan Perez","Ayuda: Solicitar el ingreso de un valor y devolverlo, asegurando queestara entre el minimo y el maximo pasado por parametro",
+>>>>>>> 26edf767dc04c2873662ae158d735ece3fdf38c5
