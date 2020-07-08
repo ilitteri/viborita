@@ -55,10 +55,7 @@ def creacion_archivo_txt_p3(diccionario_funciones):
     texto_max = 0
     numero_tabla = 1
     filas_txt = []
-    columnas_txt = []
-    lineas_txt[0] = filas_txt
-    lineas_txt[1] = columnas_txt
-    filas_txt [0] = None
+    filas_txt [0] = ""
     indice = 1
     indice_2 = 0
     
