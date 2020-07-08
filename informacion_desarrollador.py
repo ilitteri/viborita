@@ -1,13 +1,14 @@
+import m_organizar_datos as organizar
+
 def leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: esta funcion abre los archivos cuyos nombres o ubicaciones le llegan por parametro, y devuelve
     una lista de datos por cada archivo que lee, cuando termina la lectura, los cierra]'''
 
-    from m_organizar_datos import por_cantidad_lineas_autor
 
     #Abre los dos archivos que le llegan por parametro para su lectura
     with open(nombre_archivo_fuente, "r") as archivo_fuente, open(nombre_archivo_comentarios, "r") as archivo_comentarios:
-        datos_ordenados = por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios)
+        datos_ordenados = organizar.por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios)
     
     return datos_ordenados
 
