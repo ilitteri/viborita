@@ -27,6 +27,19 @@ def obtencion_datos(archivo_fuente):
             #Devuelvo el diccionario 
     return diccionario_invocaciones
 
+def buscar_invocaciones(diccionario_invocaciones):
+    with open ("archivo_fuente", "r") as invocaciones :
+        lineas = invocaciones.readline()
+        while lineas :
+            nombre = lineas.splitline('","')[0]
+            llamadas = lineas.splitline('","')[3:]
+            for llamada in llamadas :
+                if  llamadas in diccionario_invocaciones.keys():
+                    diccionario_invocaciones[nombre].append(llamada)
+                else :
+                    diccionario_invocaciones[nombre] = []
+    return diccionario_invocaciones
+
 def contar_interacciones(diccionario_invocaciones):
     
     #Creo un nuevo diccionario que tiene las funciones sin repetir 
@@ -38,20 +51,32 @@ def contar_interacciones(diccionario_invocaciones):
             diccionario_funciones[funcion][invocacion] =  numero_llamadas
     return diccionario_funciones
 
-"""
-En proceso....
-
-def imprimir_ej3(archivo_fuente):
+def creacion_archivo_txt_p3(diccionario_funciones):
+    texto_max = 0
+    numero_tabla = 1
+    filas_txt = []
+    columnas_txt = []
+    lineas_txt[0] = filas_txt
+    lineas_txt[1] = columnas_txt
+    filas_txt [0] = None
+    indice = 1
+    indice_2 = 0
     
-    largo_nombre = 0
-    valores = ""
-    for i in range(len(nombres)):
-        valores += str(i) + "\t"
-    print ("Funciones","\t",valores)
-    for i in range((len(nombres)-1)) :
-        
-        if len(nombres[i]> largo_nombre) :
-            largo_nombre = len(Nombres[i]) + 4
-        print (i+1, " - " , Nombres[i],"\n")
-    print ("Total invocaciones","  ",)
-"""
+    for funcion in diccionario_funciones.keys():
+        if len(funcion+"\t") > texto_max :
+            texto_max = len(funcion)
+            correccion_espaciado = texto_max - len(funcion)
+            numero_tabla += 1
+        filas_txt.append(str( " ",numero_tabla," - ",funcion,correccion_espaciado, "\t"*2 ))
+        while indice < len (diccionario_funciones[funcion]) :
+            if diccionario_funciones[funcion][indice_2] != 0 :
+                filas_txt[indice_2+1] = " " * 3
+            else :
+                filas_txt[indice_2+1] = " " + str(diccionario_funciones[funcion][indice_2]) + " "
+            indice_2 += 1
+    filas_txt [0] = (str(" ","FUNCIONES",correccion_espaciado, "\t"*2))
+    while indice <= numero_tabla :
+        filas_txt[0] += " "+str(indice)+" "
+        indice += 1 
+       
+    
