@@ -30,8 +30,8 @@ def imprimir_datos(datos_por_autor, nombre_archivo_participacion):
 
     for autor in datos_por_autor:
         lineas_totales_modulo = 0
-        print(f'{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
-        grabar_linea(archivo_datos, f'{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
+        print(f'\n{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
+        grabar_linea(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
         
         for funcion, lineas in datos_por_autor[autor].items():
             lineas_totales_modulo += lineas
@@ -39,8 +39,9 @@ def imprimir_datos(datos_por_autor, nombre_archivo_participacion):
             grabar_linea(archivo_datos, f'\t{funcion}{" " * (50-len(funcion))}{lineas}\n')
         
         porcentaje_lineas_modulo = -1
-        print(f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%')
-        grabar_linea(archivo_datos, f'\t{len(datos_por_autor[autor])} Funciones - Lineas{" " * (47-len("Funciones - Lineas"))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%\n')
+        string = f'{len(datos_por_autor[autor])} Funciones - Lineas'
+        print(f'\t{string}{" " * (50-len(string))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%\n\n')
+        grabar_linea(archivo_datos, f'\t{string}{" " * (50-len(string))}{lineas_totales_modulo}\t{porcentaje_lineas_modulo}%\n\n')
     
     archivo_datos.close()
 
