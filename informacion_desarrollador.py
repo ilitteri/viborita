@@ -38,15 +38,16 @@ def imprimir_datos(datos_por_autor, nombre_archivo_participacion):
         
         for funcion, cantidad_lineas in datos_por_autor[autor].items():
             lineas_totales_autor += cantidad_lineas
-            print(f'\t{funcion}{" " * (50-len(funcion))}{cantidad_lineas}')
+            separacion = " " * (50-len(funcion))
+            print(f'\t{funcion}{separacion}{cantidad_lineas}')
             grabar_linea(archivo_datos, f'\t{funcion}{" " * (50-len(funcion))}{cantidad_lineas}\n')
-        lineas_totales_codigos += lineas_totales_autor
         
-        porcentaje_lineas_modulo = round(obtener_porcentaje_lineas_codigo(datos_por_autor, lineas_totales_autor), 2)
-        lineas_totales_modulo = -1
-        string = f'{len(datos_por_autor[autor])} Funciones - Lineas'
-        print(f'\t{string}{" " * (50-len(string))}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
-        grabar_linea(archivo_datos, f'\t{string}{" " * (50-len(string))}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
+        lineas_totales_codigos += lineas_totales_autor
+        porcentaje_lineas_modulo = round(obtener_porcentaje_lineas_codigo(datos_por_autor, lineas_totales_autor))
+        columna_1 = f'{len(datos_por_autor[autor])} Funciones - Lineas'
+        separacion = " " * (50-len(columna_1))
+        print(f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
+        grabar_linea(archivo_datos, f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
     archivo_datos.close()
 
 def main():
