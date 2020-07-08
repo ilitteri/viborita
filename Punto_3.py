@@ -34,10 +34,10 @@ def buscar_invocaciones(diccionario_invocaciones):
             nombre = lineas.splitline('","')[0]
             llamadas = lineas.splitline('","')[3:]
             for llamada in llamadas :
-                if  llamadas in diccionario_invocaciones.keys():
-                    diccionario_invocaciones[nombre].append(llamada)
-                else :
+                if llamada not in diccionario_invocaciones:
                     diccionario_invocaciones[nombre] = []
+                diccionario_invocaciones[nombre].append(llamada)
+            lineas = invocaciones.readline()
     return diccionario_invocaciones
 
 def contar_interacciones(diccionario_invocaciones):
