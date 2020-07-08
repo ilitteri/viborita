@@ -21,11 +21,15 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                     bandera_comentario = False
             #Guarda otro tipo de comentarios
             elif "#" in linea_codigo:
-                #Si es None, cambia su valor a una lista vacia para que se pueda hacer append.
-                if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
-                    datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
-                otro_comentario = analizar.comentario_numeral(linea_codigo)
-                datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
+                if not linea_codigo.startswith("#"):
+                    #Si es None, cambia su valor a una lista vacia para que se pueda hacer append.
+                    if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
+                        datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
+                    otro_comentario, posible_linea = analizar.comentario_numeral(linea_codigo)
+                    datos_ordenados[nombre_funcion]["lineas"].append(f'"{posible_linea.strip()}"')
+                    datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
+                else:
+                    datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
             #Si un comentario multilinea se abre y cierra en la misma linea, analiza la linea y guarda los datos del autor.
             elif linea_codigo.count("'''") == 2:
                 autor_funcion = analizar.autor_funcion(linea_codigo)
@@ -79,11 +83,10 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     imports = {}
 
     #Recorro las ubicaciones de los modulos.
-    for ubicacion_modulo in ubicaciones_modulos:
+    for nombre_modulo in ubicaciones_modulos:
         #Nombre del modulo.
-        nombre_modulo = ubicacion_modulo.split("\\")[-1]
         #Abre un archivo para leer y dos para escribir, al mismo tiempo.
-        with open(ubicacion_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
+        with open(nombre_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
             datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
             #Lista de nombres de funciones.
             nombres_funciones_ordenadas = sorted(list(datos_modulos.keys()))
@@ -126,7 +129,7 @@ def main():
 
     #Crea los archivos csv individuales.
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
+    ubicaciones_modulos = ["app_matematica.py", "lib_matematica.py"]
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
     #Aparea los archivos csv individuales en uno general.

@@ -74,23 +74,30 @@ def ayuda_funcion(linea_codigo, bandera_ayuda):
 
     return ayuda_funcion, bandera_ayuda
 
-def comentario_numeral(linea_codigo, bandera_otro_comentario = False):
+def comentario_numeral(linea_codigo, bandera_otro_comentario = False, bandera_linea = True):
     '''[Autor: Ivan Litteri]
     [Ayuda: Esta funcion analiza la linea que le llega por parametro (sabiendo que se trata de una linea que posiblemente tenga un comentario
     de linea simple, y devuelve solo desde el "#" en adelante)]'''
 
     #Declara inicialmente como una cadena vacia para luego llenarla desde 0
     otro_comentario = ""
+    posible_linea = ""
 
-    #Recorre caracter a caracter la linea que entra por parametro
-    for caracter in linea_codigo.strip():
-        #Cuando el caracter se trate del numeral, se habilita la bandera para que se empiece a guardar caracteres en la cadena inicializada anteriormente
-        if caracter == "#":
-            bandera_otro_comentario = True
-        if bandera_otro_comentario:
-            otro_comentario += caracter
+    if not linea_codigo.startswith("#"):
+        #Recorre caracter a caracter la linea que entra por parametro
+        for caracter in linea_codigo.strip(): 
+            #Cuando el caracter se trate del numeral, se habilita la bandera para que se empiece a guardar caracteres en la cadena inicializada anteriormente
+            if caracter == "#":
+                bandera_linea = False
+                bandera_otro_comentario = True
+            if bandera_linea:
+                posible_linea += caracter
+            if bandera_otro_comentario:
+                otro_comentario += caracter
+    else:
+        otro_comentario = linea_codigo
 
-    return otro_comentario
+    return otro_comentario, posible_linea
 
 def imports(linea_codigo, bandera_import = False):
     '''[Autor: Ivan Litteri]
