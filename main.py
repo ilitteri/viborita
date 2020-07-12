@@ -1,4 +1,5 @@
 # coding=utf-8
+import creador_csv
 
 def menu_interactivo():
     '''[Autor: Andres Kubler]
@@ -26,8 +27,7 @@ def menu_interactivo():
 
 def main():
     '''[Autor: Andres Kubler]
-    [Ayuda: Importamos el modulo para crear los archivos csv, y así correrlo antes del menú]'''
-    import creador_csv_v2
+    [Ayuda: Ejecuta el archivo para crear el csv, luego ejecua el menu interativo]'''
 
-    creador_csv_v2.main()
+    creador_csv.main()
     menu_interactivo()
