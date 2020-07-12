@@ -26,12 +26,15 @@ def buscar_invocaciones(diccionario_invocaciones , lineas):
             for llamada in llamadas :
                 #Separo la funcion de su contenido (...)
                 funcion = llamada.splitlines("(")[0]
+                if " " in funcion :
+                    funcion_limpia = funcion.replace(" ","")
+
                 #Busco funciones con nombres existentes en el diccionario
-                if funcion in diccionario_invocaciones:
+                if funcion_limpia in diccionario_invocaciones:
                     #Creo listas dentro del diccionario 
                     diccionario_invocaciones[nombre] = []
                     #Agrego las funciones encontradas en una lista para facilitar operaciones
-                    diccionario_invocaciones[nombre].append(funcion)
+                    diccionario_invocaciones[nombre].append(funcion_limpia)
             lineas = invocaciones.readline()
     return diccionario_invocaciones
 
