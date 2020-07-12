@@ -1,44 +1,34 @@
 
-def obtencion_datos(archivo_fuente):
+def buscar_invocaciones(diccionario_invocaciones , lineas):
     """[Autor: Luciano Federico Aguilera]"""
-    #Abro el .csv generado en creador_csv.py 
-    with open ("archivo_fuente", "r") as informacion:
-        funciones = informacion.readline()
-        diccionario_invocaciones = {}
-        #Creo un diccionario que contiene una lista de las invocaciones de cada funcion
-        while funciones :
-            nombre = funciones.splitline('","')[0]
-            diccionario_invocaciones[nombre] = []
-            #Filtro las lineas que no son de codigo
-            lineas = funciones.splitline('","')[3:]
-            for linea in lineas :
-                for funcion in linea :
-                    if "import" in funcion :
-                        #Busco las invocaciones dentro de las lineas de codigo   
-                        invocado = linea.splitline("import")[1]
-                        #Agrego un if para agregar invocaciones de varias funciones en un mismo import
-                        if "," in invocado :
-                            invocaciones = invocado.split(",")
-                            for funcion_invocada in invocaciones :
-                                diccionario_invocaciones[nombre].append(funcion_invocada) 
-                        else :
-                                diccionario_invocaciones[nombre].append(invocaciones)                  
-            funciones = informacion.readline()
-            #Devuelvo el diccionario 
-    return diccionario_invocaciones
-
-def buscar_invocaciones(diccionario_invocaciones):
-    """[Autor: Luciano Federico Aguilera]"""
-
+    #Abro el archivo creado anteriormente que contiene los datos ordenados
     with open ("archivo_fuente", "r") as invocaciones :
+        #Creo un diccionario para almacenar los nombres de las funciones
+        diccionario_invocaciones = {}
+        nombres = invocaciones.readline()
+        #Recorro las lineas del archivo 
+        while nombres :
+            nombre = nombres.splitline('","')[0]
+            #Almaceno los nombres de las funciones como keys del diccionario
+            #Para poder identificarlos de encontrarse entre las lineas de codigo
+            diccionario_invocaciones[nombre] = []
+    
+            funciones = invocaciones.readline()  
+        
         lineas = invocaciones.readline()
+        #Recorro nuevamente el archivo para identificar invocaciones a funcione
         while lineas :
+            #Identifico que funcion es la que llama a las siguientes
             nombre = lineas.splitline('","')[0]
+            #Separo las lineas que contienen codigo
             llamadas = lineas.splitline('","')[3:]
             for llamada in llamadas :
-                if llamada not in diccionario_invocaciones:
+                #Busco funciones con nombres existentes en el diccionario
+                if llamada in diccionario_invocaciones:
+                    #Creo listas dentro del diccionario 
                     diccionario_invocaciones[nombre] = []
-                diccionario_invocaciones[nombre].append(llamada)
+                    #Agrego las funciones encontradas en una lista para facilitar operaciones
+                    diccionario_invocaciones[nombre].append(llamada)
             lineas = invocaciones.readline()
     return diccionario_invocaciones
 
@@ -56,7 +46,7 @@ def contar_interacciones(diccionario_invocaciones):
 
 def creacion_formato_tabla(diccionario_funciones):
     """[Autor: Luciano Federico Aguilera]"""
-
+    #Defino variables que usare mas adelante
     texto_max = 0
     numero_tabla = 1
     filas_txt = []
@@ -64,6 +54,7 @@ def creacion_formato_tabla(diccionario_funciones):
     indice = 1
     indice_2 = 0
     total_invocado = []
+    #Esta funcion sirve para que los nommbres no queden demaciado largos para el formato que se quiere
     for funcion in diccionario_funciones.keys():
         if len(funcion+"\t") > texto_max :
             texto_max = len(funcion)
@@ -79,6 +70,7 @@ def creacion_formato_tabla(diccionario_funciones):
                 total_invocado.append(diccionario_funciones[funcion][indice_2])
             indice_2 += 1
     filas_txt [0] = (str(" ","FUNCIONES",correccion_espaciado, "\t"*2))
+
     while indice <= numero_tabla :
         filas_txt[0] += " "+str(indice)+" "
         indice += 1 
@@ -90,7 +82,7 @@ def creacion_formato_tabla(diccionario_funciones):
 
 def creacion_archivo_txt (filas_txt) :
     """[Autor: Luciano Federico Aguilera]"""
-    
+    # Escribo el archivo de texto txt con las lineas ordenadas
     with open("analizador.txt" , "w") as analizador :
         for linea in filas_txt:
             analizador.write(linea)
