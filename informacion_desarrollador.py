@@ -16,11 +16,11 @@ def grabar_linea(archivo_datos, linea):
     '''[Autor: Ivan Litteri]'''
     archivo_datos.write(linea)
 
-def imprimir_datos(datos_por_cantidad_lineas_autor, nombre_archivo_participacion):
+def imprimir_datos(datos_por_cantidad_lineas_autor):
     '''[Autor: Ivan Litteri]
     [Ayuda: imprime una tabla con la informacion de desarrollo por cada autor en la consola y en un archivo de texto]'''
     
-    archivo_datos = open(nombre_archivo_participacion, "w")
+    archivo_datos = open("participacion.txt", "w")
     lineas_codigo_totales = obtener.lineas_codigo_totales(datos_por_cantidad_lineas_autor)
 
     print("\t\t\tInformacion de Desarrollo Por Autor\n")
@@ -45,11 +45,10 @@ def imprimir_datos(datos_por_cantidad_lineas_autor, nombre_archivo_participacion
 
 def main():
     '''[Autor: Ivan Litteri]'''
+#def main(archivo_fuente, archiv_comentarios):
 
-    nombre_archivo_participacion = "participacion.txt"
-    nombre_archivo_comentarios = "comentarios.csv"
-    nombre_archivo_fuente = "fuente_unico.csv"
-    datos_ordenados_por_autor = leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios)
-    imprimir_datos(datos_ordenados_por_autor, nombre_archivo_participacion)
+    #datos_por_cantidad_lineas_autor = obtener.por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios)
+    datos_por_cantidad_lineas_autor = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
+    imprimir_datos(datos_por_cantidad_lineas_autor)
 
 main()
