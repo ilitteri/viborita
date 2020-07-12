@@ -22,13 +22,16 @@ def buscar_invocaciones(diccionario_invocaciones , lineas):
             nombre = lineas.splitline('","')[0]
             #Separo las lineas que contienen codigo
             llamadas = lineas.splitline('","')[3:]
+
             for llamada in llamadas :
+                #Separo la funcion de su contenido (...)
+                funcion = llamada.splitlines("(")[0]
                 #Busco funciones con nombres existentes en el diccionario
-                if llamada in diccionario_invocaciones:
+                if funcion in diccionario_invocaciones:
                     #Creo listas dentro del diccionario 
                     diccionario_invocaciones[nombre] = []
                     #Agrego las funciones encontradas en una lista para facilitar operaciones
-                    diccionario_invocaciones[nombre].append(llamada)
+                    diccionario_invocaciones[nombre].append(funcion)
             lineas = invocaciones.readline()
     return diccionario_invocaciones
 
