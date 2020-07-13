@@ -1,3 +1,12 @@
+def leer_archivo():
+    '''[Autor: Andrés Kübler]
+    [Ayuda: Esta funcion lee el archivo csv y devuelve sus lineas en forma de listas]'''
+
+    #Abro y leo el archivo
+    with open("fuente_unico.csv","r") as archivo_funciones:
+        lineas = archivo_funciones.readlines()
+    return lineas
+
 def listar_funciones(lista_de_lineas):
     '''[Autor: Andrés Kübler]
     [Ayuda: Esta funcion lista los nombres de las funciones del archvio]'''
@@ -13,8 +22,7 @@ def listar_funciones(lista_de_lineas):
 def crear_diccionario(lista_de_lineas,nombres_funciones):
     '''[Autor: Andrés Kübler]
     [Ayuda: Esta funcion crea el diccionario el cual contiene la informacion necesaria: nombre de la funcion, 
-    cantidad de lineas, funcionea a las que llama. a partir de aca solo vamos a usar este diccionario como fuente
-    de información]'''
+    cantidad de lineas, funcionea a las que llama. También indica cual es la funcion principal del archivo.]'''
 
     #Creo diccionario vacio donde voy a ir guardando la informacion
     dicc_funciones = {}
@@ -22,8 +30,11 @@ def crear_diccionario(lista_de_lineas,nombres_funciones):
     for linea in lista_de_lineas:
         #Convierto la linea en una lista para asi recorrerla por indices
         linea_listada = linea.split(",")
-        #Saco el nombre de la funcion de la linea evaluada
+        #Busco el nombre de la funcion en la linea y me fijo si es la funcion principal del archivo
         nombre_funcion = linea_listada[0].strip('"')
+        if nombre_funcion.startswith("*"):
+            nombre_funcion = nombre_funcion.lstrip("*")
+            funcion_main = nombre_funcion
         #Saco la cantidad de lineas de la funcion
         cantidad_lineas = len(linea_listada) - 3
         
@@ -33,18 +44,21 @@ def crear_diccionario(lista_de_lineas,nombres_funciones):
                 funciones_llamadas.append(funcion)
         
         #Agrego los datos encontrados al diccionario 
-        dicc_funciones[nombre_funcion,cantidad_lineas] = funciones_llamadas
+        dicc_funciones[nombre_funcion] = [cantidad_lineas,funciones_llamadas]
+
+    return dicc_funciones,funcion_main
+
+def printear_funciones(diccionario_informacion,funcion_principal):
+    encontrar = diccionario_informacion[funcion_principal]
+    print(encontrar)
+
+
+def main_punto4():
+    lista_de_lineas = leer_archivo()
+    nombres_funciones = listar_funciones(lista_de_lineas)
+    diccionario_informacion,funcion_principal = crear_diccionario(lista_de_lineas,nombres_funciones)
     
-    return dicc_funciones
+    #En construcción
+    printear_funciones(diccionario_informacion,funcion_principal)
 
-
-def leer_archivo():
-    '''[Autor: Andrés Kübler]
-    [Ayuda: Esta funcion lee el archivo csv y su informacion se procesa]'''
-    with open("fuente_unico.csv","r") as archivo_funciones:
-        lineas = archivo_funciones.readlines()
-
-        nombres_funciones = listar_funciones(lineas)
-        diccionario_informacion = crear_diccionario(lineas,nombres_funciones)
-
-leer_archivo()
+main_punto4()
