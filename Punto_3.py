@@ -1,14 +1,14 @@
 
-def buscar_invocaciones(diccionario_invocaciones , lineas):
+def buscar_invocaciones(archivo_fuente):
     """[Autor: Luciano Federico Aguilera]"""
     #Abro el archivo creado anteriormente que contiene los datos ordenados
-    with open ("archivo_fuente", "r") as invocaciones :
+    with open ( archivo_fuente , "r") as invocaciones :
         #Creo un diccionario para almacenar los nombres de las funciones
         diccionario_invocaciones = {}
         nombres = invocaciones.readline()
         #Recorro las lineas del archivo 
         while nombres :
-            nombre = nombres.splitline('","')[0]
+            nombre = nombres.split('","')[0]
             #Almaceno los nombres de las funciones como keys del diccionario
             #Para poder identificarlos de encontrarse entre las lineas de codigo
             diccionario_invocaciones[nombre] = []
@@ -19,13 +19,13 @@ def buscar_invocaciones(diccionario_invocaciones , lineas):
         #Recorro nuevamente el archivo para identificar invocaciones a funcione
         while lineas :
             #Identifico que funcion es la que llama a las siguientes
-            nombre = lineas.splitline('","')[0]
+            nombre = lineas.split('","')[0]
             #Separo las lineas que contienen codigo
-            llamadas = lineas.splitline('","')[3:]
+            llamadas = lineas.split('","')[3:]
 
             for llamada in llamadas :
                 #Separo la funcion de su contenido (...)
-                funcion = llamada.splitlines("(")[0]
+                funcion = llamada.split("(")[0]
                 if " " in funcion :
                     funcion_limpia = funcion.replace(" ","")
 
@@ -93,4 +93,13 @@ def creacion_archivo_txt (filas_txt) :
         for linea in filas_txt:
             analizador.write(linea)
 
-    
+def main () :
+    archivo_fuente = "fuente_unico.csv"
+    diccionario_invocaciones = buscar_invocaciones(archivo_fuente)
+    diccionario_funciones = contar_interacciones(diccionario_invocaciones)
+    filas_txt = creacion_formato_tabla(diccionario_funciones)
+    creacion_archivo_txt (filas_txt)
+
+main ()
+
+
