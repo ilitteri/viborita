@@ -27,20 +27,35 @@ def imprimir_datos(datos_por_cantidad_lineas_autor):
     grabar_linea(archivo_datos, "\t\t\tInformacion de Desarrollo Por Autor\n\n")
 
     for autor in datos_por_cantidad_lineas_autor:
+
         lineas_totales_autor = datos_por_cantidad_lineas_autor[autor]["lineas_totales"]
-        print(f'\n{autor}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
-        grabar_linea(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n\tFuncion{" " * (50-len("Funcion"))}Lineas\n\n\t{"=" * (50+len("Funcion"))}\n')
+        columna_1 = "Funcion"
+        columna_2 = "Lineas"
+        separacion = " " * (50-len(columna_1))
+        linea_iguales = f'\t{"=" * (50 + len(columna_1))}'
+
+        print(f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}')
+        print(linea_iguales)
+
+        grabar_linea(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}\n\n{linea_iguales}\n')
         
         for funcion, cantidad_lineas in datos_por_cantidad_lineas_autor[autor]["funciones"].items():
+
+            funcion = funcion.replace('"','')
             separacion = " " * (50-len(funcion))
+
             print(f'\t{funcion}{separacion}{cantidad_lineas}')
-            grabar_linea(archivo_datos, f'\t{funcion}{" " * (50-len(funcion))}{cantidad_lineas}\n')
+
+            grabar_linea(archivo_datos, f'\t{funcion}{separacion}{cantidad_lineas}\n')
 
         porcentaje_lineas_modulo = round(obtener.porcentaje_lineas_codigo(datos_por_cantidad_lineas_autor, autor, lineas_codigo_totales))
-        columna_1 = f'{len(datos_por_cantidad_lineas_autor[autor])} Funciones - Lineas'
+        columna_1 = f'{len(datos_por_cantidad_lineas_autor[autor])} Funciones - Lineas' 
         separacion = " " * (50-len(columna_1))
+        
         print(f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
+        
         grabar_linea(archivo_datos, f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
+    
     archivo_datos.close()
 
 def main():
