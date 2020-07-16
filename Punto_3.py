@@ -28,7 +28,7 @@ def buscar_invocaciones(archivo_fuente):
 
         for funcion in lista_funciones :
             diccionario_invocaciones [cuenta_lineas] [key] [funcion] = 0
-    print ("\n" , diccionario_invocaciones , "\n" )
+    
     
     return diccionario_invocaciones , lista_funciones    
 
@@ -63,7 +63,6 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
                             diccionario_invocaciones ["total"][contador] += 1
 
             lineas = invocaciones.readline()
-    print ("\n" , diccionario_invocaciones , "\n" )
 
     return diccionario_invocaciones
 
@@ -82,7 +81,7 @@ def creacion_formato_tabla(diccionario_invocaciones):
     for funcion in diccionario_invocaciones :
         if funcion != "total" and funcion != "indices":
             funcion_en_linea = str(diccionario_invocaciones[funcion]).split(":")[0].replace("{", "").replace("'","")
-            print( funcion_en_linea)
+            
             cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea) + " " + " " * (22-len(str(funcion_en_linea)) )
             if funcion <= 9 :
                 cadena_de_texto += " "
@@ -95,7 +94,7 @@ def creacion_formato_tabla(diccionario_invocaciones):
     filas_txt.append(cadena_totales )       
 
    
-    print (filas_txt)
+    
     return filas_txt
 
 def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
