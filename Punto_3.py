@@ -119,15 +119,14 @@ def creacion_archivo_txt (filas_txt) :
         for linea in filas_txt:
             analizador.write(str(linea) + "\n" + "\n")
 
-def main () :
+def Analizador_reutilizacion_de_codigo () :
     archivo_fuente = "fuente_unico.csv"
     diccionario_invocaciones , lista_funciones = buscar_invocaciones(archivo_fuente)
     diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente)
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
-    
     creacion_archivo_txt (filas_txt)
 
-main ()
+Analizador_reutilizacion_de_codigo  ()
 
 
