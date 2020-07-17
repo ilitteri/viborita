@@ -33,10 +33,10 @@ def buscar_invocaciones(archivo_fuente):
     return diccionario_invocaciones , lista_funciones    
 
 def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente):  
-
+    """[Autor: Luciano Federico Aguilera]"""
     with open ( archivo_fuente , "r") as invocaciones :
         lineas = invocaciones.readline()
-        #Recorro nuevamente el archivo para identificar invocaciones a funcione
+        #Recorro nuevamente el archivo para identificar invocaciones a funciones
         cuenta_linea = 0
         while lineas :
             #Identifico que funcion es la que llama a las siguientes
@@ -98,7 +98,7 @@ def creacion_formato_tabla(diccionario_invocaciones):
     return filas_txt
 
 def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
-
+    """[Autor: Luciano Federico Aguilera]"""
     for numero in diccionario_invocaciones :
         if str(numero).isdigit() :
             funcion_en_linea = str(diccionario_invocaciones[numero]).split(":")[0].replace("{", "").replace("'","")
@@ -120,6 +120,7 @@ def creacion_archivo_txt (filas_txt) :
             analizador.write(str(linea) + "\n" + "\n")
 
 def Analizador_reutilizacion_de_codigo () :
+    """[Autor: Luciano Federico Aguilera]"""
     archivo_fuente = "fuente_unico.csv"
     diccionario_invocaciones , lista_funciones = buscar_invocaciones(archivo_fuente)
     diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente)
