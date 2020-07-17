@@ -39,9 +39,9 @@ def buscar_invocaciones(archivo_fuente):
     return diccionario_invocaciones , lista_funciones    
 
 def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente):  
+
     """[Autor: Luciano Federico Aguilera]
     [Ayuda : Busca coincidencias entre las funciones listadas y las presentes en el archivo csv y las  ]"""
-    
     with open ( archivo_fuente , "r") as invocaciones :
         lineas = invocaciones.readline()
         #Recorro nuevamente el archivo para identificar invocaciones a funciones usando los datos recogidos en buscar_invocaciones
@@ -114,9 +114,11 @@ def creacion_formato_tabla(diccionario_invocaciones):
     return filas_txt
 
 def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
+
     """[Autor: Luciano Federico Aguilera]
     [Ayuda: Esta funcion agrega los numeros de invocaciones que hizo cada funcion]"""
     # Recorro las keys del diccionario para buscar los datos 
+
     for numero in diccionario_invocaciones :
         # Filtro las keys que no son funciones 
         if str(numero).isdigit() :
@@ -145,6 +147,7 @@ def Analizador_reutilizacion_de_codigo () :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
+
     archivo_fuente = "fuente_unico.csv"
 
     diccionario_invocaciones , lista_funciones = buscar_invocaciones(archivo_fuente)
