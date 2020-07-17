@@ -1,4 +1,4 @@
-
+from os import remove
 def buscar_invocaciones(archivo_fuente):
     """[Autor: Luciano Federico Aguilera]
     [Ayuda: Busca las funciones presentes en el archivo csv creado anteriormente y las agrega en un diccionario con un numero de indice ]"""
@@ -7,7 +7,7 @@ def buscar_invocaciones(archivo_fuente):
     cuenta_lineas = 0
 
     #Abro el archivo creado anteriormente que contiene los datos ordenados
-    with open ( archivo_fuente , "r") as invocaciones :
+    with open ( archivo_fuente , "r") as invocaciones  , open ("informacion.csv" , "w") as informacion_extraida :
         #Creo un diccionario para almacenar los nombres de las funciones junto con sus indices para la tabla
         diccionario_invocaciones = {"total": {} , "indices" : {} }
         nombres = invocaciones.readline()
@@ -18,7 +18,7 @@ def buscar_invocaciones(archivo_fuente):
             lista_funciones.append(nombre)
             # Almaceno los nombres de las funciones como keys del diccionario
             # Para poder identificarlos de encontrarse entre las lineas de codigo
-
+            informacion_extraida.write(nombres)
             nombres = invocaciones.readline()  
     
     for key in lista_funciones :
@@ -39,10 +39,10 @@ def buscar_invocaciones(archivo_fuente):
     return diccionario_invocaciones , lista_funciones    
 
 def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente):  
+
     """[Autor: Luciano Federico Aguilera]
     [Ayuda : Busca coincidencias entre las funciones listadas y las presentes en el archivo csv y las  ]"""
-    
-    with open ( archivo_fuente , "r") as invocaciones :
+    with open ( "informacion.csv" , "r") as invocaciones :
         lineas = invocaciones.readline()
         #Recorro nuevamente el archivo para identificar invocaciones a funciones usando los datos recogidos en buscar_invocaciones
         cuenta_linea = 0
@@ -77,6 +77,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
                             diccionario_invocaciones ["total"][indices] += 1
 
             lineas = invocaciones.readline()
+    remove ("informacion.csv")
     # Devuelvo el diccionario actualizado
     return diccionario_invocaciones
 
@@ -114,9 +115,11 @@ def creacion_formato_tabla(diccionario_invocaciones):
     return filas_txt
 
 def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
+
     """[Autor: Luciano Federico Aguilera]
     [Ayuda: Esta funcion agrega los numeros de invocaciones que hizo cada funcion]"""
     # Recorro las keys del diccionario para buscar los datos 
+
     for numero in diccionario_invocaciones :
         # Filtro las keys que no son funciones 
         if str(numero).isdigit() :
@@ -136,7 +139,7 @@ def creacion_archivo_txt (filas_txt) :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion crea un archivo txt llamado anatizador.txt a partir de los elementos de la lista filas_txt]"""
     # Creo un archivo txt
-    with open("analizador2.txt" , "w") as analizador :
+    with open("analizador.txt" , "w") as analizador :
         # Escribo el archivo de texto txt con las lineas ordenadas
         for linea in filas_txt:
             analizador.write(str(linea) + "\n" + "\n")
@@ -145,6 +148,7 @@ def Analizador_reutilizacion_de_codigo () :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
+
     archivo_fuente = "fuente_unico.csv"
 
     diccionario_invocaciones , lista_funciones = buscar_invocaciones(archivo_fuente)
@@ -154,7 +158,7 @@ def Analizador_reutilizacion_de_codigo () :
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
 
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
-    
+
     creacion_archivo_txt (filas_txt)
 
 
