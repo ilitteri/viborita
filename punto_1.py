@@ -25,7 +25,8 @@ def main():
     from m_organizar_datos import por_cantidad_declaraciones_funcion
     with open ("fuente_unico.csv", "r") as fuente_unico, open ("comentarios.csv", "r") as comentarios: 
         diccionario = por_cantidad_declaraciones_funcion(fuente_unico, comentarios)
-    grabar(diccionario)
+    return diccionario
+print(main())
 
 
 
