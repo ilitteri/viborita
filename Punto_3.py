@@ -87,16 +87,16 @@ def creacion_formato_tabla(diccionario_invocaciones):
     # Creo una lista cuyos elementos seran las lineas del archivo txt
     filas_txt = []
     indice_2 = 1
+
     # Creo la primer linea del archivo de texto  
     filas_txt.append(str(" FUNCIONES" + " "*20 ))
-    # Concateno los indices de las funciones a la primer linea
-    for numero in range(len (diccionario_invocaciones)-2):
-        filas_txt [0] += "\t" + str(numero+1) + "\t" 
-    filas_txt[0] += " \n"
+    cadena_totales = "\n Total Invocaciones " + " "*11
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
         # Filtro las keys que no contienen datos importantes
         if funcion != "total" and funcion != "indices":
+            filas_txt [0] += "\t" + str(funcion) + "\t" 
+            
             funcion_en_linea = str(diccionario_invocaciones[funcion]).split(":")[0].replace("{", "").replace("'","")
             # Hago correcciones para que la tabla quede pareja
             cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea) + " " + " " * (22-len(str(funcion_en_linea)) )
@@ -105,11 +105,9 @@ def creacion_formato_tabla(diccionario_invocaciones):
                 cadena_de_texto += " "
             filas_txt.append(cadena_de_texto )
             indice_2 += 1  
-    # Agrego la linea final que contendra los totales de las veces que fueron invocadas las funciones
-    cadena_totales = "\n Total Invocaciones " + " "*11
-    # Concateno a los totales que estaban el el diccionario a la tabla
-    for numero in range(1,len (diccionario_invocaciones)-1) :
-        cadena_totales += "\t" + str(diccionario_invocaciones ["total"] [numero]) + "\t"  
+            # Concateno a los totales que estaban el el diccionario a la tabla
+            cadena_totales += "\t" + str(diccionario_invocaciones ["total"] [funcion]) + "\t"
+    
     # Finalmente agrego la cadena a la lista
     filas_txt.append(cadena_totales )       
     # Devuelvo la lista modificada 
