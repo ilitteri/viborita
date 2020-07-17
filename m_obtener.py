@@ -1,3 +1,5 @@
+import os
+
 def ubicaciones_modulos(archivo_principal):
     '''[Autor: Ivan Litteri]
     [Ayuda: Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las 
@@ -31,7 +33,6 @@ def nombres_modulos(ubicaciones_modulos):
 def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
 
-    import os
     
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
