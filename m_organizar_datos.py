@@ -11,31 +11,23 @@ def por_funciones(archivo_fuente, archivo_comentarios):
 
     #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
+    #Cargo la primera linea del archivo de comentarios
+    linea_comentarios = archivo_comentarios.readline()
     #Mientras el archivo tenga lineas para leer
-    while linea_fuente:
+    while linea_fuente and linea_comentarios:
         #Desempaqueto los datos de cada linea
-        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
+        nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
+        #Desempaqueto los datos de cada linea
+        nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
         #Si la funcion no esta como key del diccionario, entonces la agrego y le doy su forma
-        if nombre_funcion not in datos_ordenados_por_funcion:
+        if nombre_funcion_f not in datos_ordenados_por_funcion:
             datos_ordenados_por_funcion[nombre_funcion] = {"parametros": None,
                                                             "modulo": None,
                                                             "lineas": None}
         #Agrego los datos a sus respectivos lugares
-        datos_ordenados_por_funcion[nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
-        datos_ordenados_por_funcion[nombre_funcion]["modulo"] = modulo_funcion
-        datos_ordenados_por_funcion[nombre_funcion]["lineas"] = lineas_funcion
-        #Avanzo de linea en el archivo
-        linea_fuente = archivo_fuente.readline()
-    
-    #Cargo la primera linea del archivo de comentarios
-    linea_comentarios = archivo_comentarios.readline()
-    #Mientras el archivo tenga lineas para leer
-    while linea_comentarios:
-        #Desempaqueto los datos de cada linea
-        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
-        #Si la funcion no esta como key del diccionario, entonces la agrego
-        if nombre_funcion not in datos_ordenados_por_funcion:
-            datos_ordenados_por_funcion[nombre_funcion] = {}
+        datos_ordenados_por_funcion[nombre_funcion]["parametros"] = parametros_funcion_f if len(parametros_funcion_f) > 2 else None
+        datos_ordenados_por_funcion[nombre_funcion]["modulo"] = modulo_funcion_f
+        datos_ordenados_por_funcion[nombre_funcion]["lineas"] = lineas_funcion_f
         #Si la key comentarios aun no existe en la funcion lo agrego y le doy forma
         if "comentarios" not in datos_ordenados_por_funcion[nombre_funcion]:
             datos_ordenados_por_funcion[nombre_funcion]["comentarios"] = {"autor": None,
@@ -45,6 +37,8 @@ def por_funciones(archivo_fuente, archivo_comentarios):
         datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["autor"] = autor_funcion
         datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["ayuda"] = ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
         datos_ordenados_por_funcion[nombre_funcion]["comentarios"]["otros"] = otros if len(otros) > 0 else None
+        #Avanzo de linea en el archivo
+        linea_fuente = archivo_fuente.readline()
         #Avanzo de linea en el archivo
         linea_comentarios = archivo_comentarios.readline()
 
@@ -61,43 +55,39 @@ def por_modulos(archivo_fuente, archivo_comentarios):
 
     #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
-    #Mientras el archivo tenga lineas para leer
-    while linea_fuente:
-        #Desempaqueto los datos de cada linea
-        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
-        #Si el modulo no esta como key del diccionario, entonces lo agrego
-        if modulo_funcion not in datos_ordenados_por_modulo:
-            datos_ordenados_por_modulo[modulo_funcion] = {}
-        #Si la funcion no esta como key del modulo entonces la agrego y le doy forma
-        if nombre_funcion not in datos_ordenados_por_modulo[modulo_funcion]:
-            datos_ordenados_por_modulo[modulo_funcion][nombre_funcion] = {"parametros": None,
-                                                                            "lineas": None
-                                                                        }
-        #Agrego los datos a sus respectivos lugares
-        datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
-        datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["lineas"] = lineas_funcion
-        #Avanzo a la siguiente linea
-        linea_fuente = archivo_fuente.readline()
-
     #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
     #Mientras el archivo tenga lineas para leer
-    while linea_comentarios:
+    while linea_fuente and linea_comentarios:
         #Desempaqueto los datos de cada linea
-        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
-        for modulo_funcion in datos_ordenados_por_modulo:
-            #Si la funcion a la que pertenecen los datos no esta como key del diccionario entonces la agrego
-            if nombre_funcion not in datos_ordenados_por_modulo[modulo_funcion]:
-                datos_ordenados_por_modulo[modulo_funcion][nombre_funcion] = {}
-            #Si comentarios no es una key del diccioanrio de la funcion entonces la agrego y le doy forma
-            if "comentarios" not in datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]:
-                datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"] = {"autor": None,
-                                                                                            "ayuda": None,
-                                                                                            "otros": None}
-            #Agrego los datos a sus respectivos lugares
-            datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["autor"] = autor_funcion
-            datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["ayuda"] = ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
-            datos_ordenados_por_modulo[modulo_funcion][nombre_funcion]["comentarios"]["otros"] = otros if len(otros) > 0 else None
+        nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
+        #Desempaqueto los datos de cada linea
+        nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
+        #Si el modulo no esta como key del diccionario, entonces lo agrego
+        if modulo_funcion_f not in datos_ordenados_por_modulo:
+            datos_ordenados_por_modulo[modulo_funcion_f] = {}
+        #Si la funcion no esta como key del modulo entonces la agrego y le doy forma
+        if nombre_funcion_f not in datos_ordenados_por_modulo[modulo_funcion_f]:
+            datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_f] = {"parametros": None,
+                                                                            "lineas": None
+                                                                        }
+        #Agrego los datos a sus respectivos lugares
+        datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_f]["parametros"] = parametros_funcion_f if len(parametros_funcion_f) > 2 else None
+        datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_f]["lineas"] = lineas_funcion_f
+        #Si la funcion a la que pertenecen los datos no esta como key del diccionario entonces la agrego
+        if nombre_funcion_c not in datos_ordenados_por_modulo[modulo_funcion_f]:
+            datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_c] = {}
+        #Si comentarios no es una key del diccioanrio de la funcion entonces la agrego y le doy forma
+        if "comentarios" not in datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_c]:
+            datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_c]["comentarios"] = {"autor": None,
+                                                                                        "ayuda": None,
+                                                                                        "otros": None}
+        #Agrego los datos a sus respectivos lugares
+        datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_c]["comentarios"]["autor"] = autor_funcion_c
+        datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_c]["comentarios"]["ayuda"] = ayuda_funcion_c if ("Ayuda" in ayuda_funcion_c) else None
+        datos_ordenados_por_modulo[modulo_funcion_f][nombre_funcion_c]["comentarios"]["otros"] = otros_c if len(otros_c) > 0 else None
+        #Avanzo a la siguiente linea
+        linea_fuente = archivo_fuente.readline()
         #Avanzo a la siguiente linea del archivo
         linea_comentarios = archivo_comentarios.readline()
 
@@ -115,15 +105,19 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
 
     #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
+    #Cargo la primera linea del archivo de comentarios
+    linea_comentarios = archivo_comentarios.readline()
     #Mientras haya lineas para leer del archivo fuente entra al while
-    while linea_fuente:
+    while linea_fuente and linea_comentarios:
         #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
+        nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
+        nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
         #Le doy forma al diccionario 
-        if nombre_funcion not in datos_ordenados_cantidad_declaraciones:
-            datos_ordenados_cantidad_declaraciones[nombre_funcion] = {"modulo": modulo_funcion,
+        if nombre_funcion_f not in datos_ordenados_cantidad_declaraciones:
+            datos_ordenados_cantidad_declaraciones[nombre_funcion_f] = {"modulo": modulo_funcion_f,
                                                                         "parametros": 0,
-                                                                        "lineas": len(lineas_funcion),
+                                                                        "lineas": len(lineas_funcion_f),
                                                                         "invocaciones": 0,
                                                                         "returns": 0,
                                                                         "if/elif": 0,
@@ -135,24 +129,17 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
                                                                         "ayuda": None,
                                                                         "autor": None
                                                                         } 
-        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_fuente, nombre_funcion)
-        linea_fuente = archivo_fuente.readline()
-    
-    #Cargo la primera linea del archivo de comentarios
-    linea_comentarios = archivo_comentarios.readline()
-    #Mientras haya lineas para leer del archivo comentarios entra al while
-    while linea_comentarios:
-        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
-        if nombre_funcion not in datos_ordenados_cantidad_declaraciones:
-            datos_ordenados_cantidad_declaraciones[nombre_funcion] = {}
+        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_fuente_f, nombre_funcion_f)
+        if nombre_funcion_c not in datos_ordenados_cantidad_declaraciones:
+            datos_ordenados_cantidad_declaraciones[nombre_funcion_c] = {}
         #Agrego los datos al diccionario
-        datos_ordenados_cantidad_declaraciones[nombre_funcion]["coment"] = len(otros)
-        datos_ordenados_cantidad_declaraciones[nombre_funcion]["ayuda"] = ("Ayuda" in ayuda_funcion)
-        datos_ordenados_cantidad_declaraciones[nombre_funcion]["autor"] = autor_funcion
+        datos_ordenados_cantidad_declaraciones[nombre_funcion_c]["coment"] = len(otros_c)
+        datos_ordenados_cantidad_declaraciones[nombre_funcion_c]["ayuda"] = ("Ayuda" in ayuda_funcion_c)
+        datos_ordenados_cantidad_declaraciones[nombre_funcion_c]["autor"] = autor_funcion_c
         #Cargo la siguiente linea en el archivo en caso de que haya
         linea_comentarios = archivo_comentarios.readline()
-
+        linea_fuente = archivo_fuente.readline()
+        
     return datos_ordenados_cantidad_declaraciones
 
 def por_autor(archivo_fuente, archivo_comentarios):
@@ -166,43 +153,41 @@ def por_autor(archivo_fuente, archivo_comentarios):
 
     #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
-    #Mientras haya lineas para leer del archivo comentarios entra al while
-    while linea_comentarios:
-        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
-        #Le doy forma al diccionario 
-        if autor_funcion not in datos_ordenados_por_autor:
-            datos_ordenados_por_autor[autor_funcion] = {}
-        if nombre_funcion not in datos_ordenados_por_autor[autor_funcion]:
-            datos_ordenados_por_autor[autor_funcion][nombre_funcion] = {"comentarios": {"ayuda": None,
-                                                                                        "otros": None,
-                                                                                        }
-                                                                        }
-        #Agrego los datos al diccionario
-        datos_ordenados_por_autor[autor_funcion][nombre_funcion]["comentarios"]["ayuda"] =  ayuda_funcion if ("Ayuda" in ayuda_funcion) else None
-        datos_ordenados_por_autor[autor_funcion][nombre_funcion]["comentarios"]["otros"] =  otros if len(otros) > 0 else None
-        #Cargo la siguiente linea en el archivo en caso de que haya
-        linea_comentarios = archivo_comentarios.readline()
-
     #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
     #Mientras haya lineas para leer del archivo comentarios entra al while
-    while linea_fuente:
+    while linea_comentarios and linea_fuente:
         #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
-        #Le doy forma al diccionario por cada autor
-        for autor_funcion in datos_ordenados_por_autor:
-            if nombre_funcion not in datos_ordenados_por_autor[autor_funcion]:
-                datos_ordenados_por_autor[autor_funcion][nombre_funcion] = {"modulo": None,
+        nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
+        nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
+        #Le doy forma al diccionario 
+        if autor_funcion_c not in datos_ordenados_por_autor:
+            datos_ordenados_por_autor[autor_funcion_c] = {}
+        if nombre_funcion_c not in datos_ordenados_por_autor[autor_funcion_c]:
+            datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_c] = {"comentarios": {"ayuda": None,
+                                                                                        "otros": None,
+                                                                            "modulo": None,
                                                                             "parametros": None,
-                                                                            "lineas": None}
-            #Agrego los datos al diccionario por cada autor
-            datos_ordenados_por_autor[autor_funcion][nombre_funcion]["modulo"] = modulo_funcion
-            datos_ordenados_por_autor[autor_funcion][nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
-            datos_ordenados_por_autor[autor_funcion][nombre_funcion]["lineas"] = lineas_funcion
+                                                                            "lineas": None
+                                                                                        }
+                                                                        }
+        #Agrego los datos al diccionario
+        datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_c]["comentarios"]["ayuda"] =  ayuda_funcion_c if ("Ayuda" in ayuda_funcion_c) else None
+        datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_c]["comentarios"]["otros"] =  otros_c if len(otros) > 0 else None
+        if nombre_funcion_f not in datos_ordenados_por_autor[autor_funcion_c]:
+            datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_f] = {"modulo": None,
+                                                                        "parametros": None,
+                                                                        "lineas": None}
+        #Agrego los datos al diccionario por cada autor
+        datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_f]["modulo"] = modulo_funcion_f
+        datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_f]["parametros"] = parametros_funcion_f if len(parametros_funcion_f) > 2 else None
+        datos_ordenados_por_autor[autor_funcion_c][nombre_funcion_f]["lineas"] = lineas_funcion_f
+        #Cargo la siguiente linea en el archivo en caso de que haya
+        linea_comentarios = archivo_comentarios.readline()
         #Cargo la siguiente linea en el archivo en caso de que haya
         linea_fuente = archivo_fuente.readline()
-    
+
     return datos_ordenados_por_autor
 
 def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
@@ -216,28 +201,24 @@ def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
 
     #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
-    #Mientras haya lineas para leer del archivo comentarios entra al while
-    while linea_comentarios:
-        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion, autor_funcion, ayuda_funcion, *otros = linea_comentarios.split('","')
-        if autor_funcion not in datos_ordenados_cantidad_lineas_autor:
-            datos_ordenados_cantidad_lineas_autor[autor_funcion] = {"lineas_totales": 0, "funciones": {}}
-        if nombre_funcion not in datos_ordenados_cantidad_lineas_autor[autor_funcion]["funciones"]:
-            datos_ordenados_cantidad_lineas_autor[autor_funcion]["funciones"][nombre_funcion] = -1
-        #Cargo la siguiente linea en el archivo en caso de que haya
-        linea_comentarios = archivo_comentarios.readline()
-    
     #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
     #Mientras haya lineas para leer del archivo comentarios entra al while
-    while linea_fuente:
+    while linea_comentarios and linea_fuente:
         #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
-        for autor_funcion in datos_ordenados_cantidad_lineas_autor:
-            if nombre_funcion in datos_ordenados_cantidad_lineas_autor[autor_funcion]["funciones"]:
-                datos_ordenados_cantidad_lineas_autor[autor_funcion]["funciones"][nombre_funcion] = len(lineas_funcion)
-                datos_ordenados_cantidad_lineas_autor[autor_funcion]["lineas_totales"] += len(lineas_funcion)
+        nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
+        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
+        nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
+        if autor_funcion_c not in datos_ordenados_cantidad_lineas_autor:
+            datos_ordenados_cantidad_lineas_autor[autor_funcion_c] = {"lineas_totales": 0, "funciones": {}}
+        if nombre_funcion_c not in datos_ordenados_cantidad_lineas_autor[autor_funcion_c]["funciones"]:
+            datos_ordenados_cantidad_lineas_autor[autor_funcion_c]["funciones"][nombre_funcion_c] = -1
+        if nombre_funcion_f in datos_ordenados_cantidad_lineas_autor[autor_funcion_c]["funciones"]:
+            datos_ordenados_cantidad_lineas_autor[autor_funcion_c]["funciones"][nombre_funcion_f] = len(lineas_funcion_f)
+            datos_ordenados_cantidad_lineas_autor[autor_funcion_c]["lineas_totales"] += len(lineas_funcion_f)
+        #Cargo la siguiente linea en el archivo en caso de que haya
+        linea_comentarios = archivo_comentarios.readline()
         #Cargo la siguiente linea en el archivo en caso de que haya
         linea_fuente = archivo_fuente.readline()
-    
+
     return datos_ordenados_cantidad_lineas_autor
