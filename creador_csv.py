@@ -11,7 +11,7 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
         #Se habilita esta bandera cuando en el codigo a leer empieza una funcion, se deshabilita cuando termina o empieza otra.
-        if bandera_funcion:
+        if bandera_funcion and not linea_codigo.startswith("def"):
             #Se habilita esta bandera cuando se detecta un comentario multilinea que no se cierra en la misma linea.
             if bandera_comentario:
                 ayuda_funcion, bandera_ayuda = analizar.ayuda_funcion(linea_codigo, bandera_ayuda)
