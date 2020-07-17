@@ -12,7 +12,7 @@ def leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios):
     
     return datos_ordenados
 
-def grabar_linea(archivo_datos, linea):
+def grabar_txt(archivo_datos, linea):
     '''[Autor: Ivan Litteri]'''
     archivo_datos.write(linea)
 
@@ -24,7 +24,7 @@ def imprimir_datos(datos_por_cantidad_lineas_autor):
     lineas_codigo_totales = obtener.lineas_codigo_totales(datos_por_cantidad_lineas_autor)
 
     print("\t\t\tInformacion de Desarrollo Por Autor\n")
-    grabar_linea(archivo_datos, "\t\t\tInformacion de Desarrollo Por Autor\n\n")
+    grabar_txt(archivo_datos, "\t\t\tInformacion de Desarrollo Por Autor\n\n")
 
     for autor in datos_por_cantidad_lineas_autor:
 
@@ -37,7 +37,7 @@ def imprimir_datos(datos_por_cantidad_lineas_autor):
         print(f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}')
         print(linea_iguales)
 
-        grabar_linea(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}\n\n{linea_iguales}\n')
+        grabar_txt(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}\n{linea_iguales}\n')
         
         for funcion, cantidad_lineas in datos_por_cantidad_lineas_autor[autor]["funciones"].items():
 
@@ -46,7 +46,7 @@ def imprimir_datos(datos_por_cantidad_lineas_autor):
 
             print(f'\t{funcion}{separacion}{cantidad_lineas}')
 
-            grabar_linea(archivo_datos, f'\t{funcion}{separacion}{cantidad_lineas}\n')
+            grabar_txt(archivo_datos, f'\t{funcion}{separacion}{cantidad_lineas}\n')
 
         porcentaje_lineas_modulo = round(obtener.porcentaje_lineas_codigo(datos_por_cantidad_lineas_autor, autor, lineas_codigo_totales))
         columna_1 = f'{len(datos_por_cantidad_lineas_autor[autor])} Funciones - Lineas' 
@@ -54,7 +54,7 @@ def imprimir_datos(datos_por_cantidad_lineas_autor):
         
         print(f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
         
-        grabar_linea(archivo_datos, f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
+        grabar_txt(archivo_datos, f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_modulo}%\n\n')
     
     archivo_datos.close()
 
