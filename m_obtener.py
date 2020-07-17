@@ -71,3 +71,13 @@ def porcentaje_lineas_codigo(datos, autor_actual, lineas_codigo_totales):
     no funcionaria), el autor que se desea evaluar y devuelve el porcentaje de lineas de codigo que ese autor escribio]'''
     
     return (datos[autor_actual]["lineas_totales"] / lineas_codigo_totales) * 100
+
+def lista_funciones(archivo_fuente):
+    funciones = []
+
+    linea_fuente = archivo_fuente.readline()
+    while linea_fuente:
+        funciones.append(linea_fuente.split('","')[0].replace('"', ''))
+        linea_fuente = archivo_fuente.readline()
+
+    return funciones
