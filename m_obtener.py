@@ -33,7 +33,6 @@ def nombres_modulos(ubicaciones_modulos):
 def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
 
-    
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
@@ -93,11 +92,17 @@ def porcentaje_lineas_codigo(autor, datos_autor, lineas_codigo_totales):
     return (datos_autor["lineas_totales"] / lineas_codigo_totales) * 100
 
 def lista_funciones(archivo_fuente):
-    funciones = []
+    '''[Autor: Ivan Litteri]
+    [Ayuda: le llegan un objeto de text.IO (datos del archivo fuente_unico) y devuelve una lista con los nombres de todas
+    las funciones]'''
 
+    funciones = []
+    #Obtiene la primera linea del archivo
     linea_fuente = archivo_fuente.readline()
     while linea_fuente:
+        #Agrega a la lista de funciones la funcion correspondiente al primer campo de la linea
         funciones.append(linea_fuente.split('","')[0])
+        #Avanza de linea en el archivo
         linea_fuente = archivo_fuente.readline()
 
     return funciones
