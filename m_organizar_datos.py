@@ -216,6 +216,7 @@ def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
         nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
         #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
         nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
+        nombre_funcion_f = nombre_funcion_c = nombre_funcion_f.replace('"', '')
         if autor_funcion_c not in datos_ordenados_cantidad_lineas_autor:
             datos_ordenados_cantidad_lineas_autor[autor_funcion_c] = {"lineas_totales": 0, "funciones": {}}
         if nombre_funcion_c not in datos_ordenados_cantidad_lineas_autor[autor_funcion_c]["funciones"]:
