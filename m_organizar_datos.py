@@ -41,7 +41,7 @@ def por_funciones(archivo_fuente, archivo_comentarios):
                                                                             "otros": None}
         #Agrego los datos a sus respectivos lugares
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["autor"] = autor_funcion_c
-        datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["ayuda"] = ayuda_funcion_c if ("Ayuda" in ayuda_funcion_c) else None
+        datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["ayuda"] = ayuda_funcion_c.replace('",\n', '') if ("Ayuda" in ayuda_funcion_c) else None
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["otros"] = otros_c if len(otros_c) > 0 else None
         #Avanzo de linea en el archivo
         linea_fuente = archivo_fuente.readline()
