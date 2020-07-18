@@ -104,7 +104,7 @@ def organizar_impresion(diccionario_informacion,funcion_principal):
         else:
             print(string_a_imprimir)
 
-def main_punto4():
+def main():
     '''[Autor: Andrés Kübler]
     [Ayuda: Esta funcion es el main del punto 4, lee el archvio fuente_unico.csv e imprime
     por pantalla sus funciones indicando cual llama a cual otra]'''
