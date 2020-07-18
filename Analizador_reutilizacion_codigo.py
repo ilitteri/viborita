@@ -17,6 +17,7 @@ def buscar_invocaciones(archivo_fuente):
             # Filtro los nombres de las funciones 
             nombre = (nombres.split('","')[0]).replace('"','')
             lista_funciones.append(nombre)
+            #Creo una lista para no tener que volver a leer el archivo csv
             codigo = (nombres.split('","')[3:])
             lineas_codigo.append(codigo)
             # Almaceno los nombres de las funciones como keys del diccionario
@@ -146,12 +147,12 @@ def creacion_archivo_txt (filas_txt) :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion crea un archivo txt llamado anatizador.txt a partir de los elementos de la lista filas_txt]"""
     # Creo un archivo txt
-    with open("analizador_V3.txt" , "w") as analizador :
+    with open("analizador.txt" , "w") as analizador :
         # Escribo el archivo de texto txt con las lineas ordenadas
         for linea in filas_txt:
             analizador.write(str(linea) + "\n" + "\n")
 
-def Analizador_reutilizacion_de_codigo () :
+def main () :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
@@ -169,6 +170,6 @@ def Analizador_reutilizacion_de_codigo () :
     creacion_archivo_txt (filas_txt)
 
 
-Analizador_reutilizacion_de_codigo  ()
+main  ()
 
 
