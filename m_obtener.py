@@ -37,27 +37,47 @@ def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     #Retorna una lista de ubicaciones de todos los archivos .csv individuales
     return [os.path.abspath(nombre_archivo_csv_individual) for nombre_archivo_csv_individual in nombres_archivos_csv_individuales]
 
-def cantidad_declaraciones(datos_fuente, lineas_funciones, nombre_funcion):
+def cantidad_invocaciones(datos, key_invocaciones, archivo_fuente, bandera = False):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: le llega por parametro una linea, y una lista con los nombres de las funciones, analiza por cada
+    nombre de funcion si este esta en la linea, en caso verdadero incrementa en uno el contador de invocaciones
+    de esa funcion]'''
+
+    for funcion in datos:
+        for linea_funcion in datos[funcion]["lineas"]:
+            for nombre_funcion in datos:
+                if key_invocaciones not in datos[nombre_funcion]:
+                    datos[nombre_funcion][key_invocaciones] = 0
+                if nombre_funcion in linea_funcion and  (nombre_funcion[0] == linea_funcion[0] or f' {nombre_funcion}(' in linea_funcion):
+                    datos[nombre_funcion][key_invocaciones] += 1
+                    if bandera:
+                        datos[funcion]["invocaciones"].append(nombre_funcion)
+
+    return datos
+
+def cantidad_declaraciones(datos_fuente, lineas_funcion, nombre_funcion):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: esta funcion recibe un diccionario, una lista de lineas, un nombre de funcion; en donde
     sera analizada la lista de lineas para contar la cantidad de declaraciones, y estas cantidades una vez
     obtenidas, ser actualizadas en el diccionario con nombre de funcion como key]'''
 
-    for linea_funcion in lineas_funciones:
-            if "for" in linea_funcion:
-                datos_fuente[nombre_funcion]["for"] += linea_funcion.count("for")
-            if "return" in linea_funcion:
-                datos_fuente[nombre_funcion]["returns"] += 1
-            if "if" in linea_funcion:
-                datos_fuente[nombre_funcion]["if/elif"] += 1
-            elif "elif" in linea_funcion:
-                datos_fuente[nombre_funcion]["if/elif"] += 1
-            elif "while" in linea_funcion:
-                datos_fuente[nombre_funcion]["while"] += 1
-            elif "break" in linea_funcion:
-                datos_fuente[nombre_funcion]["break"] += 1
-            elif "exit" in linea_funcion:
-                datos_fuente[nombre_funcion]["exit"] += 1
+    for linea_funcion in lineas_funcion:
+        if "for" in linea_funcion:
+            datos_fuente[nombre_funcion]["for"] += linea_funcion.count("for")
+        if "return" in linea_funcion:
+            datos_fuente[nombre_funcion]["returns"] += 1
+        if "if" in linea_funcion:
+            datos_fuente[nombre_funcion]["if/elif"] += 1
+        elif "elif" in linea_funcion:
+            datos_fuente[nombre_funcion]["if/elif"] += 1
+        elif "while" in linea_funcion:
+            datos_fuente[nombre_funcion]["while"] += 1
+        elif "break" in linea_funcion:
+            datos_fuente[nombre_funcion]["break"] += 1
+        elif "exit" in linea_funcion:
+            datos_fuente[nombre_funcion]["exit"] += 1
+
+    return datos_fuente
 
 def lineas_codigo_totales(datos_por_cantidad_lineas_autor):
     '''[Autor: Ivan Litteri]
@@ -77,7 +97,7 @@ def lista_funciones(archivo_fuente):
 
     linea_fuente = archivo_fuente.readline()
     while linea_fuente:
-        funciones.append(linea_fuente.split('","')[0].replace('"', ''))
+        funciones.append(linea_fuente.split('","')[0])
         linea_fuente = archivo_fuente.readline()
 
     return funciones
