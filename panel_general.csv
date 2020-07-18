@@ -1,3 +1,14 @@
 funcion, parametros, lineas, invocaciones, returns, if/elif, for, while, break, exit, coment, ayuda, autor 
-"nombre_funcion.archivo_funcion
-"contar.modulo.py
+"es_primo.lib_matematica.py,0,10,0,1,2,0,1,0,0,1,si,Juan Perez
+"factorial.lib_matematica.py,0,4,0,1,0,1,0,0,0,0,si,Juan Perez
+"mcd.lib_matematica.py,0,18,0,1,2,0,1,0,0,2,si,Ana Garcia
+"mcm.lib_matematica.py,0,1,0,1,0,0,0,0,0,0,si,Ana Garcia
+"menu_MCD.app_matematica.py,0,4,0,0,0,0,0,0,0,0,si,Juan Perez
+"menu_MCM.app_matematica.py,0,4,0,0,0,0,0,0,0,0,si,Juan Perez
+"menu_elegir.app_matematica.py,0,18,0,0,4,0,1,0,0,0,no,sin autor
+"menu_factorial.app_matematica.py,0,3,0,0,0,0,0,0,0,0,si,Alan Gonzalez
+"menu_opciones.app_matematica.py,0,10,0,0,0,0,0,0,0,0,si,Alan Gonzalez
+"menu_potencia.app_matematica.py,0,4,0,0,0,0,0,0,0,0,si,Juan Perez
+"menu_primo.app_matematica.py,0,3,0,0,1,0,0,0,0,0,si,Alan Gonzalez
+"potencia.lib_matematica.py,0,8,0,1,2,1,0,0,0,0,si,Ana Garcia
+"solicitar_valor.app_matematica.py,0,5,0,1,0,0,1,0,0,0,si,Juan Perez
