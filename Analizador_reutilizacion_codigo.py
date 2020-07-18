@@ -7,7 +7,7 @@ def buscar_invocaciones(archivo_fuente):
     cuenta_lineas = 0
 
     #Abro el archivo creado anteriormente que contiene los datos ordenados
-    with open ( archivo_fuente , "r") as invocaciones  , open ("informacion.csv" , "w") as informacion_extraida :
+    with open ( archivo_fuente , "r") as invocaciones  :
         #Creo un diccionario para almacenar los nombres de las funciones junto con sus indices para la tabla
         diccionario_invocaciones = {"total": {} , "indices" : {} }
         nombres = invocaciones.readline()
@@ -22,7 +22,7 @@ def buscar_invocaciones(archivo_fuente):
             lineas_codigo.append(codigo)
             # Almaceno los nombres de las funciones como keys del diccionario
             # Para poder identificarlos de encontrarse entre las lineas de codigo
-            informacion_extraida.write(nombres)
+            
             nombres = invocaciones.readline()  
     
     for key in lista_funciones :
