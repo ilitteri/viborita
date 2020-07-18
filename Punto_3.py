@@ -7,7 +7,7 @@ def buscar_invocaciones(archivo_fuente):
     cuenta_lineas = 0
 
     #Abro el archivo creado anteriormente que contiene los datos ordenados
-    with open ( archivo_fuente , "r") as invocaciones :
+    with open ( archivo_fuente , "r") as invocaciones  :
         #Creo un diccionario para almacenar los nombres de las funciones junto con sus indices para la tabla
         diccionario_invocaciones = {"total": {} , "indices" : {} }
         nombres = invocaciones.readline()
@@ -157,7 +157,7 @@ def Analizador_reutilizacion_de_codigo () :
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
 
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
-    
+
     creacion_archivo_txt (filas_txt)
 
 

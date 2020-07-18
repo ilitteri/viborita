@@ -11,12 +11,14 @@ def buscar_invocaciones(archivo_fuente):
         #Creo un diccionario para almacenar los nombres de las funciones junto con sus indices para la tabla
         diccionario_invocaciones = {"total": {} , "indices" : {} }
         nombres = invocaciones.readline()
-        lineas = []
+        lineas_codigo = []
         #Recorro las lineas del archivo 
         while nombres :
             # Filtro los nombres de las funciones 
             nombre = (nombres.split('","')[0]).replace('"','')
             lista_funciones.append(nombre)
+            codigo = (nombres.split('","')[3:])
+            lineas_codigo.append(codigo)
             # Almaceno los nombres de las funciones como keys del diccionario
             # Para poder identificarlos de encontrarse entre las lineas de codigo
             informacion_extraida.write(nombres)
@@ -37,50 +39,52 @@ def buscar_invocaciones(archivo_fuente):
             diccionario_invocaciones [cuenta_lineas] [key] [funcion] = 0
     
     
-    return diccionario_invocaciones , lista_funciones    
+    return diccionario_invocaciones , lista_funciones , lineas_codigo   
 
-def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente):  
+def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo):  
 
     """[Autor: Luciano Federico Aguilera]
     [Ayuda : Busca coincidencias entre las funciones listadas y las presentes en el archivo csv y las  ]"""
-    with open ( "informacion.csv" , "r") as invocaciones :
-        lineas = invocaciones.readline()
+   
+    funciones_llamadas = {}
         #Recorro nuevamente el archivo para identificar invocaciones a funciones usando los datos recogidos en buscar_invocaciones
-        cuenta_linea = 0
-        while lineas :
-            #Identifico que funcion es la que llama a las siguientes
-            nombre = (lineas.split('","')[0]).replace('"','')
-            #Separo las lineas que contienen codigo
-            codigo = lineas.split('","')[3:]
-            
-            # Esta lista funcionara para evitar errores al para identificar a las funciones
-            funciones_llamadas = []
-            
-            cuenta_linea += 1
-            # Esta cadena devuelve el nombre de la funcion al poner su indice 
-            funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")
+    lineas = 0
+    cuenta_linea = 0
+    while lineas < len(lineas_codigo) :
 
-            for llamadas in codigo :
-                #Separo la funcion de su contenido (...)
-                llamada = llamadas.split("(")[0]
-                # Busco coincidencias entre las funciones listadas y las presentes en el archivo
-                for funcion in lista_funciones :
-                    #Si las encuentra las agrega a una lista para su operacion
-                    if funcion in llamada :
-                        funciones_llamadas.append(funcion)
+        #Identifico que funcion es la que llama a las siguientes
+        nombre = lista_funciones [lineas]
+        #Separo las lineas que contienen codigo
+        codigo = lineas_codigo [lineas]
+    
+        # Esta lista funcionara para evitar errores al para identificar a las funciones
+        funciones_llamadas = []
+        cuenta_linea += 1
+        # Esta cadena devuelve el nombre de la funcion al poner su indice 
+        funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")
+
+        for llamadas in codigo :
+            #Separo la funcion de su contenido (...)
+            llamada = llamadas.split("(")[0]
+            # Busco coincidencias entre las funciones listadas y las presentes en el archivo
+            for funcion in lista_funciones :
+                #Si las encuentra las agrega a una lista para su operacion
+                if funcion in llamada :
+                    funciones_llamadas.append(funcion)
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
-            if cuenta_linea <= len(diccionario_invocaciones) :
-                for invocado in diccionario_invocaciones[cuenta_linea][funcion_en_linea] :
-                        # Cuento las veces que se invoca a las funciones 
-                        if invocado in funciones_llamadas :
-                            diccionario_invocaciones [cuenta_linea][funcion_en_linea][invocado] += 1
-                            
-                            indices = diccionario_invocaciones ["indices"][invocado]
-                            # Se cuentan todas las invocaciones por indice  de 
-                            diccionario_invocaciones ["total"][indices] += 1
+        if cuenta_linea <= len(diccionario_invocaciones) :
+            for invocado in diccionario_invocaciones[cuenta_linea][funcion_en_linea] :
+                    # Cuento las veces que se invoca a las funciones 
+                    if invocado in funciones_llamadas :
+                        diccionario_invocaciones [cuenta_linea][funcion_en_linea][invocado] += funciones_llamadas.count(invocado)
+                        
+                        indices = diccionario_invocaciones ["indices"][invocado]
+                        # Se cuentan todas las invocaciones por indice  de 
+                        diccionario_invocaciones ["total"][indices] += funciones_llamadas.count(invocado)
 
-            lineas = invocaciones.readline()
-    remove ("informacion.csv")
+        lineas += 1
+
+    
     # Devuelvo el diccionario actualizado
     return diccionario_invocaciones
 
@@ -142,7 +146,7 @@ def creacion_archivo_txt (filas_txt) :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion crea un archivo txt llamado anatizador.txt a partir de los elementos de la lista filas_txt]"""
     # Creo un archivo txt
-    with open("analizador.txt" , "w") as analizador :
+    with open("analizador_V3.txt" , "w") as analizador :
         # Escribo el archivo de texto txt con las lineas ordenadas
         for linea in filas_txt:
             analizador.write(str(linea) + "\n" + "\n")
@@ -154,10 +158,10 @@ def Analizador_reutilizacion_de_codigo () :
 
     archivo_fuente = "fuente_unico.csv"
 
-    diccionario_invocaciones , lista_funciones = buscar_invocaciones(archivo_fuente)
+    diccionario_invocaciones , lista_funciones , lineas_codigo   = buscar_invocaciones(archivo_fuente)
 
-    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente)
-    print(diccionario_invocaciones)
+    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo )
+
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
 
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
