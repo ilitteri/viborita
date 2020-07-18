@@ -85,12 +85,12 @@ def lineas_codigo_totales(datos_por_cantidad_lineas_autor):
     no funcionaria) y devuelve la cantidad de lineas totales de todos los codigos involucrados en la aplicacion]'''
     return sum(datos_por_cantidad_lineas_autor[autor]["funciones"][funcion] for autor in datos_por_cantidad_lineas_autor for funcion in datos_por_cantidad_lineas_autor[autor]["funciones"])
 
-def porcentaje_lineas_codigo(datos, autor_actual, lineas_codigo_totales):
+def porcentaje_lineas_codigo(autor, datos_autor, lineas_codigo_totales):
     '''[Autor: Ivan Litteri]
     [Ayuda: le llega por parametro el diccionario ordenado por cantidad de lineas totales por autor (si se pasase otro
     no funcionaria), el autor que se desea evaluar y devuelve el porcentaje de lineas de codigo que ese autor escribio]'''
     
-    return (datos[autor_actual]["lineas_totales"] / lineas_codigo_totales) * 100
+    return (datos_autor["lineas_totales"] / lineas_codigo_totales) * 100
 
 def lista_funciones(archivo_fuente):
     funciones = []
