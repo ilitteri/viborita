@@ -130,7 +130,8 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
                                                                         "ayuda": None,
                                                                         "autor": None
                                                                         } 
-        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_fuente, nombre_funcion)
+        for linea_funcion in lineas_funcion:
+            obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, linea_funcion, nombre_funcion)
         linea_fuente = archivo_fuente.readline()
     
     linea_comentarios = archivo_comentarios.readline()
@@ -140,7 +141,7 @@ def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
             datos_ordenados_cantidad_declaraciones[nombre_funcion] = {}
         datos_ordenados_cantidad_declaraciones[nombre_funcion]["coment"] = len(otros)
         datos_ordenados_cantidad_declaraciones[nombre_funcion]["ayuda"] = ("Ayuda" in ayuda_funcion)
-        datos_ordenados_cantidad_declaraciones[nombre_funcion]["autor"] = autor_funcion
+        datos_ordenados_cantidad_declaraciones[nombre_funcion]["autor"] = autor_funcion.split(": ")[-1] if autor_funcion is not "" else "sin autor"
         linea_comentarios = archivo_comentarios.readline()
 
     return datos_ordenados_cantidad_declaraciones
