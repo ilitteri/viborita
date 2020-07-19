@@ -98,7 +98,7 @@ def creacion_formato_tabla(diccionario_invocaciones):
     indice_2 = 1
 
     # Creo la primer linea del archivo de texto  
-    filas_txt.append(str(" FUNCIONES" + " "*20 ))
+    filas_txt.append(str("\tFUNCIONES" + " "*16))
     cadena_totales = "\n Total Invocaciones " + " "*11
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
@@ -151,6 +151,7 @@ def creacion_archivo_txt (filas_txt) :
         # Escribo el archivo de texto txt con las lineas ordenadas
         for linea in filas_txt:
             analizador.write(str(linea) + "\n" + "\n")
+            print(str(linea) + "\n" + "\n")
 
 def main () :
     """[Autor: Luciano Federico Aguilera]
