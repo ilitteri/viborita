@@ -51,7 +51,7 @@ def analizar_diccionario(diccionario):
                             f'{diccionario[key]["cantidad_declaraciones"]["for"]}', f'{diccionario[key]["cantidad_declaraciones"]["while"]}', 
                             f'{diccionario[key]["cantidad_declaraciones"]["break"]}', f'{diccionario[key]["cantidad_declaraciones"]["exit"]}',
                             f'{diccionario[key]["cantidad_declaraciones"]["coment"]}', 
-                            f'{"Si" if diccionario[key]["comentarios"]["ayuda"] else "No"}', f'{diccionario[key]["comentarios"]["autor"] if diccionario[key]["comentarios"]["autor"] else "Sin Autor"}']
+                            f'{"Si" if diccionario[key]["comentarios"]["ayuda"] else "No"}', f'{diccionario[key]["comentarios"]["autor"].split(": ")[1] if diccionario[key]["comentarios"]["autor"] else "Sin Autor"}']
             #suma a la lista de listas cada una de las listas columna de datos que dependen de la key      
             lista_de_listas.append(columnas_datos) 
             #graba en el panel_general cada uno de los elementos de las listas con el formato pedido
