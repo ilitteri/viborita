@@ -117,3 +117,5 @@ def main():
     diccionario_informacion,fun_principal = crear_diccionario(lista_de_lineas,nombres_funciones)
     #Analiza las funciones del diccionario e imprime un diagrama de las mismas y sus funciones internas
     organizar_impresion(diccionario_informacion,fun_principal)
+    print(diccionario_informacion)
+main()
