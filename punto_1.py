@@ -30,7 +30,7 @@ def grabar(diccionario):
                             f'{diccionario[key]["coment"]}', 
                             f'{"Si" if diccionario[key]["ayuda"] else "No"}', f'{diccionario[key]["autor"]}']
             lista_de_listas.append(columnas_datos)       
-            panel_general.write(f'{columnas_datos[0]},{columnas_datos[1]},{columnas_datos[2]},{columnas_datos[3]},{columnas_datos[4]},{columnas_datos[5]},{columnas_datos[6]},{columnas_datos[7]},{columnas_datos[8]},{columnas_datos[9]},{columnas_datos[10]},{columnas_datos[11]}\n')
+            panel_general.write(f'{columnas_datos[0]},{columnas_datos[1]},{columnas_datos[2]},{columnas_datos[3]},{columnas_datos[4]},{columnas_datos[5]},{columnas_datos[6]},{columnas_datos[7]},{columnas_datos[8]},{columnas_datos[9]},{columnas_datos[10]},{columnas_datos[11]},{columnas_datos[12]}\n')
             longitud = longitudes_maximas(columnas_datos,longitud)
 
     imprimir(lista_de_listas,longitud)
