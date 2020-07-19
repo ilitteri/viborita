@@ -12,6 +12,7 @@ def buscar_invocaciones(archivo_fuente):
         diccionario_invocaciones = {"total": {} , "indices" : {} }
         nombres = invocaciones.readline()
         lineas_codigo = []
+        lineas_modulo = []
         #Recorro las lineas del archivo 
         while nombres :
             # Filtro los nombres de las funciones 
@@ -22,7 +23,9 @@ def buscar_invocaciones(archivo_fuente):
             lineas_codigo.append(codigo)
             # Almaceno los nombres de las funciones como keys del diccionario
             # Para poder identificarlos de encontrarse entre las lineas de codigo
-            
+            modulo = (nombres.split('","')[3:])
+            lineas_modulo.append(modulo)
+
             nombres = invocaciones.readline()  
     
     for key in lista_funciones :
@@ -40,9 +43,9 @@ def buscar_invocaciones(archivo_fuente):
             diccionario_invocaciones [cuenta_lineas] [key] [funcion] = 0
     
     
-    return diccionario_invocaciones , lista_funciones , lineas_codigo   
+    return diccionario_invocaciones , lista_funciones , lineas_codigo  , lineas_modulo
 
-def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo):  
+def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo , lineas_modulo):  
 
     """[Autor: Luciano Federico Aguilera]
     [Ayuda : Busca coincidencias entre las funciones listadas y las presentes en el archivo csv y las  ]"""
@@ -57,6 +60,8 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
         nombre = lista_funciones [lineas]
         #Separo las lineas que contienen codigo
         codigo = lineas_codigo [lineas]
+
+        modulo = lineas_modulo [lineas]
     
         # Esta lista funcionara para evitar errores al para identificar a las funciones
         funciones_llamadas = []
@@ -66,11 +71,11 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
 
         for llamadas in codigo :
             #Separo la funcion de su contenido (...)
-            llamada = llamadas.split("(")[0]
+            #llamada = llamadas.split("(")[0]
             # Busco coincidencias entre las funciones listadas y las presentes en el archivo
             for funcion in lista_funciones :
                 #Si las encuentra las agrega a una lista para su operacion
-                if funcion in llamada :
+                if funcion in llamadas or (str(modulo)+"."+str(funcion)) in llamadas :
                     funciones_llamadas.append(funcion)
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
         if cuenta_linea <= len(diccionario_invocaciones) :
@@ -84,7 +89,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
                         diccionario_invocaciones ["total"][indices] += funciones_llamadas.count(invocado)
 
         lineas += 1
-
+    
     
     # Devuelvo el diccionario actualizado
     return diccionario_invocaciones
@@ -160,9 +165,9 @@ def main () :
 
     archivo_fuente = "fuente_unico.csv"
 
-    diccionario_invocaciones , lista_funciones , lineas_codigo   = buscar_invocaciones(archivo_fuente)
+    diccionario_invocaciones , lista_funciones , lineas_codigo , lineas_modulo  = buscar_invocaciones(archivo_fuente)
 
-    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo )
+    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo , lineas_modulo)
 
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
 
