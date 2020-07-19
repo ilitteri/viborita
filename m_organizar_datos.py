@@ -62,7 +62,7 @@ def por_funciones(archivo_fuente, archivo_comentarios):
         #Avanzo de linea en el archivo
         linea_comentarios = archivo_comentarios.readline()
 
-    obtener.cantidad_invocaciones(datos_ordenados_por_funcion, "cantidad_invocaciones", archivo_fuente, True)
+    obtener.cantidad_invocaciones(datos_ordenados_por_funcion, archivo_fuente)
 
     return datos_ordenados_por_funcion
 
