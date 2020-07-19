@@ -29,12 +29,14 @@ def por_funciones(archivo_fuente, archivo_comentarios):
                                                             "cantidad_lineas": 0,
                                                             "invocaciones": [],
                                                             "cantidad_invocaciones": 0,
+                                                            "cantidad_parametros": 0
                                                             }
         #Agrego los datos a sus respectivos lugares
         datos_ordenados_por_funcion[nombre_funcion_f]["parametros"] = parametros_funcion_f if len(parametros_funcion_f) > 2 else None
         datos_ordenados_por_funcion[nombre_funcion_f]["modulo"] = modulo_funcion_f
         datos_ordenados_por_funcion[nombre_funcion_f]["lineas"] = lineas_funcion_f
         datos_ordenados_por_funcion[nombre_funcion_f]["cantidad_lineas"] = len(lineas_funcion_f)
+        datos_ordenados_por_funcion[nombre_funcion_f]["cantidad_parametros"] = len(parametros_funcion_f.split(",")) if parametros_funcion_f else 0
         #Si la key comentarios aun no existe en la funcion lo agrego y le doy forma
         if "comentarios" not in datos_ordenados_por_funcion[nombre_funcion_c]:
             datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"] = {"autor": None,
