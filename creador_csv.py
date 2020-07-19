@@ -83,10 +83,11 @@ def crear_archivos_csv_individuales(ubicaciones_modulos):
     imports = {}
 
     #Recorro las ubicaciones de los modulos.
-    for nombre_modulo in ubicaciones_modulos:
+    for ubicacion_modulo in ubicaciones_modulos:
         #Nombre del modulo.
+        nombre_modulo = ubicacion_modulo.split("\\")[-1]
         #Abre un archivo para leer y dos para escribir, al mismo tiempo.
-        with open(nombre_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
+        with open(ubicacion_modulo, "r") as codigo, open(f'fuente_{nombre_modulo}.csv', "w") as archivo_fuente, open(f'comentarios_{nombre_modulo}.csv', "w") as archivo_comentarios:
             datos_modulos, imports = leer_codigo(codigo, datos_modulos, nombre_modulo, imports)
             #Lista de nombres de funciones.
             nombres_funciones_ordenadas = sorted(list(datos_modulos.keys()))
@@ -129,7 +130,7 @@ def main():
 
     #Crea los archivos csv individuales.
     archivo_principal = "programas.txt"
-    ubicaciones_modulos = ["app_matematica.py", "lib_matematica.py"]
+    ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
     #Aparea los archivos csv individuales en uno general.
