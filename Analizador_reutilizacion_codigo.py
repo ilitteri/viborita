@@ -71,7 +71,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
 
         for llamadas in codigo :
             #Separo la funcion de su contenido (...)
-            #llamada = llamadas.split("(")[0]
+            
             # Busco coincidencias entre las funciones listadas y las presentes en el archivo
             for funcion in lista_funciones :
                 #Si las encuentra las agrega a una lista para su operacion
