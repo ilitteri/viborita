@@ -23,7 +23,7 @@ def buscar_invocaciones(archivo_fuente):
             lineas_codigo.append(codigo)
             # Almaceno los nombres de las funciones como keys del diccionario
             # Para poder identificarlos de encontrarse entre las lineas de codigo
-            modulo = (nombres.split('","')[3:])
+            modulo = (nombres.split('","')[2]).replace(".py","")
             lineas_modulo.append(modulo)
 
             nombres = invocaciones.readline()  
@@ -75,8 +75,14 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
             # Busco coincidencias entre las funciones listadas y las presentes en el archivo
             for funcion in lista_funciones :
                 #Si las encuentra las agrega a una lista para su operacion
-                if funcion in llamadas or (str(modulo)+"."+str(funcion)) in llamadas :
+                #if funcion in llamadas and  (funcion[0] == llamadas[0] or f' {funcion}(' in llamadas or (str(modulo)+"."+str(funcion)) in llamadas or ("\n"+str(funcion)) in llamadas ):
+                if (f' {funcion}('  in llamadas)  :
                     funciones_llamadas.append(funcion)
+                elif (f'.{funcion}('  in llamadas) :
+                    funciones_llamadas.append(funcion)
+                elif (f'{funcion}('  in llamadas) and not (f'_{funcion}('  in llamadas):
+                    funciones_llamadas.append(funcion)
+               
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
         if cuenta_linea <= len(diccionario_invocaciones) :
             for invocado in diccionario_invocaciones[cuenta_linea][funcion_en_linea] :
@@ -103,8 +109,8 @@ def creacion_formato_tabla(diccionario_invocaciones):
     indice_2 = 1
 
     # Creo la primer linea del archivo de texto  
-    filas_txt.append(str("\tFUNCIONES" + " "*16))
-    cadena_totales = "\n Total Invocaciones " + " "*11
+    filas_txt.append(str("\t FUNCIONES" + " "*16))
+    cadena_totales = "\n\t Total Invocaciones " + " "*7
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
         # Filtro las keys que no contienen datos importantes
