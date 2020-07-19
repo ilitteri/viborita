@@ -28,7 +28,8 @@ def por_funciones(archivo_fuente, archivo_comentarios):
                                                             "lineas": None,
                                                             "cantidad_lineas": 0,
                                                             "invocaciones": [],
-                                                            "cantidad_invocaciones": 0}
+                                                            "cantidad_invocaciones": 0,
+                                                            }
         #Agrego los datos a sus respectivos lugares
         datos_ordenados_por_funcion[nombre_funcion_f]["parametros"] = parametros_funcion_f if len(parametros_funcion_f) > 2 else None
         datos_ordenados_por_funcion[nombre_funcion_f]["modulo"] = modulo_funcion_f
@@ -43,6 +44,18 @@ def por_funciones(archivo_fuente, archivo_comentarios):
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["autor"] = autor_funcion_c
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["ayuda"] = ayuda_funcion_c.replace('",\n', '') if ("Ayuda" in ayuda_funcion_c) else None
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["otros"] = otros_c if len(otros_c) > 0 else None
+        if "cantidad_decalraciones" not in datos_ordenados_por_funcion[nombre_funcion_f]:
+            datos_ordenados_por_funcion[nombre_funcion_f]["cantidad_declaraciones"] = {"parametros": 0,
+                                                                                        "invocaciones": 0,
+                                                                                        "returns": 0,
+                                                                                        "if/elif": 0,
+                                                                                        "for": 0,
+                                                                                        "while": 0,
+                                                                                        "break": 0,
+                                                                                        "exit": 0,
+                                                                                        "coment": len(otros_c)
+                                                                                        }
+        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, lineas_funcion_f, nombre_funcion_f)
         #Avanzo de linea en el archivo
         linea_fuente = archivo_fuente.readline()
         #Avanzo de linea en el archivo
@@ -100,60 +113,6 @@ def por_modulos(archivo_fuente, archivo_comentarios):
         linea_comentarios = archivo_comentarios.readline()
 
     return datos_ordenados_por_modulo
-
-def por_cantidad_declaraciones_funcion(archivo_fuente, archivo_comentarios):
-    '''[Autor: Santiago Vaccarelli]
-    [Ayuda: esta funcion recibe los datos de los archivos fuente y comentarios (csv), hace uso de una funcion
-    de otro modulo que cuenta la cantidad de declaraciones respectivas por linea, y devuelve un diccionario
-    con los datos organizados por funcion y cada funcion (key) tiene como caracteristicas (value) los datos
-    como se piden en el punto 1.]'''
-
-    #Inicializo el diccionario final en vacio
-    datos_ordenados_cantidad_declaraciones = {}
-
-    #Cargo la primera linea del archivo fuente
-    linea_fuente = archivo_fuente.readline()
-    #Cargo la primera linea del archivo de comentarios
-    linea_comentarios = archivo_comentarios.readline()
-    #Mientras haya lineas para leer del archivo fuente entra al while
-    while linea_fuente and linea_comentarios:
-        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion_f, parametros_funcion_f, modulo_funcion_f, *lineas_funcion_f = linea_fuente.split('","')
-        #Desempaqueto los datos de la linea que estoy leyendo en cada iteracion
-        nombre_funcion_c, autor_funcion_c, ayuda_funcion_c, *otros_c = linea_comentarios.split('","')
-        
-        nombre_funcion_f = nombre_funcion_c = nombre_funcion_f.replace('"', '')
-        #Le doy forma al diccionario 
-        if nombre_funcion_f not in datos_ordenados_cantidad_declaraciones:
-            datos_ordenados_cantidad_declaraciones[nombre_funcion_f] = {"modulo": modulo_funcion_f,
-                                                                        "parametros": 0,
-                                                                        "cantidad_lineas": len(lineas_funcion_f),
-                                                                        "invocaciones": 0,
-                                                                        "returns": 0,
-                                                                        "if/elif": 0,
-                                                                        "for": 0,
-                                                                        "while": 0,
-                                                                        "break": 0,
-                                                                        "exit": 0,
-                                                                        "coment": 0,
-                                                                        "ayuda": None,
-                                                                        "autor": None,
-                                                                        "lineas": lineas_funcion_f
-                                                                        }    
-        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, lineas_funcion_f, nombre_funcion_f)
-        if nombre_funcion_c not in datos_ordenados_cantidad_declaraciones:
-            datos_ordenados_cantidad_declaraciones[nombre_funcion_c] = {}
-        #Agrego los datos al diccionario
-        datos_ordenados_cantidad_declaraciones[nombre_funcion_c]["coment"] = len(otros_c)
-        datos_ordenados_cantidad_declaraciones[nombre_funcion_c]["ayuda"] = ("Ayuda" in ayuda_funcion_c)
-        datos_ordenados_cantidad_declaraciones[nombre_funcion_c]["autor"] = autor_funcion_c
-        #Cargo la siguiente linea en el archivo en caso de que haya
-        linea_comentarios = archivo_comentarios.readline()
-        linea_fuente = archivo_fuente.readline()
-        
-    obtener.cantidad_invocaciones(datos_ordenados_cantidad_declaraciones, "invocaciones", archivo_fuente)
-        
-    return datos_ordenados_cantidad_declaraciones
 
 def por_autor(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
