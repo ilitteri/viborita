@@ -117,4 +117,24 @@ def imports(linea_codigo, bandera_import = False):
         datos["modulo_importado"] = [recorte[1], recorte[3:]]
     
     return datos_import
-    
+
+def largo_ayuda(ayuda):
+    '''[Autor: Joel Glauber]
+    [Ayuda: analiza un comentario de ayuda con mas de 80 caracteres, y devuelve el mismo, pero cada 80 caracteres, agrega
+    un enter (para la grabacion del archivo de ayuda de funcion del punto 2)]'''
+
+    #Declara una cadena vacia para llenar con los caracteres de el comentario de ayuda
+    ayuda_recortada = ""
+    #Declaro una variable global como 0 para usarla de indice
+    i = 0
+    while i < len(ayuda):
+        #Si se llega a una posicion que es multiplo de 79 (cada vez que se llega a 80 caracteres de longitud) y agrega un enter
+        if i % 79 == 0:
+            ayuda_recortada += "\n"
+        #Agregar el caracter a la cadena final
+        ayuda_recortada += ayuda[i]
+        #Incrementa el indice
+        i += 1
+
+    return ayuda_recortada
+
