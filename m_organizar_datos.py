@@ -46,7 +46,6 @@ def por_funciones(archivo_fuente, archivo_comentarios):
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["otros"] = otros_c if len(otros_c) > 0 else None
         if "cantidad_decalraciones" not in datos_ordenados_por_funcion[nombre_funcion_f]:
             datos_ordenados_por_funcion[nombre_funcion_f]["cantidad_declaraciones"] = {"parametros": 0,
-                                                                                        "invocaciones": 0,
                                                                                         "returns": 0,
                                                                                         "if/elif": 0,
                                                                                         "for": 0,
@@ -55,7 +54,7 @@ def por_funciones(archivo_fuente, archivo_comentarios):
                                                                                         "exit": 0,
                                                                                         "coment": len(otros_c)
                                                                                         }
-        obtener.cantidad_declaraciones(datos_ordenados_cantidad_declaraciones, lineas_funcion_f, nombre_funcion_f)
+        obtener.cantidad_declaraciones(datos_ordenados_por_funcion, lineas_funcion_f, nombre_funcion_f)
         #Avanzo de linea en el archivo
         linea_fuente = archivo_fuente.readline()
         #Avanzo de linea en el archivo
