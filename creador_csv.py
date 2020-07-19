@@ -137,5 +137,3 @@ def main():
     #Borra los archivos individuales.
     nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
     borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
-
-main()

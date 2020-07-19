@@ -43,18 +43,18 @@ def cantidad_declaraciones(datos_fuente, linea_funcion, nombre_funcion):
     sera analizada la lista de lineas para contar la cantidad de declaraciones, y estas cantidades una vez
     obtenidas, ser actualizadas en el diccionario con nombre de funcion como key]'''
 
-    if "for" in linea_funcion:
-        datos_fuente[nombre_funcion]["for"] += linea_funcion.count("for")
-    if "return" in linea_funcion:
-        datos_fuente[nombre_funcion]["returns"] += 1
-    if "if" in linea_funcion:
-        datos_fuente[nombre_funcion]["if/elif"] += 1
-    elif "elif" in linea_funcion:
-        datos_fuente[nombre_funcion]["if/elif"] += 1
-    elif "while" in linea_funcion:
-        datos_fuente[nombre_funcion]["while"] += 1
-    elif "break" in linea_funcion:
-        datos_fuente[nombre_funcion]["break"] += 1
-    elif "exit" in linea_funcion:
-        datos_fuente[nombre_funcion]["exit"] += 1
-    return datos_fuente
+    for linea_funcion in lineas_funciones:
+            if "for" in linea_funcion:
+                datos_fuente[nombre_funcion]["for"] += linea_funcion.count("for")
+            if "return" in linea_funcion:
+                datos_fuente[nombre_funcion]["returns"] += 1
+            if "if" in linea_funcion:
+                datos_fuente[nombre_funcion]["if/elif"] += 1
+            elif "elif" in linea_funcion:
+                datos_fuente[nombre_funcion]["if/elif"] += 1
+            elif "while" in linea_funcion:
+                datos_fuente[nombre_funcion]["while"] += 1
+            elif "break" in linea_funcion:
+                datos_fuente[nombre_funcion]["break"] += 1
+            elif "exit" in linea_funcion:
+                datos_fuente[nombre_funcion]["exit"] += 1
