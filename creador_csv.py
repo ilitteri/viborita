@@ -21,11 +21,15 @@ def leer_codigo(codigo, datos_ordenados, nombre_modulo, imports, bandera_funcion
                     bandera_comentario = False
             #Guarda otro tipo de comentarios
             elif "#" in linea_codigo:
-                #Si es None, cambia su valor a una lista vacia para que se pueda hacer append.
-                if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
-                    datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
-                otro_comentario = analizar.comentario_numeral(linea_codigo)
-                datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
+                if not linea_codigo.startswith("#"):
+                    #Si es None, cambia su valor a una lista vacia para que se pueda hacer append.
+                    if datos_ordenados[nombre_funcion]["comentarios"]["otros"] == None:
+                        datos_ordenados[nombre_funcion]["comentarios"]["otros"] = []
+                    otro_comentario, posible_linea = analizar.comentario_numeral(linea_codigo)
+                    datos_ordenados[nombre_funcion]["lineas"].append(f'"{posible_linea.strip()}"')
+                    datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
+                else:
+                    datos_ordenados[nombre_funcion]["comentarios"]["otros"].append(f'"{otro_comentario}"')
             #Si un comentario multilinea se abre y cierra en la misma linea, analiza la linea y guarda los datos del autor.
             elif linea_codigo.count("'''") == 2:
                 autor_funcion = analizar.autor_funcion(linea_codigo)
