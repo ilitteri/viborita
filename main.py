@@ -1,10 +1,9 @@
-# coding=utf-8
 import creador_csv
-#import m_panel_general
-#import m_consulta_funciones
-import m_analizador_codigo
+import m_panel_general_funciones
+import m_consulta_funciones
+#import m_analizador_codigo
 import m_arbol_invocacion
-#import m_informacion_desarrollador
+import m_informacion_desarrollador
 
 def menu_interactivo():
     '''[Autor: Andres Kubler]
