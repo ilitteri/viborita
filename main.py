@@ -8,9 +8,9 @@ import m_informacion_desarrollador as informacion_desarrollador
 
 def leer_archivos_csv(fuente, comentarios):
     with open(fuente, "r") as archivo_fuente, open(comentarios, "r") as archivo_comentarios:
-        datos = organizar_datos.por_funciones(archivo_fuente, archivo_comentarios)
+        datos_por_funciones = organizar_datos.por_funciones(archivo_fuente, archivo_comentarios)
 
-    return datos
+    return datos_por_funciones
 
 def imprimir_menu_interaccion():
     titulo = "ANALIZADOR Y EVALUADOR DE DISEÑO MODULAR DE APLICACIONES"
@@ -33,20 +33,25 @@ def ayuda_menu(opcion):
 
     return input("Presione cualquier tecla para volver al menu")
 
-def menu_interaccion(datos):
+def menu_interaccion(datos_por_funciones):
     imprimir_menu_interaccion()
     opcion = input("Ingrese una opcion o presione ENTER para salir: ")
     while opcion:
         if opcion == "1" or opcion.lower() == "panel general de funciones":
-            panel_general_funciones.main(datos)
+            panel_general_funciones.main(datos_por_funciones)
+            imprimir_menu_interaccion()
         elif opcion == "2" or opcion.lower() == "consultar funciones":
-            consulta_funciones.main(datos)
+            consulta_funciones.main(datos_por_funciones)
+            imprimir_menu_interaccion()
         elif opcion == "3" or opcion.lower() == "analizar reutilizacion de codigo":
-            analizador_reutilizacion_codigo.main(datos)
+            analizador_reutilizacion_codigo.main(datos_por_funciones)
+            imprimir_menu_interaccion()
         elif opcion == "4" or opcion.lower() == "arbol de invocaciones":
-            arbol_invocacion.main(datos)
+            arbol_invocacion.main(datos_por_funciones)
+            imprimir_menu_interaccion()
         elif opcion == "5" or opcion.lower() == "informacion de desarrollador":
-            informacion_desarrollador.main(datos)
+            informacion_desarrollador.main(datos_por_funciones)
+            imprimir_menu_interaccion()
         elif opcion == "6" or opcion.lower() == "ayuda":
             ayuda_menu(opcion)
             imprimir_menu_interaccion()
@@ -56,7 +61,7 @@ def menu_interaccion(datos):
 
 def main():
     creador_csv.main("programas.txt")
-    datos = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
-    menu_interaccion(datos)
-
+    datos_por_funciones = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
+    menu_interaccion(datos_por_funciones)
+    
 main()
