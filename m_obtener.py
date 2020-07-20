@@ -125,3 +125,15 @@ def tabla_para_imprimir(lista_funciones):
         tabla += fila
 
     return tabla
+
+def longitud_maxima(columnas_datos, longitud):
+    '''[Autor: Santiago Vaccarelli]
+    [Ayuda: busca las longitudes mas largas para cada columna del la tabla]'''
+
+    #itera los elementos de una lista
+    for elemento in range(len(columnas_datos)):
+        #compara para cada indice de la lista si la longitud es mayor
+        if len(columnas_datos[elemento]) > longitud[elemento]:
+            longitud[elemento] = len(columnas_datos[elemento])
+    
+    return longitud
