@@ -1,7 +1,7 @@
 import creador_csv
 import m_panel_general_funciones
 import m_consulta_funciones
-#import m_analizador_codigo
+import m_analizador__reutilizacion_codigo
 import m_arbol_invocacion
 import m_informacion_desarrollador
 
