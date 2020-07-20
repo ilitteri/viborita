@@ -2,18 +2,6 @@ import m_obtener as obtener
 import m_organizar_datos as organizar_datos
 import m_analizar_linea as analizar_linea
 
-def leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios):
-    '''[Autor: Joel Glauber]
-    [Ayuda: esta funcion abre los archivos cuyos nombres o ubicaciones le llegan por parametro, y devuelve
-    una lista de datos por cada archivo que lee, cuando termina la lectura, los cierra]'''
-
-    #Abre los dos archivos que le llegan por parametro para su lectura
-    with open(nombre_archivo_fuente, "r") as archivo_fuente, open(nombre_archivo_comentarios, "r") as archivo_comentarios:
-        datos_por_funciones = organizar_datos.por_funciones(archivo_fuente, archivo_comentarios)
-    
-    return datos_por_funciones
-
-
 def obtener_datos_numeral(datos_csv, funcion):
     '''[Autor: Joel Glauber]'''
 

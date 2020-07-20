@@ -123,13 +123,10 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
         #Borro el archivo que se encuentra en esa ubicacion.
         os.remove(ubicacion_archivo_csv_individual)
 
-def main():
+def main(archivo_principal):
     '''[Autor: Ivan Litteri]'''
 
-    #Importo las funciones del modulo obtener.py.
-
     #Crea los archivos csv individuales.
-    archivo_principal = "programas.txt"
     ubicaciones_modulos = obtener.ubicaciones_modulos(archivo_principal)
     crear_archivos_csv_individuales(ubicaciones_modulos)
 
@@ -141,5 +138,3 @@ def main():
     #Borra los archivos individuales.
     nombres_archivos_csv_individuales = nombres_archivos_fuente + nombres_archivos_comentarios
     borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
-
-main()
