@@ -106,7 +106,7 @@ def lista_funciones(archivo_fuente):
 
     return funciones
 
-def tabla_para_imprimir(lista_funciones):
+def tabla_funciones(lista_funciones):
     '''[Autor: Joel Glauber]
     [Ayuda: A esta funcion le llega por parametro una lista con los nombres de todas las funciones
     y concatena a estos nombres a una cadena que llamo tabla, con un formato como el que se pide en 
