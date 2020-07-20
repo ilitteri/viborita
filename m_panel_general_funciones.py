@@ -55,7 +55,7 @@ def obtener_tabla(diccionario):
                         f'{values["cantidad_declaraciones"]["returns"]}', f'{values["cantidad_declaraciones"]["if/elif"]}', 
                         f'{values["cantidad_declaraciones"]["for"]}', f'{values["cantidad_declaraciones"]["while"]}', 
                         f'{values["cantidad_declaraciones"]["break"]}', f'{diccionario[key]["cantidad_declaraciones"]["exit"]}',
-                        f'{values["cantidad_declaraciones"]["coment"]}', 
+                        f'{values["cantidad_comentarios"]}', 
                         f'{"Si" if values["comentarios"]["ayuda"] else "No"}', f'{values["comentarios"]["autor"][7:] if values["comentarios"]["autor"] else "Sin Autor"}']
         #suma a la lista de listas cada una de las listas columna de datos que dependen de la key      
         lista_de_listas.append(columnas_datos) 
