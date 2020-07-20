@@ -29,7 +29,8 @@ def por_funciones(archivo_fuente, archivo_comentarios):
                                                             "cantidad_lineas": 0,
                                                             "invocaciones": [],
                                                             "cantidad_invocaciones": 0,
-                                                            "cantidad_parametros": 0
+                                                            "cantidad_parametros": 0,
+                                                            "cantidad_comentarios": len(otros_c),
                                                             }
         #Agrego los datos a sus respectivos lugares
         datos_ordenados_por_funcion[nombre_funcion_f]["parametros"] = parametros_funcion_f if len(parametros_funcion_f) > 2 else None
@@ -47,14 +48,12 @@ def por_funciones(archivo_fuente, archivo_comentarios):
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["ayuda"] = ayuda_funcion_c.replace('",\n', '') if ("Ayuda" in ayuda_funcion_c) else None
         datos_ordenados_por_funcion[nombre_funcion_c]["comentarios"]["otros"] = otros_c if len(otros_c) > 0 else None
         if "cantidad_decalraciones" not in datos_ordenados_por_funcion[nombre_funcion_f]:
-            datos_ordenados_por_funcion[nombre_funcion_f]["cantidad_declaraciones"] = {"parametros": 0,
-                                                                                        "returns": 0,
+            datos_ordenados_por_funcion[nombre_funcion_f]["cantidad_declaraciones"] = {"returns": 0,
                                                                                         "if/elif": 0,
                                                                                         "for": 0,
                                                                                         "while": 0,
                                                                                         "break": 0,
                                                                                         "exit": 0,
-                                                                                        "coment": len(otros_c)
                                                                                         }
         obtener.cantidad_declaraciones(datos_ordenados_por_funcion, lineas_funcion_f, nombre_funcion_f)
         #Avanzo de linea en el archivo
