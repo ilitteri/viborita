@@ -1,33 +1,41 @@
 import m_organizar_datos as organizar
 import m_obtener as obtener
 
-def ordenar_datos(datos):
+def ordenar_datos(datos_por_funciones):
     '''[Autor: Ivan Litteri]
-    [Ayuda: Ordena los datos del diccionario de forma descendiente respecto de la cantidad de lineas de codigo que
-    escribio cada autor]'''
-    return sorted(datos.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
+    [Ayuda: Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de 
+    lineas de codigo que escribio cada autor]'''
 
-def leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: esta funcion abre los archivos cuyos nombres o ubicaciones le llegan por parametro, y devuelve
-    una lista de datos por cada archivo que lee, cuando termina la lectura, los cierra]'''
+    datos_por_autor = {}
+    #Recorre los items del diccionario ordenado por funcion
+    for funcion, datos_funcion in datos_por_funciones.items():
+        #Declara la variable autor para que sea mas entendible el resto
+        autor = datos_funcion["comentarios"]["autor"]
+        #Si no esta en el diccionario, la agrego
+        if autor not in datos_por_autor:
+            datos_por_autor[autor] = {"lineas_totales": 0,
+                        "funciones": {}
+                        }
+        #Si no esta en el diccionario, la agrego
+        if funcion not in datos_por_autor[autor]["funciones"]:
+            datos_por_autor[autor]["funciones"][funcion] = 0
+        #Agrego los datos de interes
+        datos_por_autor[autor]["funciones"][funcion] += datos_funcion["cantidad_lineas"]
+        datos_por_autor[autor]["lineas_totales"] += datos_funcion["cantidad_lineas"]
 
-    #Abre los dos archivos que le llegan por parametro para su lectura
-    with open(nombre_archivo_fuente, "r") as archivo_fuente, open(nombre_archivo_comentarios, "r") as archivo_comentarios:
-        datos_csv = organizar.por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios)
-        
-    #Obtiene la cantidad de lineas de codigo totales de todos los modulos juntos
-    lineas_codigo_totales = obtener.lineas_codigo_totales(datos_csv)
-    return datos_csv, lineas_codigo_totales
+    #Devuelve una lista ordenada por el total de lineas que escribio cada autor
+    return sorted(datos_por_autor.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
 
 def grabar_txt(archivo_datos, linea):
     '''[Autor: Ivan Litteri]'''
     archivo_datos.write(linea)
 
-def imprimir_datos(datos_ordenados, lineas_codigo_totales):
+def imprimir_datos(datos_ordenados):
     '''[Autor: Ivan Litteri]
     [Ayuda: imprime una tabla con la informacion de desarrollo por cada autor en la consola y en un archivo de texto]'''
     
+    lineas_codigo_totales = sum(datos_autor["lineas_totales"] for _, datos_autor in datos_ordenados)
+
     #Crea el archivo de texto para grabar lineas
     archivo_datos = open("participacion.txt", "w")
 
@@ -69,11 +77,8 @@ def imprimir_datos(datos_ordenados, lineas_codigo_totales):
     #Cierra el archivo de texto que se creo ya que se grabo todo lo que se queria grabar
     archivo_datos.close()
 
-def main():
+def main(datos_archivos_csv):
     '''[Autor: Ivan Litteri]'''
-#def main(archivo_fuente, archiv_comentarios):
 
-    #datos_por_cantidad_lineas_autor = obtener.por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios)
-    datos_csv, lineas_codigo_totales = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
-    datos_ordenados = ordenar_datos(datos_csv)
-    imprimir_datos(datos_ordenados, lineas_codigo_totales)
+    datos_ordenados = ordenar_datos(datos_archivos_csv)
+    imprimir_datos(datos_ordenados)
