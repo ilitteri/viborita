@@ -53,9 +53,9 @@ def obtener_tabla(diccionario):
     
     return lista_de_listas, longitud
 
-def main(datos):
+def main(datos_archivos_csv):
     '''[Autor: Santiago Vaccarelli]'''
     
-    lista_de_listas, longitud = obtener_tabla(datos)
+    lista_de_listas, longitud = obtener_tabla(datos_archivos_csv)
     crear_panel_general(lista_de_listas)
     imprimir_panel_general(lista_de_listas, longitud)

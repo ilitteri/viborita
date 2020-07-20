@@ -150,11 +150,10 @@ def imprimir_tabla(tabla):
     '''[Autor: Joel Glauber]'''
     print(tabla)
 
-def main():
+def main(datos_archivos_csv):
     '''[Autor: Joel Glauber]'''
 
-    datos_csv = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
-    lista_funciones = sorted(datos_csv.keys())
+    lista_funciones = sorted(datos_archivos_csv.keys())
     tabla = obtener.tabla_funciones(lista_funciones)
     imprimir_tabla(tabla)
-    analizar_ingreso_usuario(datos_csv)
+    analizar_ingreso_usuario(datos_archivos_csv)
