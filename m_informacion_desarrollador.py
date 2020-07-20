@@ -77,5 +77,3 @@ def main():
     datos_csv, lineas_codigo_totales = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
     datos_ordenados = ordenar_datos(datos_csv)
     imprimir_datos(datos_ordenados, lineas_codigo_totales)
-
-main()

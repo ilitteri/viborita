@@ -170,5 +170,3 @@ def main():
     tabla = obtener.tabla_funciones(lista_funciones)
     imprimir_tabla(tabla)
     analizar_ingreso_usuario(datos_csv)
-
-main()

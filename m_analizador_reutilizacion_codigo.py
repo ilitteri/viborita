@@ -182,6 +182,4 @@ def main () :
     creacion_archivo_txt (filas_txt)
 
 
-main  ()
-
 

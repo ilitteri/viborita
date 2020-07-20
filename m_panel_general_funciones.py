@@ -71,5 +71,3 @@ def main():
     lista_de_listas, longitud = obtener_tabla(diccionario)
     crear_panel_general(lista_de_listas)
     imprimir_panel_general(lista_de_listas, longitud)
-
-main()
