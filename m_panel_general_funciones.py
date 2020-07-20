@@ -1,6 +1,17 @@
 import m_organizar_datos as organizar_datos
 import m_obtener as obtener
 
+def leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios):
+    '''[Autor: Santiago Vaccarelli]
+    [Ayuda: esta funcion abre los archivos cuyos nombres o ubicaciones le llegan por parametro, y devuelve
+    una lista de datos por cada archivo que lee, cuando termina la lectura, los cierra]'''
+
+    #Abre los dos archivos que le llegan por parametro para su lectura
+    with open(nombre_archivo_fuente, "r") as archivo_fuente, open(nombre_archivo_comentarios, "r") as archivo_comentarios:
+        datos = organizar_datos.por_funciones(archivo_fuente, archivo_comentarios)
+    
+    return datos
+
 def imprimir_panel_general(lista_de_listas, longitud):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: imprime la lista de listas con los espacion necesarios para que quede parejo]'''
@@ -56,8 +67,7 @@ def obtener_tabla(diccionario):
 def main():
     '''[Autor: Santiago Vaccarelli]'''
     
-    with open ("fuente_unico.csv", "r") as fuente_unico, open ("comentarios.csv", "r") as comentarios: 
-        diccionario = organizar_datos.por_funciones(fuente_unico, comentarios)
+    diccionario = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
     lista_de_listas, longitud = obtener_tabla(diccionario)
     crear_panel_general(lista_de_listas)
     imprimir_panel_general(lista_de_listas, longitud)
