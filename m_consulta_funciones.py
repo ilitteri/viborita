@@ -13,33 +13,48 @@ def leer_archivos_csv(nombre_archivo_fuente, nombre_archivo_comentarios):
     
     return datos_por_funciones
 
-def imprimir_tabla(tabla):
-    print(tabla)
 
-def imprimir_datos_funcion(datos_csv, funcion):
+def obtener_datos_numeral(datos_csv, funcion):
+    '''[Autor: Joel Glauber]'''
 
-    ayuda = datos_csv[funcion]["comentarios"]["ayuda"]
-    parametros = datos_csv[funcion]["parametros"]
-    modulo = datos_csv[funcion]["modulo"]
-    autor = datos_csv[funcion]["comentarios"]["autor"]
-    print(f'{"*" * 40}')
-    print(f'Funcion: {funcion}\n')
-    print(f'{ayuda if ayuda else "No brinda ayuda"}')
-    print(f'Parametros formales: {parametros if parametros else "No tiene parametros formales"}')
-    print(f'Modulo: {modulo}')
-    print(f'{autor if "Autor" in autor else "El autor es anonimo"}')
-    print(f'{"*" * 40}')
+    cadena_numeral = ""
 
-def opcion_pregunta(datos_csv, opcion):
-    if opcion == "?todo":
-        for funcion in datos_csv:
-            imprimir_datos_funcion(datos_csv, funcion)
-    elif opcion[1:] in datos_csv.keys():
-        imprimir_datos_funcion(datos_csv, opcion[1:])
+    cadena_numeral += f'{"*" * 79}\n'
+    cadena_numeral += f'Funcion: {funcion}\n'
+    cadena_numeral += ("-" * len(f'Funcion: {funcion}') + "\n")
+    cadena_numeral += "\nInformacion:\n"
+    cadena_numeral += ("-" * len("Informacion:") + "\n")
+    if "*" in funcion:
+        cadena_numeral += "Es la funcion principal\n"
+    cadena_numeral += f'Modulo: {datos_csv[funcion]["modulo"]}\n'
+    cadena_numeral += f'{datos_csv[funcion]["comentarios"]["autor"] if "Autor" in datos_csv[funcion]["comentarios"]["autor"] else "El autor es anonimo"}\n'
+    cadena_numeral += f'Ayuda: {"Si" if datos_csv[funcion]["comentarios"]["ayuda"] else "No brinda ayuda"}\n'
+    cadena_numeral += f'Parametros: {datos_csv[funcion]["cantidad_parametros"]}\n'
+    cadena_numeral += f'Lineas de codigo: {datos_csv[funcion]["cantidad_lineas"]}\n'
+    if datos_csv[funcion]["cantidad_comentarios"] > 0:
+        cadena_numeral += f'Comentarios: {datos_csv[funcion]["cantidad_comentarios"]}\n'
     else:
-        print("Esa funcion no existe")
+        cadena_numeral += "No aporta comentarios\n"
+    if datos_csv[funcion]["invocaciones"]:
+        cadena_numeral += f'Invoca a {"(), ".join(datos_csv[funcion]["invocaciones"])}()\n'
+    else:
+        cadena_numeral += "No invoca a ninguna funcion\n"
+    if datos_csv[funcion]["cantidad_invocaciones"] > 0:
+        cadena_numeral += f'Es invocada {datos_csv[funcion]["cantidad_invocaciones"]} {"veces" if datos_csv[funcion]["cantidad_invocaciones"] > 1 else "vez"}\n'
+    else:
+        cadena_numeral += "No es invocada por ninguna funcion\n"
+    cadena_numeral += "\nCantidad de declaraciones: \n"
+    cadena_numeral += ("-" * len("Cantidad de declaraciones: ") + "\n")
+    for declaracion in datos_csv[funcion]["cantidad_declaraciones"]:
+        cadena_numeral += f'{declaracion}: {datos_csv[funcion]["cantidad_declaraciones"][declaracion]}\n'
+    cadena_numeral += f'{"*" * 79}\n'
 
-def grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion):
+    return cadena_numeral
+
+def obtener_datos_pregunta(datos_csv, funcion):
+    '''[Autor: Joel Glauber]'''
+
+    candena_pregunta = ""
 
     if datos_csv[funcion]["comentarios"]["ayuda"] and (len(datos_csv[funcion]["comentarios"]["ayuda"]) > 80):
         ayuda = analizar_linea.largo_ayuda(datos_csv[funcion]["comentarios"]["ayuda"])
@@ -49,18 +64,67 @@ def grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion):
     modulo = datos_csv[funcion]["modulo"]
     autor = datos_csv[funcion]["comentarios"]["autor"]
 
-    archivo_ayuda.write(f'{"*" * 40}\n')
-    archivo_ayuda.write(f'Funcion: {funcion}\n')
-    archivo_ayuda.write(f'{ayuda if ayuda else "No brinda ayuda"}\n')
-    archivo_ayuda.write(f'Parametros formales: {parametros if parametros else "No tiene parametros formales"}\n')
-    archivo_ayuda.write(f'Modulo: {modulo}\n')
-    archivo_ayuda.write(f'{autor if "Autor" in autor else "El autor es anonimo"}\n')
-    archivo_ayuda.write(f'{"*" * 40}\n')
+    candena_pregunta += f'{"*" * 79}\n'
+    candena_pregunta += f'Funcion: {funcion}\n'
+    candena_pregunta += f'{ayuda if ayuda else "No brinda ayuda"}\n'
+    candena_pregunta += f'Parametros formales: {parametros if parametros else "No tiene parametros formales"}\n'
+    candena_pregunta += f'Modulo: {modulo}\n'
+    candena_pregunta += f'{autor if "Autor" in autor else "El autor es anonimo"}\n'
+    candena_pregunta += f'{"*" * 79}\n'
 
-def crear_archivo_ayuda(datos_csv):
+    return candena_pregunta
+
+def grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion, opcion):
+    '''[Autor: Joel Glauber]'''
+
+    if "?" in opcion:
+        informacion = obtener_datos_pregunta(datos_csv, funcion)
+        archivo_ayuda.write(informacion)
+    
+    elif "#" in opcion:
+        informacion = obtener_datos_numeral(datos_csv, funcion)
+        archivo_ayuda.write(informacion)
+
+def crear_archivo_ayuda(datos_csv, opcion):
+    '''[Autor: Joel Glauber]'''
+
     with open("ayuda_funcion.txt", "w") as archivo_ayuda:
         for funcion in datos_csv:
-            grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion)
+            grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion, opcion)
+
+def imprimir_datos_pregunta(datos_csv, funcion):
+    '''[Autor: Joel Glauber]'''
+
+    informacion = obtener_datos_pregunta(datos_csv, funcion)
+    print(informacion)
+
+def opcion_pregunta(datos_csv, opcion):
+    '''[Autor: Joel Glauber]'''
+
+    if opcion == "?todo":
+        for funcion in datos_csv:
+            imprimir_datos_pregunta(datos_csv, funcion)
+    elif opcion[1:] in datos_csv.keys():
+        imprimir_datos_pregunta(datos_csv, opcion[1:])
+    else:
+        print("Esa funcion no existe")
+
+def imprimir_datos_numeral(datos_csv, funcion):
+    '''[Autor: Joel Glauber]'''
+
+    informacion = obtener_datos_numeral(datos_csv, funcion)
+    print(informacion)
+
+def opcion_numeral(datos_csv, opcion):
+    '''[Autor: Joel Glauber]'''
+
+    if opcion == "#todo":
+        for funcion in datos_csv:
+            imprimir_datos_numeral(datos_csv, funcion)
+    elif opcion[1:] in datos_csv.keys():
+        imprimir_datos_numeral(datos_csv, opcion[1:])
+    else:
+        print("Esa funcion no existe")
 
 def analizar_opcion(datos_csv, opcion):
     '''[Autor: Joel Glauber]
@@ -76,13 +140,17 @@ def analizar_opcion(datos_csv, opcion):
     #Si se ingresa la opcion "imprimir ?todo" se crea el archivo de ayuda
     elif opcion == "imprimir ?todo":
         print("\nCreando archivo de ayuda...")
-        crear_archivo_ayuda(datos_csv)
+        crear_archivo_ayuda(datos_csv, opcion)
+        print("Archivo creado con exito!")
+    elif opcion == "imprimir #todo":
+        print("\nCreando archivo de ayuda...")
+        crear_archivo_ayuda(datos_csv, opcion)
         print("Archivo creado con exito!")
     #Si la opcion ingresada es incorrecta, se vuelve a intentar
     else:
         print("\nOpcion incorrecta, ingrese nuevamente\n")
 
-def obtener_informacion(datos_csv):
+def analizar_ingreso_usuario(datos_csv):
     '''[Autor: Joel Glauber]
     [Ayuda: solicita al autor que ingrese una de las opciones]'''
     opcion = input("\nFuncion: ")
@@ -90,11 +158,17 @@ def obtener_informacion(datos_csv):
         analizar_opcion(datos_csv, opcion)
         opcion = input("\nFuncion: ")
 
+def imprimir_tabla(tabla):
+    '''[Autor: Joel Glauber]'''
+    print(tabla)
+
 def main():
+    '''[Autor: Joel Glauber]'''
+
     datos_csv = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
     lista_funciones = sorted(datos_csv.keys())
-    tabla = obtener.tabla_para_imprimir(lista_funciones)
+    tabla = obtener.tabla_funciones(lista_funciones)
     imprimir_tabla(tabla)
-    obtener_informacion(datos_csv)
+    analizar_ingreso_usuario(datos_csv)
 
 main()
