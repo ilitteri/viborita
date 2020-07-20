@@ -162,7 +162,7 @@ def por_autor(archivo_fuente, archivo_comentarios):
 
     return datos_ordenados_por_autor
 
-def por_cantidad_lineas_autor(archivo_fuente, archivo_comentarios):
+def por_autores(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: esta funcion recibe por parametro los datos de los archivos fuente y comentarios (csv) y los 
     lee secuencialmente para organizar los datos, en este caso tambien por autor pero por cada funcion
