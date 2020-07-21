@@ -3,7 +3,9 @@ import m_organizar_datos as organizar_datos
 import m_analizar_linea as analizar_linea
 
 def obtener_datos_numeral(datos_csv, funcion):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: crea una cadena de caracteres vacia para ir concatenando en la forma que se quiere que se impriman los datos
+    en pantalla, pero para las opciones que empiezan con numeral (#)]'''
 
     cadena_numeral = ""
 
@@ -40,7 +42,9 @@ def obtener_datos_numeral(datos_csv, funcion):
     return cadena_numeral
 
 def obtener_datos_pregunta(datos_csv, funcion):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: crea una cadena de caracteres vacia para ir concatenando en la forma que se quiere que se impriman los datos
+    en pantalla, pero para las opciones que empiezan con signo de pregunta (?)]'''
 
     candena_pregunta = ""
 
@@ -80,37 +84,33 @@ def crear_archivo_ayuda(datos_csv, opcion):
         for funcion in datos_csv:
             grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion, opcion)
 
-def imprimir_datos_pregunta(datos_csv, funcion):
-    '''[Autor: Joel Glauber]'''
-
-    informacion = obtener_datos_pregunta(datos_csv, funcion)
-    print(informacion)
+def imprimir_datos(datos_csv, funcion, opcion):
+    if "#" in opcion:
+        informacion = obtener_datos_numeral(datos_csv, funcion)
+        print(informacion)
+    elif "?" in opcion:
+        informacion = obtener_datos_pregunta(datos_csv, funcion)
+        print(informacion)
 
 def opcion_pregunta(datos_csv, opcion):
     '''[Autor: Joel Glauber]'''
 
     if opcion == "?todo":
         for funcion in datos_csv:
-            imprimir_datos_pregunta(datos_csv, funcion)
+            imprimir_datos(datos_csv, funcion, opcion)
     elif opcion[1:] in datos_csv.keys():
-        imprimir_datos_pregunta(datos_csv, opcion[1:])
+        imprimir_datos(datos_csv, opcion[1:], opcion)
     else:
         print("Esa funcion no existe")
-
-def imprimir_datos_numeral(datos_csv, funcion):
-    '''[Autor: Joel Glauber]'''
-
-    informacion = obtener_datos_numeral(datos_csv, funcion)
-    print(informacion)
 
 def opcion_numeral(datos_csv, opcion):
     '''[Autor: Joel Glauber]'''
 
     if opcion == "#todo":
         for funcion in datos_csv:
-            imprimir_datos_numeral(datos_csv, funcion)
+            imprimir_datos(datos_csv, funcion, opcion)
     elif opcion[1:] in datos_csv.keys():
-        imprimir_datos_numeral(datos_csv, opcion[1:])
+        imprimir_datos(datos_csv, opcion[1:], opcion)
     else:
         print("Esa funcion no existe")
 
