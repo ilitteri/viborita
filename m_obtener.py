@@ -106,25 +106,29 @@ def lista_funciones(archivo_fuente):
 
     return funciones
 
-def tabla_funciones(lista_funciones):
+def tabla_funciones(lista_funciones, primera_fila = True):
     '''[Autor: Joel Glauber]
     [Ayuda: A esta funcion le llega por parametro una lista con los nombres de todas las funciones
     y concatena a estos nombres a una cadena que llamo tabla, con un formato como el que se pide en 
     la consigna (5 columnas, x filas)]'''
     
+    cantidad_guiones = 0
     #Creo una cadena vacia, para llenar luego con los nombres de las funciones
     tabla = ""
     #Recorro los indices de la lista
     for i in range(len(lista_funciones)):
         #Si llegue a una columna 5 entonces da un enter para pasar a la siguiente fila
         if (i % 5 == 0) and (i != 0):
-            tabla += "|\n" 
+            tabla += "|\n"
+            if primera_fila:
+                cantidad_guiones = len(tabla)
+                primera_fila = False
         separacion = " " * (15-len(lista_funciones[i]))
-        fila = f'\t| {lista_funciones[i]}(){separacion}'
+        fila = f'| {lista_funciones[i]}(){separacion}'
         #Sumo los nombres de las funciones separadas con una tabulacion
         tabla += fila
 
-    return tabla
+    return tabla, cantidad_guiones
 
 def longitud_maxima(columnas_datos, longitud):
     '''[Autor: Santiago Vaccarelli]
