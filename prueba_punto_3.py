@@ -8,7 +8,7 @@ def buscar_invocaciones(datos_por_funciones):
     diccionario_invocaciones = {"total": {} , "indices" : {} }
     #Abro el archivo creado anteriormente que contiene los datos ordenados
     
-    lista_funciones = datos_por_funciones.keys()
+    lista_funciones = list(datos_por_funciones.keys())
     
     for nombre_funcion in lista_funciones :
         # Aqui declaro la variable que estara en la tabla para facilitar el manejo
@@ -55,7 +55,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por
                
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
         if cuenta_linea <= len(diccionario_invocaciones) :
-            for invocado in diccionario_invocaciones[cuenta_linea]["invocaciones"] :
+            for invocado in diccionario_invocaciones[cuenta_linea][funcion_en_linea] :
                     # Cuento las veces que se invoca a las funciones 
                     if invocado in funciones_llamadas :
                         diccionario_invocaciones [cuenta_linea][funcion_en_linea][invocado] += funciones_llamadas.count(invocado)
@@ -148,6 +148,5 @@ def main (datos_por_funciones ) :
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
 
     creacion_archivo_txt (filas_txt)
-
 
 
