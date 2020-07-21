@@ -47,7 +47,7 @@ def cantidad_invocaciones(datos, archivo_fuente):
             for nombre_funcion in datos:
                 if "cantidad_invocaciones" not in datos[nombre_funcion]:
                     datos[nombre_funcion]["cantidad_invocaciones"] = 0
-                if (nombre_funcion in linea_funcion and not f'_{nombre_funcion}' in linea_funcion) or (f'{datos[nombre_funcion]["modulo"]}.{nombre_funcion}' in linea_funcion):
+                if (nombre_funcion in linea_funcion and not f'_{nombre_funcion}' in linea_funcion) or (f'.{nombre_funcion}' in linea_funcion):
                     datos[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos[funcion]["invocaciones"].append(nombre_funcion)
 
