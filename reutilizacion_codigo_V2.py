@@ -1,87 +1,50 @@
 
-def buscar_invocaciones(archivo_fuente):
+def buscar_invocaciones(datos_por_funciones):
     """[Autor: Luciano Federico Aguilera]
     [Ayuda: Busca las funciones presentes en el archivo csv creado anteriormente y las agrega en un diccionario con un numero de indice ]"""
     #Defino variables que se usaran
-    lista_funciones = []
-    cuenta_lineas = 0
-
-    #Abro el archivo creado anteriormente que contiene los datos ordenados
-    with open ( archivo_fuente , "r") as invocaciones  :
-        #Creo un diccionario para almacenar los nombres de las funciones junto con sus indices para la tabla
-        diccionario_invocaciones = {"total": {} , "indices" : {} }
-        nombres = invocaciones.readline()
-        lineas_codigo = []
-        lineas_modulo = []
-        #Recorro las lineas del archivo 
-        while nombres :
-            # Filtro los nombres de las funciones 
-            nombre = (nombres.split('","')[0]).replace('"','')
-            lista_funciones.append(nombre)
-            #Creo una lista para no tener que volver a leer el archivo csv
-            codigo = (nombres.split('","')[3:])
-            lineas_codigo.append(codigo)
-            # Almaceno los nombres de las funciones como keys del diccionario
-            # Para poder identificarlos de encontrarse entre las lineas de codigo
-            modulo = (nombres.split('","')[2]).replace(".py","")
-            lineas_modulo.append(modulo)
-
-            nombres = invocaciones.readline()  
     
-    for key in lista_funciones :
-        # Aqui declaro la variable que estara en la tabla para facilitar el manejo
+    cuenta_lineas = 0
+    diccionario_invocaciones = {"total": {} , "indices" : {} }
+    
+    #Tomo las funciones recogidas en el diccionario principal de m_organizar_datos
+    lista_funciones = list(datos_por_funciones.keys())
+    #Creo un diccionario que servira posteriormente para el armado de la tabla
+    for nombre_funcion in lista_funciones :
+        # Aqui declaro la variable que estara en la tabla como indice para facilitar el manejo
         cuenta_lineas += 1
+        #Defino un diccionario dentro de cada indice para organizar la informacion 
         diccionario_invocaciones [cuenta_lineas] = {}
         # Creo un  diccionario dentro del anterior para almacenar las funciones a la que pertenecen las lineas de codigo junto con sus invocaciones
-        diccionario_invocaciones [cuenta_lineas] [key] = {}
+        diccionario_invocaciones [cuenta_lineas] [nombre_funcion] = {}
         # Agrego una key que funciona como suma de las invocaciones para cada funcion
         diccionario_invocaciones ["total"] [cuenta_lineas] = 0
         # Agrego una key para relacionar los nombres de las variables con sus indices para ahorrar codigo
-        diccionario_invocaciones ["indices"] [key] = cuenta_lineas
+        diccionario_invocaciones ["indices"] [nombre_funcion] = cuenta_lineas
         # Seteo los contadores de las invocaciones en 0 
         for funcion in lista_funciones :
-            diccionario_invocaciones [cuenta_lineas] [key] [funcion] = 0
+            diccionario_invocaciones [cuenta_lineas] [nombre_funcion] [funcion] = 0
     
     
-    return diccionario_invocaciones , lista_funciones , lineas_codigo  , lineas_modulo
+    return diccionario_invocaciones , lista_funciones 
 
-def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo , lineas_modulo):  
+def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por_funciones ):  
 
     """[Autor: Luciano Federico Aguilera]
     [Ayuda : Busca coincidencias entre las funciones listadas y las presentes en el archivo csv y las  ]"""
    
-    funciones_llamadas = {}
         #Recorro nuevamente el archivo para identificar invocaciones a funciones usando los datos recogidos en buscar_invocaciones
     lineas = 0
     cuenta_linea = 0
-    while lineas < len(lineas_codigo) :
+    while lineas < len(lista_funciones) :
 
         #Identifico que funcion es la que llama a las siguientes
         nombre = lista_funciones [lineas]
-        #Separo las lineas que contienen codigo
-        codigo = lineas_codigo [lineas]
-
-        modulo = lineas_modulo [lineas]
-    
-        # Esta lista funcionara para evitar errores al para identificar a las funciones
-        funciones_llamadas = []
         cuenta_linea += 1
-        # Esta cadena devuelve el nombre de la funcion al poner su indice 
-        funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")
-
-        for llamadas in codigo :
-            #Separo la funcion de su contenido (...)
-            
-            # Busco coincidencias entre las funciones listadas y las presentes en el archivo
-            for funcion in lista_funciones :
-                #Si las encuentra las agrega a una lista para su operacion
-                #if funcion in llamadas and  (funcion[0] == llamadas[0] or f' {funcion}(' in llamadas or (str(modulo)+"."+str(funcion)) in llamadas or ("\n"+str(funcion)) in llamadas ):
-                if (f' {funcion}('  in llamadas)  :
-                    funciones_llamadas.append(funcion)
-                elif (f'.{funcion}('  in llamadas) :
-                    funciones_llamadas.append(funcion)
-                elif (f'{funcion}('  in llamadas) and not (f'_{funcion}('  in llamadas):
-                    funciones_llamadas.append(funcion)
+        #Obtengo una lista de las funciones llamadas del diccionario principal
+        funciones_llamadas = datos_por_funciones[nombre]["invocaciones"]
+        # Esta cadena devuelve el nombre de la funcion al poner su indice     
+        funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")   
                
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
         if cuenta_linea <= len(diccionario_invocaciones) :
@@ -91,7 +54,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
                         diccionario_invocaciones [cuenta_linea][funcion_en_linea][invocado] += funciones_llamadas.count(invocado)
                         
                         indices = diccionario_invocaciones ["indices"][invocado]
-                        # Se cuentan todas las invocaciones por indice  de 
+                        # Se cuentan todas las invocaciones por su respectivo indice 
                         diccionario_invocaciones ["total"][indices] += funciones_llamadas.count(invocado)
 
         lineas += 1
@@ -109,24 +72,24 @@ def creacion_formato_tabla(diccionario_invocaciones):
     indice_2 = 1
 
     # Creo la primer linea del archivo de texto  
-    filas_txt.append(str("\t FUNCIONES" + " "*16))
-    cadena_totales = "\n\t Total Invocaciones " + " "*7
+    filas_txt.append(f'\t FUNCIONES{" "*16}')
+    cadena_totales = f'\n\tTotal Invocaciones {" "*7}'
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
         # Filtro las keys que no contienen datos importantes
         if funcion != "total" and funcion != "indices":
-            filas_txt [0] += "\t" + str(funcion) + "\t" 
+            filas_txt [0] += f'\t{funcion}\t' 
             
             funcion_en_linea = str(diccionario_invocaciones[funcion]).split(":")[0].replace("{", "").replace("'","")
             # Hago correcciones para que la tabla quede pareja
-            cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea) + " " + " " * (22-len(str(funcion_en_linea)) )
+            cadena_de_texto =  f'\t {indice_2} {funcion_en_linea} {" " * (22-len(str(funcion_en_linea)))}' 
             # Corrijo los espacios para que la tabla queda pareja
             if funcion <= 9 :
                 cadena_de_texto += " "
             filas_txt.append(cadena_de_texto )
             indice_2 += 1  
             # Concateno a los totales que estaban el el diccionario a la tabla
-            cadena_totales += "\t" + str(diccionario_invocaciones ["total"] [funcion]) + "\t"
+            cadena_totales += f'\t{diccionario_invocaciones ["total"] [funcion]}\t'
     
     # Finalmente agrego la cadena a la lista
     filas_txt.append(cadena_totales )       
@@ -147,9 +110,9 @@ def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
             for funcion in diccionario_invocaciones[numero][funcion_en_linea]:
                 # Intercambio los 0 para que la tabla quede como en el ejemplo del pdf del tp
                 if diccionario_invocaciones[numero][funcion_en_linea][funcion] > 0 :
-                    filas_txt[numero] += "\t" + str(diccionario_invocaciones[numero][funcion_en_linea][funcion]) + "\t"
+                    filas_txt[numero] += f'\t{diccionario_invocaciones[numero][funcion_en_linea][funcion]}\t'
                 else:
-                    filas_txt[numero] += "\t" + " " + "\t"
+                    filas_txt[numero] += f'\t \t'
     # Devuelvo nuevamente la lista luego de modificarla
     return filas_txt
     
@@ -161,25 +124,22 @@ def creacion_archivo_txt (filas_txt) :
     with open("analizador.txt" , "w") as analizador :
         # Escribo el archivo de texto txt con las lineas ordenadas
         for linea in filas_txt:
-            analizador.write(str(linea) + "\n" + "\n")
-            print(str(linea) + "\n" + "\n")
+            analizador.write(f'{linea}\n\n')
+            print(f'{linea}\n\n')
 
-def main () :
+def main (datos_por_funciones) :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
 
-    archivo_fuente = "fuente_unico.csv"
+    diccionario_invocaciones , lista_funciones  = buscar_invocaciones(datos_por_funciones )
 
-    diccionario_invocaciones , lista_funciones , lineas_codigo , lineas_modulo  = buscar_invocaciones(archivo_fuente)
-
-    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo , lineas_modulo)
+    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , datos_por_funciones )
 
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
 
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
 
     creacion_archivo_txt (filas_txt)
-
 
 
