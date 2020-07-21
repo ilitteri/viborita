@@ -25,9 +25,9 @@ def buscar_invocaciones(datos_por_funciones):
             diccionario_invocaciones [cuenta_lineas] [nombre_funcion] [funcion] = 0
     
     
-    return diccionario_invocaciones , lista_funciones , lineas_codigo  , lineas_modulo
+    return diccionario_invocaciones , lista_funciones 
 
-def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo , lineas_modulo , datos_por_funciones ):  
+def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por_funciones ):  
 
     """[Autor: Luciano Federico Aguilera]
     [Ayuda : Busca coincidencias entre las funciones listadas y las presentes en el archivo csv y las  ]"""
@@ -45,7 +45,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
         funciones_llamadas = []
         cuenta_linea += 1
         # Esta cadena devuelve el nombre de la funcion al poner su indice 
-        funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")
+        
 
         for nombre_funcion in datos_por_funciones :
             #Separo la funcion de su contenido (...)
@@ -55,7 +55,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fu
                
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
         if cuenta_linea <= len(diccionario_invocaciones) :
-            for invocado in diccionario_invocaciones[cuenta_linea][funcion_en_linea] :
+            for invocado in diccionario_invocaciones[cuenta_linea]["invocaciones"] :
                     # Cuento las veces que se invoca a las funciones 
                     if invocado in funciones_llamadas :
                         diccionario_invocaciones [cuenta_linea][funcion_en_linea][invocado] += funciones_llamadas.count(invocado)
@@ -139,9 +139,9 @@ def main (datos_por_funciones ) :
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
 
-    diccionario_invocaciones , lista_funciones , lineas_codigo , lineas_modulo  = buscar_invocaciones(datos_por_funciones )
+    diccionario_invocaciones , lista_funciones  = buscar_invocaciones(datos_por_funciones )
 
-    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , archivo_fuente , lineas_codigo , lineas_modulo , datos_por_funciones )
+    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , datos_por_funciones )
 
     filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
 
