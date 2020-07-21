@@ -46,10 +46,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por
         cuenta_linea += 1
         # Esta cadena devuelve el nombre de la funcion al poner su indice 
         
-
-        for nombre_funcion in datos_por_funciones :
-            #Separo la funcion de su contenido (...)
-            funciones_llamadas = datos_por_funciones[nombre_funcion]["invocaciones"]
+        funciones_llamadas = datos_por_funciones[nombre]["invocaciones"]
             
         funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")   
                
