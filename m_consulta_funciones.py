@@ -146,14 +146,16 @@ def analizar_ingreso_usuario(datos_csv):
         analizar_opcion(datos_csv, opcion)
         opcion = input("\nFuncion: ")
 
-def imprimir_tabla(tabla):
+def imprimir_tabla(tabla, cantidad_guiones):
     '''[Autor: Joel Glauber]'''
+    print(f'{"-" * (cantidad_guiones)}')
     print(tabla)
+    print(f'{"-" * (cantidad_guiones)}')
 
 def main(datos_archivos_csv):
     '''[Autor: Joel Glauber]'''
 
     lista_funciones = sorted(datos_archivos_csv.keys())
-    tabla = obtener.tabla_funciones(lista_funciones)
-    imprimir_tabla(tabla)
+    tabla, cantidad_guiones = obtener.tabla_funciones(lista_funciones)
+    imprimir_tabla(tabla, cantidad_guiones)
     analizar_ingreso_usuario(datos_archivos_csv)
