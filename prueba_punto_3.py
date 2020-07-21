@@ -35,7 +35,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por
         #Recorro nuevamente el archivo para identificar invocaciones a funciones usando los datos recogidos en buscar_invocaciones
     lineas = 0
     cuenta_linea = 0
-    while lineas < len(lineas_codigo) :
+    while lineas < len(lista_funciones) :
 
         #Identifico que funcion es la que llama a las siguientes
         nombre = lista_funciones [lineas]
