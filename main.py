@@ -5,7 +5,7 @@ import m_consulta_funciones as consulta_funciones
 import m_analizador_reutilizacion_codigo as analizador_reutilizacion_codigo
 import m_arbol_invocacion as arbol_invocacion
 import m_informacion_desarrollador as informacion_desarrollador
-import prueba_punto_3
+
 
 def leer_archivos_csv(fuente, comentarios):
     with open(fuente, "r") as archivo_fuente, open(comentarios, "r") as archivo_comentarios:
@@ -45,7 +45,7 @@ def menu_interaccion(datos_por_funciones):
             consulta_funciones.main(datos_por_funciones)
             imprimir_menu_interaccion()
         elif opcion == "3" or opcion.lower() == "analizar reutilizacion de codigo":
-            prueba_punto_3.main(datos_por_funciones)
+            analizador_reutilizacion_codigo.main(datos_por_funciones)
             imprimir_menu_interaccion()
         elif opcion == "4" or opcion.lower() == "arbol de invocaciones":
             arbol_invocacion.main(datos_por_funciones)
