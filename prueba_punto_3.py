@@ -51,7 +51,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por
             #Separo la funcion de su contenido (...)
             funciones_llamadas = datos_por_funciones[nombre_funcion]["invocaciones"]
             
-            
+        funcion_en_linea = str(diccionario_invocaciones[cuenta_linea]).split(":")[0].replace("{", "").replace("'","")   
                
             # Aqui se agregan a su key correspondiente los totales y los indices mencionados anteriormente
         if cuenta_linea <= len(diccionario_invocaciones) :
