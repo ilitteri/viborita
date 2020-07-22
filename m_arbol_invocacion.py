@@ -1,4 +1,4 @@
-def printear_arbol(arbol)
+def printear_arbol(arbol):
     '''[Autor: Andrés Kübler]
     [Ayuda: Imprime el arbol de forma ordenada]'''
     return print(arbol)
