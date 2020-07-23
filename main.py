@@ -1,4 +1,4 @@
-import creador_csv
+import m_crear_csv_finales as crear_csv_finales
 import m_organizar_datos as organizar_datos
 import m_panel_general_funciones as panel_general_funciones
 import m_consulta_funciones as consulta_funciones
@@ -61,7 +61,7 @@ def menu_interaccion(datos_por_funciones):
         opcion = input("Ingrese una opcion o presione ENTER para salir: ")
 
 def main():
-    creador_csv.main("programas.txt")
+    crear_csv_finales.main("programas.txt")
     datos_por_funciones = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
     menu_interaccion(datos_por_funciones)
     
