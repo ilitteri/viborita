@@ -35,6 +35,7 @@ def imprimir_datos(datos_ordenados):
     [Ayuda: imprime una tabla con la informacion de desarrollo por cada autor en la consola y en un archivo de texto]'''
     
     lineas_codigo_totales = sum(datos_autor["lineas_totales"] for _, datos_autor in datos_ordenados)
+    funciones_totales = 0
 
     #Crea el archivo de texto para grabar lineas
     archivo_datos = open("participacion.txt", "w")
@@ -67,6 +68,7 @@ def imprimir_datos(datos_ordenados):
             grabar_txt(archivo_datos, f'\t{funcion}{separacion}{cantidad_lineas}\n')
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
         porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
+        funciones_totales += len(datos_autor["funciones"])
         #Establece la columna 1 y la separacion
         columna_1 = f'{len(datos_autor["funciones"])} Funciones - Lineas' 
         separacion = " " * (50-len(columna_1))
@@ -74,6 +76,10 @@ def imprimir_datos(datos_ordenados):
         print(f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
         grabar_txt(archivo_datos, f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
 
+    columna_1 = f'Total: {funciones_totales} Funciones - Lineas'
+    separacion = " " * (50-len(columna_1))
+    print(f'\t{columna_1}{separacion}{lineas_codigo_totales}')
+    grabar_txt(archivo_datos, f'\t{columna_1}{separacion}{lineas_codigo_totales}')
     #Cierra el archivo de texto que se creo ya que se grabo todo lo que se queria grabar
     archivo_datos.close()
 
