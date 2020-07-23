@@ -66,7 +66,7 @@ def imprimir_datos(datos_ordenados):
             print(f'\t{funcion}{separacion}{cantidad_lineas}')
             grabar_txt(archivo_datos, f'\t{funcion}{separacion}{cantidad_lineas}\n')
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
-        porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales))
+        porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
         #Establece la columna 1 y la separacion
         columna_1 = f'{len(datos_autor["funciones"])} Funciones - Lineas' 
         separacion = " " * (50-len(columna_1))
