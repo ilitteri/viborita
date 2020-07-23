@@ -1,5 +1,6 @@
 import m_organizar_datos as organizar
 import m_obtener as obtener
+import m_grabar as grabar
 
 def ordenar_datos(datos_por_funciones):
     '''[Autor: Ivan Litteri]
@@ -26,23 +27,16 @@ def ordenar_datos(datos_por_funciones):
     #Devuelve una lista ordenada por el total de lineas que escribio cada autor
     return sorted(datos_por_autor.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
 
-def grabar_txt(archivo_datos, linea):
-    '''[Autor: Ivan Litteri]'''
-    archivo_datos.write(linea)
-
-def imprimir_datos(datos_ordenados):
+def formatear_datos(datos_ordenados):
     '''[Autor: Ivan Litteri]
     [Ayuda: imprime una tabla con la informacion de desarrollo por cada autor en la consola y en un archivo de texto]'''
     
     lineas_codigo_totales = sum(datos_autor["lineas_totales"] for _, datos_autor in datos_ordenados)
     funciones_totales = 0
-
-    #Crea el archivo de texto para grabar lineas
-    archivo_datos = open("participacion.txt", "w")
+    datos_a_imprimir = ""
 
     #Imprime y graba la primera linea
-    print("\t\t\tInformacion de Desarrollo Por Autor\n")
-    grabar_txt(archivo_datos, "\t\t\tInformacion de Desarrollo Por Autor\n\n")
+    datos_a_imprimir += "\t\tInformacion de Desarrollo Por Autor\n"
 
     #Recorre los datos ordenados que me llegan por parametro
     for autor, datos_autor in datos_ordenados:
@@ -56,17 +50,15 @@ def imprimir_datos(datos_ordenados):
         linea_iguales = f'{separacion_2}{"=" * (50 + len(columna_1))}'
 
         #Imprime y graba la linea correspondiende al autor y la fila que corresponde al titulo de la tabla del autor
-        print(f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n{separacion_2}{columna_1}{separacion}{columna_2}')
-        print(linea_iguales)
-        grabar_txt(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n{separacion_2}{columna_1}{separacion}{columna_2}\n{linea_iguales}\n')
+        datos_a_imprimir += f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n{separacion_2}{columna_1}{separacion}{columna_2}\n'
+        datos_a_imprimir += f'{linea_iguales}\n'
         
         #Recorre los datos de las funciones del autor
         for funcion, cantidad_lineas in datos_autor["funciones"].items():
             #Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion
             separacion = " " * (50-len(funcion))
             #Imprime y graba la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
-            print(f'{separacion_2}{funcion}{separacion}{cantidad_lineas}')
-            grabar_txt(archivo_datos, f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n')
+            datos_a_imprimir += f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n'
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
         porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
         funciones_totales += len(datos_autor["funciones"])
@@ -74,18 +66,26 @@ def imprimir_datos(datos_ordenados):
         columna_1 = f'{len(datos_autor["funciones"])} Funciones - Lineas' 
         separacion = " " * (50-len(columna_1))
         #Imprime y graba la linea que contiene la cantidad de funciones que escribio el autor y el porcentaje respecto a todo el codigo
-        print(f'{separacion_2}{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
-        grabar_txt(archivo_datos, f'{separacion_2}{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
+        datos_a_imprimir += f'{separacion_2}{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n'
 
     columna_1 = f'{funciones_totales} Funciones - Lineas'
     separacion = " " * (50-len(columna_1))
-    print(f'Total: {columna_1}{separacion}{lineas_codigo_totales}')
-    grabar_txt(archivo_datos, f'Total: {columna_1}{separacion}{lineas_codigo_totales}')
-    #Cierra el archivo de texto que se creo ya que se grabo todo lo que se queria grabar
-    archivo_datos.close()
+
+    datos_a_imprimir += f'Total: {columna_1}{separacion}{lineas_codigo_totales}'
+
+    return datos_a_imprimir
+
+def imprimir_participacion(datos):
+    print(datos)
+
+def crear_archivo_txt(nombre_archivo, datos):
+    with open(nombre_archivo, "w") as archivo_txt:
+        grabar.cadena(archivo_txt, datos)
 
 def main(datos_archivos_csv):
     '''[Autor: Ivan Litteri]'''
 
     datos_ordenados = ordenar_datos(datos_archivos_csv)
-    imprimir_datos(datos_ordenados)
+    datos_formateados = formatear_datos(datos_ordenados)
+    imprimir_participacion(datos_formateados)
+    crear_archivo_txt("participacion.txt", datos_formateados)

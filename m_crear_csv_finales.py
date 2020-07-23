@@ -1,15 +1,12 @@
 import m_crear_csv_individuales as crear_csv_individuales
 import m_obtener as obtener
 import os
+import m_grabar as grabar
 
 def cerrar_archivos_individuales(datos):
     '''[Autores: Luciano Aguilera, Ivan Litteri]'''
     for nombre_modulo in datos:
         datos[nombre_modulo]["contenido"].close()
-
-def grabar_final(archivo, linea):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]'''
-    archivo.write(linea)
 
 def leer_archivos_individuales(datos):
     '''[Autores: Luciano Aguilera, Ivan Litteri]
@@ -49,9 +46,9 @@ def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
             if linea == linea_menor:
                 nombre_funcion, _, nombre_modulo, *otros_datos = linea.split('","')
                 if "*" in nombre_modulo and f'{nombre_funcion[1:]}()\n' in lineas_fuera_funcion:
-                    grabar_final(archivo_final, '"*' + linea[1:])
+                    grabar.cadena(archivo_final, '"*' + linea[1:])
                 else:
-                    grabar_final(archivo_final, linea)
+                    grabar.cadena(archivo_final, linea)
                 lineas.remove(linea)
 
 def abrir_archivos_individuales(archivos):

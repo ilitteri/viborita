@@ -1,5 +1,6 @@
 import m_analizar_linea as analizar_linea
 import m_obtener as obtener
+import m_grabar as grabar
 
 def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def):
     if linea_codigo[0:3] != "def" and linea_codigo[0:3] != "   " and linea_codigo != "\n":
@@ -68,10 +69,6 @@ def leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuen
 
     return datos_fuente, datos_comentarios, lineas_fuera_funcion
 
-def grabar_individual(archivo, datos_ordenados):
-    for linea in datos_ordenados:
-        archivo.write(linea)
-
 def ordenar_datos(datos):
     return sorted(datos)
 
@@ -85,8 +82,8 @@ def crear_csv_individuales(ubicaciones):
             datos_fuente_ordenados = sorted(datos_fuente)
             datos_comentarios_ordenados = sorted(datos_comentarios)
             #Graba los datos en los archivos
-            grabar_individual(fuente_modulo, datos_fuente_ordenados)
-            grabar_individual(comentarios_modulo, datos_comentarios_ordenados)
+            grabar.cadenas(fuente_modulo, datos_fuente_ordenados)
+            grabar.cadenas(comentarios_modulo, datos_comentarios_ordenados)
             #Guarda el nombre de los archivos en listas
             archivos_fuente.append((f'fuente_{nombre_modulo}.csv', nombre_modulo))
             archivos_comentarios.append((f'comentarios_{nombre_modulo}.csv', nombre_modulo))
