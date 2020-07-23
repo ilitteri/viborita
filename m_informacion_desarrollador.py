@@ -29,13 +29,17 @@ def ordenar_datos(datos_por_funciones):
 
 def formatear_datos(datos_ordenados):
     '''[Autor: Ivan Litteri]
-    [Ayuda: imprime una tabla con la informacion de desarrollo por cada autor en la consola y en un archivo de texto]'''
+    [Ayuda: Formatea los datos del diccionario como se pide en la consigna y devuelve una cadena con los datos 
+    formateados]'''
     
+    #Obtiene las lineas de codigo totales de la aplicacion
     lineas_codigo_totales = sum(datos_autor["lineas_totales"] for _, datos_autor in datos_ordenados)
+    #Declara el contador de funciones en 0
     funciones_totales = 0
+    #Inicializa la devolucion en vacio para ir concatenando
     datos_a_imprimir = ""
 
-    #Imprime y graba la primera linea
+    #Concatena la primera linea
     datos_a_imprimir += "\t\tInformacion de Desarrollo Por Autor\n"
 
     #Recorre los datos ordenados que me llegan por parametro
@@ -49,37 +53,45 @@ def formatear_datos(datos_ordenados):
         separacion_2 = " " * 7
         linea_iguales = f'{separacion_2}{"=" * (50 + len(columna_1))}'
 
-        #Imprime y graba la linea correspondiende al autor y la fila que corresponde al titulo de la tabla del autor
+        #Concatena la linea correspondiende al autor y la fila que corresponde al titulo de la tabla del autor
         datos_a_imprimir += f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n{separacion_2}{columna_1}{separacion}{columna_2}\n'
+        #Concatena la linea de iguales
         datos_a_imprimir += f'{linea_iguales}\n'
         
         #Recorre los datos de las funciones del autor
         for funcion, cantidad_lineas in datos_autor["funciones"].items():
             #Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion
             separacion = " " * (50-len(funcion))
-            #Imprime y graba la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
+            #Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
             datos_a_imprimir += f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n'
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
         porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
+        #Incrementa el contador de funciones
         funciones_totales += len(datos_autor["funciones"])
         #Establece la columna 1 y la separacion
         columna_1 = f'{len(datos_autor["funciones"])} Funciones - Lineas' 
         separacion = " " * (50-len(columna_1))
-        #Imprime y graba la linea que contiene la cantidad de funciones que escribio el autor y el porcentaje respecto a todo el codigo
+        #Concatena la linea que contiene la cantidad de funciones que escribio el autor y el porcentaje respecto a todo el codigo
         datos_a_imprimir += f'{separacion_2}{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n'
-
+    #Establece la columna 1 y la separacion
     columna_1 = f'{funciones_totales} Funciones - Lineas'
     separacion = " " * (50-len(columna_1))
-
+    #Concatena la linea final
     datos_a_imprimir += f'Total: {columna_1}{separacion}{lineas_codigo_totales}'
 
     return datos_a_imprimir
 
 def imprimir_participacion(datos):
+    '''[Autor: Ivan Litteri]'''
     print(datos)
 
 def crear_archivo_txt(nombre_archivo, datos):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Crea y graba el archivo de participacion txt con los datos formateados]'''
+
+    #Abre el archivo para escribir y lo cierra al finalizar la grabacion
     with open(nombre_archivo, "w") as archivo_txt:
+        #Escribe en el archivo
         grabar.cadena(archivo_txt, datos)
 
 def main(datos_archivos_csv):
