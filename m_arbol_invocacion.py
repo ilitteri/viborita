@@ -27,7 +27,7 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
         #Busca la funcion main/principal en el diccionario
         funcion,funcion_imprimir = encontrar_main_archivo(diccionario_informacion)
         #Crea una variable string con la información de la funcion main/principal
-        str_invocacion = f'{separacion} ---> {funcion_imprimir}({diccionario_informacion[funcion]["cantidad_lineas"]})'
+        str_invocacion = f'{separacion}---> {funcion_imprimir}({diccionario_informacion[funcion]["cantidad_lineas"]})'
     #Si la variable función no es vacia, crea una variable string con la funcion recorrida
     else:
         str_invocacion = f'{separacion} ---> {funcion}({diccionario_informacion[funcion]["cantidad_lineas"]})'

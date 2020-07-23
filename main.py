@@ -15,7 +15,7 @@ def leer_archivos_csv(fuente, comentarios):
 
 def imprimir_menu_interaccion():
     titulo = "ANALIZADOR Y EVALUADOR DE DISEÑO MODULAR DE APLICACIONES"
-    print(f'{"*" * len(titulo)}\n{titulo}\n{"*" * len(titulo)}')
+    print(f'\n{"*" * len(titulo)}\n{titulo}\n{"*" * len(titulo)}')
     print("1. Panel General de Funciones")
     print("2. Consultar Funciones")
     print("3. Analizar Reutilizacion de Codigo")
@@ -37,6 +37,7 @@ def ayuda_menu(opcion):
 def menu_interaccion(datos_por_funciones):
     imprimir_menu_interaccion()
     opcion = input("Ingrese una opcion o presione ENTER para salir: ")
+    print()
     while opcion:
         if opcion == "1" or opcion.lower() == "panel general de funciones":
             panel_general_funciones.main(datos_por_funciones)
@@ -58,7 +59,9 @@ def menu_interaccion(datos_por_funciones):
             imprimir_menu_interaccion()
         else:
             print("Opcion incorrecta!, intente denuevo...")
+            print()
         opcion = input("Ingrese una opcion o presione ENTER para salir: ")
+        print()
 
 def main():
     crear_csv_finales.main("programas.txt")
