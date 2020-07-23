@@ -54,11 +54,9 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
 
 def main(diccionario_informacion):
     '''[Autor: Andrés Kübler]
-    [Ayuda: Esta funcion es el main del punto 4, busca la funcion principal del archivo en el diccionario, e imprime
+    [Ayuda: Esta funcion es el main del punto 4; arma el arbol de funciones llamando a la función obtener_arbol_invocaciones, e imprime
     por pantalla sus invocaciones indicando que función llama a otra función]'''
 
-    #Busco la funcion principal del archivo
-    funcion_principal = encontrar_main_archivo(diccionario_informacion)
     #Analiza las invocaciones del diccionario y arma un diagrama de las mismas y sus invocaciones internas
     arbol = obtener_arbol_invocaciones(diccionario_informacion)
     ##Imprime el arbol
