@@ -44,7 +44,7 @@ def autor_funcion(linea_codigo, bandera_autor = False):
         if bandera_autor:
             autor_funcion += caracter
         #Cuando el caracter se trate de una apertura de corchete y al mismo tiempo esa linea tenga la palabra autor, se habilita la bandera para que se almacenen caracteres en la cadena de autor.
-        if caracter == "[" and "Autor" in linea_codigo:
+        if caracter == "[" and ("Autor" in linea_codigo or "Autores" in linea_codigo):
             bandera_autor = True
 
     return autor_funcion
