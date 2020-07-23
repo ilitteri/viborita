@@ -95,7 +95,7 @@ def crear_csv_individuales(ubicaciones):
     archivos_comentarios = []
     for ubicacion, nombre_modulo in ubicaciones:
         with open(f'fuente_{nombre_modulo}.csv', "w") as fuente_modulo, open(f'comentarios_{nombre_modulo}.csv', "w") as comentarios_modulo, open(ubicacion, "r") as codigo:
-            datos_fuente, datos_comentarios = leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones)
+            datos_fuente, datos_comentarios, lineas_fuera_funcion = leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones)
             #Ordena las lineas a grabar en forma alfabetica
             datos_fuente_ordenados = sorted(datos_fuente)
             datos_comentarios_ordenados = sorted(datos_comentarios)

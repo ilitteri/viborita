@@ -28,7 +28,7 @@ def leer_archivos_individuales(datos):
     
     return lineas
 
-def ordenar_lineas(archivo_final, archivos_individuales):
+def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
     '''[Autores: Luciano Aguilera, Ivan Litteri]
     [Ayuda: lee las lineas de los archivos individuales, las compara, y graba de forma ordenada alfabeticamente por funcion
     el archivo final]'''
@@ -45,7 +45,11 @@ def ordenar_lineas(archivo_final, archivos_individuales):
         for linea in lineas:
             #Graba la linea y luego la borra de la lista una vez encontrada
             if linea == linea_menor:
-                grabar_final(archivo_final, linea)
+                nombre_funcion, _, nombre_modulo, *otros_datos = linea.split('","')
+                if "*" in nombre_modulo and f'{nombre_funcion[1:]}()\n' in lineas_fuera_funcion:
+                    grabar_final(archivo_final, '"*' + linea[1:])
+                else:
+                    grabar_final(archivo_final, linea)
                 lineas.remove(linea)
 
 def crear_archivo_final(nombre_archivo):
@@ -67,7 +71,7 @@ def abrir_archivos_individuales(archivos):
     return diccionario_archivos_abiertos
 
             
-def merge(nombre_archivo_final, archivos_individuales):
+def merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion):
     '''[Autores: Luciano Aguilera, Ivan Litteri]
     [Ayuda: abre los "n" archivos individuales y el archivo final en forma paralela, los lee secuencialmente, graba en 
     forma ordenada el archivo final, y luego los cierra una vez finalizado el proceso.]'''
@@ -76,7 +80,7 @@ def merge(nombre_archivo_final, archivos_individuales):
     archivos_individuales = abrir_archivos_individuales(archivos_individuales)
     archivo_final= crear_archivo_final(nombre_archivo_final)
     #Graba en forma ordenada las lineas de los individuales en el archivo final
-    ordenar_lineas(archivo_final, archivos_individuales)
+    ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion)
     #Cierra todos los archivos abiertos
     cerrar_archivos_individuales(archivos_individuales)
 
@@ -92,6 +96,7 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
 
 def main(nombre_archivo):
     archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = crear_csv_individuales.main(nombre_archivo)
-    merge("fuente_unico.csv", archivos_fuente_individuales)
-    merge("comentarios.csv", archivos_comentarios_individuales)
+    merge("fuente_unico.csv", archivos_fuente_individuales, lineas_fuera_funcion)
+    merge("comentarios.csv", archivos_comentarios_individuales, lineas_fuera_funcion)
+    print(lineas_fuera_funcion)
     #borrar_archivos_csv_individuales(list(zip(*ubicaciones))[1])
