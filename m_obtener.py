@@ -1,30 +1,23 @@
 import os
+import platform
 
-def ubicaciones_modulos(archivo_principal):
+def ubicaciones_modulos(nombre_archivo):
     '''[Autor: Ivan Litteri]
     [Ayuda: Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las 
     lineas de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a 
     anlizar).]'''
-    #Abro el archivo y obtengo una lista de todas sus lineas
-    with open(archivo_principal, "r") as archivo:
-        ubicaciones = archivo.read().splitlines()
+    ubicaciones = []
+    os = platform.system()
+    with open(nombre_archivo, "r") as archivo_programas:
+        ubicacion = archivo_programas.readline().strip()
+        while ubicacion:
+            if os == "Linux" or os == "Darwin":
+                ubicaciones.append((ubicacion, ubicacion.split("/")[-1]))
+            elif os == "Windows":
+                ubicaciones.append((ubicacion, ubicacion.split("\\")[-1]))
+            ubicacion = archivo_programas.readline().strip()
 
-    #Devuelvo la lista de lineas 
     return ubicaciones
-
-def nombres_archivos_csv_individuales(ubicaciones_modulos):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: Obtiene 2 listas de nombres (uno para fuentes y otro para comentarios).]'''
-
-    #lista de nombres de modulos
-    nombres_modulos = [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
-    #Lista de todos los nombres de los archivos fuente
-    nombres_archivos_fuente_individuales = [f'fuente_{nombre_modulo}.csv' for nombre_modulo in nombres_modulos]
-    #Lista de todos los nombres de los archivos de comentarios
-    nombres_archivos_comentarios_individuales = [f'comentarios_{nombre_modulo}.csv' for nombre_modulo in nombres_modulos]
-
-    #Retorna las listas
-    return nombres_archivos_fuente_individuales, nombres_archivos_comentarios_individuales
 
 def nombres_modulos(ubicaciones_modulos):
     '''[Autor: Ivan Litteri]'''

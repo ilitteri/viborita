@@ -1,20 +1,5 @@
-import platform
-import os
 import m_analizar_linea as analizar_linea
-
-def analizar_archivo_programas(nombre_archivo):
-    ubicaciones = []
-    os = platform.system()
-    with open(nombre_archivo, "r") as archivo_programas:
-        ubicacion = archivo_programas.readline().strip()
-        while ubicacion:
-            if os == "Linux" or os == "Darwin":
-                ubicaciones.append((ubicacion, ubicacion.split("/")[-1]))
-            elif os == "Windows":
-                ubicaciones.append((ubicacion, ubicacion.split("\\")[-1]))
-            ubicacion = archivo_programas.readline().strip()
-
-    return ubicaciones
+import m_obtener as obtener
 
 def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def):
     if linea_codigo[0:3] != "def" and linea_codigo[0:3] != "   " and linea_codigo != "\n":
@@ -109,7 +94,7 @@ def crear_csv_individuales(ubicaciones):
     return archivos_fuente, archivos_comentarios, lineas_fuera_funcion
 
 def main(nombre_archivo):
-    ubicaciones = analizar_archivo_programas(nombre_archivo)
+    ubicaciones = obtener.ubicaciones_modulos(nombre_archivo)
     archivos_fuente, archivos_comentarios, lineas_fuera_funcion = crear_csv_individuales(ubicaciones)
 
     return archivos_fuente, archivos_comentarios, lineas_fuera_funcion
