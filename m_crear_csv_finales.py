@@ -98,5 +98,4 @@ def main(nombre_archivo):
     archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = crear_csv_individuales.main(nombre_archivo)
     merge("fuente_unico.csv", archivos_fuente_individuales, lineas_fuera_funcion)
     merge("comentarios.csv", archivos_comentarios_individuales, lineas_fuera_funcion)
-    print(lineas_fuera_funcion)
     #borrar_archivos_csv_individuales(list(zip(*ubicaciones))[1])
