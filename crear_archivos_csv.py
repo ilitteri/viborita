@@ -16,23 +16,27 @@ def analizar_archivo_programas(nombre_archivo):
 
     return ubicaciones
 
-def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def):
+def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def):
     if linea_codigo[0:3] != "def" and linea_codigo[0:3] != "   " and linea_codigo != "\n":
             lineas_fuera_funcion.append(linea_codigo)
     elif linea_codigo[0:3] == "def":
-        contador_def += 1
         bandera_funcion = True
+        contador_def += 1
         if contador_def > 1:
-            datos_fuente += "\n"
-            datos_comentarios += f',"{autor}","{ayuda}","{otros_comentarios}"\n'
-            autor = ""
-            ayuda = ""
+            linea_fuente += "\n"
+            linea_comentarios += f',"{autor}","{ayuda}","{otros_comentarios}"\n'
+            datos_fuente.append(linea_fuente)
+            datos_comentarios.append(linea_comentarios)
+            linea_fuente = linea_comentarios = autor = ayuda = otros_comentarios = ""
+        else:
+            datos_comentarios = []
+            datos_fuente = []
         funcion, parametros = analizar_linea.declaracion_funcion(linea_codigo)
         if ubicacion == ubicaciones[0][0]:
-            datos_fuente += f'"{funcion}","{parametros}","*{nombre_modulo}"'
+            linea_fuente += f'"{funcion}","{parametros}","*{nombre_modulo}"'
         else:
-            datos_fuente += f'"{funcion}","{parametros}","{nombre_modulo}"'
-        datos_comentarios += f'"{funcion}"'
+            linea_fuente += f'"{funcion}","{parametros}","{nombre_modulo}"'
+        linea_comentarios += f'"{funcion}"'
     elif bandera_funcion:
         if "return" in linea_codigo:
             bandera_funcion = False
@@ -46,7 +50,7 @@ def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, d
                 comentario, linea = analizar_linea.comentario_numeral(linea_codigo)
                 otros_comentarios += f'{comentario}'
                 if linea != "":
-                    datos_fuente += f',"{linea}",'
+                    linea_fuente += f',"{linea}",'
             elif "'''" in linea_codigo or '"""' in linea_codigo:
                 if linea_codigo.count("'''") == 2 or linea_codigo.count('"""') == 2:
                     if "Autor" in linea_codigo:
@@ -59,24 +63,31 @@ def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, d
                     bandera_comentario = True
                     autor += f'{analizar_linea.autor_funcion(linea_codigo)}'
             elif linea_codigo:
-                datos_fuente += f',"{linea_codigo.strip()}"'
+                linea_fuente += f',"{linea_codigo.strip()}"'
     else:
         lineas_fuera_funcion.append(linea_codigo.strip())
     
-    return datos_fuente, datos_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def
+    return datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def
 
-def leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente="", datos_comentarios="", autor="", ayuda="", otros_comentarios="", lineas_fuera_funcion=[], bandera_funcion=False, bandera_comentario=False, bandera_ayuda=False, contador_def=0):
+def leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente=[], datos_comentarios=[], linea_fuente="", linea_comentarios="", autor="", ayuda="", otros_comentarios="", lineas_fuera_funcion=[], bandera_funcion=False, bandera_comentario=False, bandera_ayuda=False, contador_def=0):
 
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
-        datos_fuente, datos_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def =analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def)
+        datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def =analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def)
         linea_codigo = codigo.readline().replace('"', "'")
-    datos_comentarios += f',"{autor}","{ayuda}","{otros_comentarios}"'
+    linea_comentarios += f',"{autor}","{ayuda}","{otros_comentarios}"\n'
+    linea_fuente += "\n"
+    datos_comentarios.append(linea_comentarios)
+    datos_fuente.append(linea_fuente)
 
     return datos_fuente, datos_comentarios
 
-def grabar(archivo, datos):
-    archivo.write(datos)
+def grabar_individual(archivo, datos_ordenados):
+    for linea in datos_ordenados:
+        archivo.write(linea)
+
+def ordenar_datos(datos):
+    return sorted(datos)
 
 def crear_csv_individuales(ubicaciones):
     archivos_fuente = []
@@ -84,12 +95,97 @@ def crear_csv_individuales(ubicaciones):
     for ubicacion, nombre_modulo in ubicaciones:
         with open(f'fuente_{nombre_modulo}.csv', "w") as fuente_modulo, open(f'comentarios_{nombre_modulo}.csv', "w") as comentarios_modulo, open(ubicacion, "r") as codigo:
             datos_fuente, datos_comentarios = leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones)
-            grabar(fuente_modulo, datos_fuente)
-            grabar(comentarios_modulo, datos_comentarios)
-            archivos_fuente.append(f'fuente_{nombre_modulo}.csv')
-            archivos_comentarios.append(f'comentarios_{nombre_modulo}.csv')
+            #Ordena las lineas a grabar en forma alfabetica
+            datos_fuente_ordenados = sorted(datos_fuente)
+            datos_comentarios_ordenados = sorted(datos_comentarios)
+            #Graba los datos en los archivos
+            grabar_individual(fuente_modulo, datos_fuente_ordenados)
+            grabar_individual(comentarios_modulo, datos_comentarios_ordenados)
+            #Guarda el nombre de los archivos en listas
+            archivos_fuente.append((f'fuente_{nombre_modulo}.csv', nombre_modulo))
+            archivos_comentarios.append((f'comentarios_{nombre_modulo}.csv', nombre_modulo))
     
     return archivos_fuente, archivos_comentarios
+
+def cerrar_archivos_individuales(datos):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]'''
+    for nombre_modulo in datos:
+        datos[nombre_modulo]["contenido"].close()
+        
+def grabar_final(archivo, linea):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]'''
+    archivo.write(linea)
+
+def leer_archivos_individuales(datos):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    [Ayuda: lee secuencialmente los datos de los archivos individuales que le llegan y los guarda en una lista]'''
+    
+    #Declara una lista vacia a llenar
+    lineas = []
+    #Recorro los modulos en el diccionario de datos
+    for nombre_modulo in datos:
+        #Carga la linea del archivo abierto
+        linea = datos[nombre_modulo]["contenido"].readline()
+        #Mientras el archivo tenga lineas
+        while linea:
+            #Guarda la linea en una lista
+            lineas.append(linea)
+            #Avanza de linea en el archivo
+            linea = datos[nombre_modulo]["contenido"].readline()
+    
+    return lineas
+
+def ordenar_lineas(archivo_final, archivos_individuales):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    [Ayuda: lee las lineas de los archivos individuales, las compara, y graba de forma ordenada alfabeticamente por funcion
+    el archivo final]'''
+
+    #Obtiene la menor linea, en este caso la siguiente a imprimir
+    obtener_primera_linea = lambda x: min(x)
+    #Lista de lineas leidas de los archivos individuales
+    lineas = leer_archivos_individuales(archivos_individuales)
+
+    #Mientras la lista de lineas no este vacia
+    while lineas:
+        #Recorre linea por linea
+        linea_menor = obtener_primera_linea(lineas)
+        for linea in lineas:
+            #Graba la linea y luego la borra de la lista una vez encontrada
+            if linea == linea_menor:
+                grabar_final(archivo_final, linea)
+                lineas.remove(linea)
+
+def crear_archivo_final(nombre_archivo):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]'''
+    return open(nombre_archivo, "w")
+
+def abrir_archivos_individuales(archivos):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    [Ayuda: se guardan los datos a leer de los archivos individuales en un diccionario ya que la unica forma que encontramos
+    de guardar variables dinamicas fue de esta forma, entonces se pueden tener abiertos "n" archivos. Y devuelve
+    un diccionario con el contenido de cada modulo como value de la key (que seria el modulo)]'''
+
+    diccionario_archivos_abiertos = {}
+    for archivo, nombre_modulo in archivos:
+        if nombre_modulo not in diccionario_archivos_abiertos:
+            diccionario_archivos_abiertos[nombre_modulo] = {"contenido": None, "lineas": []}
+        diccionario_archivos_abiertos[nombre_modulo]["contenido"] = open(archivo, "r")
+
+    return diccionario_archivos_abiertos
+
+            
+def merge(nombre_archivo_final, archivos_individuales):
+    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    [Ayuda: abre los "n" archivos individuales y el archivo final en forma paralela, los lee secuencialmente, graba en 
+    forma ordenada el archivo final, y luego los cierra una vez finalizado el proceso.]'''
+
+    #Abre los archivos "n" individuales y el archivo final
+    archivos_individuales = abrir_archivos_individuales(archivos_individuales)
+    archivo_final= crear_archivo_final(nombre_archivo_final)
+    #Graba en forma ordenada las lineas de los individuales en el archivo final
+    ordenar_lineas(archivo_final, archivos_individuales)
+    #Cierra todos los archivos abiertos
+    cerrar_archivos_individuales(archivos_individuales)
 
 def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]
@@ -103,7 +199,9 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
 
 def main(nombre_archivo):
     ubicaciones = analizar_archivo_programas(nombre_archivo)
-    crear_csv_individuales(ubicaciones)
+    archivos_fuente_individuales, archivos_comentarios_individuales = crear_csv_individuales(ubicaciones)
+    merge("fuente_unico.csv", archivos_fuente_individuales)
+    merge("comentarios.csv", archivos_comentarios_individuales)
     #borrar_archivos_csv_individuales(list(zip(*ubicaciones))[1])
 
 main("programas.txt")
