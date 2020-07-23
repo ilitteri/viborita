@@ -52,20 +52,21 @@ def imprimir_datos(datos_ordenados):
         columna_1 = "Funcion"
         columna_2 = "Lineas"
         separacion = " " * (50-len(columna_1))
-        linea_iguales = f'\t{"=" * (50 + len(columna_1))}'
+        separacion_2 = " " * 7
+        linea_iguales = f'{separacion_2}{"=" * (50 + len(columna_1))}'
 
         #Imprime y graba la linea correspondiende al autor y la fila que corresponde al titulo de la tabla del autor
-        print(f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}')
+        print(f'\n{autor if "Autor" in autor else "Sin Autor"}\n\n{separacion_2}{columna_1}{separacion}{columna_2}')
         print(linea_iguales)
-        grabar_txt(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n\t{columna_1}{separacion}{columna_2}\n{linea_iguales}\n')
+        grabar_txt(archivo_datos, f'{autor if "Autor" in autor else "Sin Autor"}\n\n{separacion_2}{columna_1}{separacion}{columna_2}\n{linea_iguales}\n')
         
         #Recorre los datos de las funciones del autor
         for funcion, cantidad_lineas in datos_autor["funciones"].items():
             #Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion
             separacion = " " * (50-len(funcion))
             #Imprime y graba la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
-            print(f'\t{funcion}{separacion}{cantidad_lineas}')
-            grabar_txt(archivo_datos, f'\t{funcion}{separacion}{cantidad_lineas}\n')
+            print(f'{separacion_2}{funcion}{separacion}{cantidad_lineas}')
+            grabar_txt(archivo_datos, f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n')
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
         porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
         funciones_totales += len(datos_autor["funciones"])
@@ -73,13 +74,13 @@ def imprimir_datos(datos_ordenados):
         columna_1 = f'{len(datos_autor["funciones"])} Funciones - Lineas' 
         separacion = " " * (50-len(columna_1))
         #Imprime y graba la linea que contiene la cantidad de funciones que escribio el autor y el porcentaje respecto a todo el codigo
-        print(f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
-        grabar_txt(archivo_datos, f'\t{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
+        print(f'{separacion_2}{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
+        grabar_txt(archivo_datos, f'{separacion_2}{columna_1}{separacion}{lineas_totales_autor}\t{porcentaje_lineas_autor}%\n\n')
 
-    columna_1 = f'Total: {funciones_totales} Funciones - Lineas'
+    columna_1 = f'{funciones_totales} Funciones - Lineas'
     separacion = " " * (50-len(columna_1))
-    print(f'\t{columna_1}{separacion}{lineas_codigo_totales}')
-    grabar_txt(archivo_datos, f'\t{columna_1}{separacion}{lineas_codigo_totales}')
+    print(f'Total: {columna_1}{separacion}{lineas_codigo_totales}')
+    grabar_txt(archivo_datos, f'Total: {columna_1}{separacion}{lineas_codigo_totales}')
     #Cierra el archivo de texto que se creo ya que se grabo todo lo que se queria grabar
     archivo_datos.close()
 
