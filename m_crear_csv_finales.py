@@ -54,10 +54,6 @@ def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
                     grabar_final(archivo_final, linea)
                 lineas.remove(linea)
 
-def crear_archivo_final(nombre_archivo):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]'''
-    return open(nombre_archivo, "w")
-
 def abrir_archivos_individuales(archivos):
     '''[Autores: Luciano Aguilera, Ivan Litteri]
     [Ayuda: se guardan los datos a leer de los archivos individuales en un diccionario ya que la unica forma que encontramos
@@ -72,7 +68,6 @@ def abrir_archivos_individuales(archivos):
 
     return diccionario_archivos_abiertos
 
-            
 def merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion):
     '''[Autores: Luciano Aguilera, Ivan Litteri]
     [Ayuda: abre los "n" archivos individuales y el archivo final en forma paralela, los lee secuencialmente, graba en 
@@ -80,11 +75,12 @@ def merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion):
 
     #Abre los archivos "n" individuales y el archivo final
     archivos_individuales = abrir_archivos_individuales(archivos_individuales)
-    archivo_final= crear_archivo_final(nombre_archivo_final)
+    archivo_final= open(nombre_archivo_final, "w")
     #Graba en forma ordenada las lineas de los individuales en el archivo final
     ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion)
     #Cierra todos los archivos abiertos
     cerrar_archivos_individuales(archivos_individuales)
+    archivo_final.close()
 
 def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]
