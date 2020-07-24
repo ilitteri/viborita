@@ -58,7 +58,7 @@ def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, 
     return datos_por_autores
 
 def leer_archivos_csv(archivo_fuente, archivo_comentarios):
-    '''
+    '''[Autor: Ivan Litteri]
     [Ayuda: recibe los archivos fuente unico y comentarios csv, los lee secuencialemente, extrayendo de cada linea los
     datos deseados y los organiza en diccionarios segun la necesidad]'''
 
