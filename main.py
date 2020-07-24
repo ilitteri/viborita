@@ -9,9 +9,9 @@ import m_informacion_desarrollador as informacion_desarrollador
 
 def leer_archivos_csv(fuente, comentarios):
     with open(fuente, "r") as archivo_fuente, open(comentarios, "r") as archivo_comentarios:
-        datos_por_funciones = organizar_datos.por_funciones(archivo_fuente, archivo_comentarios)
+        datos_por_funciones, datos_por_autores = organizar_datos.leer_archivos_csv(archivo_fuente, archivo_comentarios)
 
-    return datos_por_funciones
+    return datos_por_funciones, datos_por_autores
 
 def imprimir_menu_interaccion():
     titulo = "ANALIZADOR Y EVALUADOR DE DISEÑO MODULAR DE APLICACIONES"
@@ -34,7 +34,7 @@ def ayuda_menu(opcion):
 
     return input("Presione cualquier tecla para volver al menu")
 
-def menu_interaccion(datos_por_funciones):
+def menu_interaccion(datos_por_funciones, datos_por_autores):
     imprimir_menu_interaccion()
     opcion = input("Ingrese una opcion o presione ENTER para salir: ")
     print()
@@ -52,7 +52,7 @@ def menu_interaccion(datos_por_funciones):
             arbol_invocacion.main(datos_por_funciones)
             imprimir_menu_interaccion()
         elif opcion == "5" or opcion.lower() == "informacion de desarrollador":
-            informacion_desarrollador.main(datos_por_funciones)
+            informacion_desarrollador.main(datos_por_autores)
             imprimir_menu_interaccion()
         elif opcion == "6" or opcion.lower() == "ayuda":
             ayuda_menu(opcion)
@@ -65,7 +65,7 @@ def menu_interaccion(datos_por_funciones):
 
 def main():
     crear_csv_finales.main("programas.txt")
-    datos_por_funciones = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
-    menu_interaccion(datos_por_funciones)
+    datos_por_funciones, datos_por_autores = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
+    menu_interaccion(datos_por_funciones, datos_por_autores)
     
 main()
