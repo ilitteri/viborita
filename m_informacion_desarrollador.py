@@ -62,8 +62,11 @@ def formatear_datos(datos_ordenados):
         for funcion, cantidad_lineas in datos_autor["funciones"].items():
             #Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion
             separacion = " " * (50-len(funcion))
-            #Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
-            datos_a_imprimir += f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n'
+            if "*" in funcion:
+                datos_a_imprimir += f'{separacion_2}{funcion[1:]}{separacion}{cantidad_lineas}\n'
+            else:    
+                #Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
+                datos_a_imprimir += f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n'
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
         porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
         #Incrementa el contador de funciones
