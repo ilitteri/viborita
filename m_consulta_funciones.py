@@ -67,48 +67,63 @@ def obtener_datos_pregunta(datos_csv, funcion):
     return candena_pregunta
 
 def grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion, opcion):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: le llega por parametro la opcion ingresada por el usuario, el archivo para grabar, los datos a grabar,
+    y la funcion solicitada por el autor para analizar dicha opcion y grabar en el archivo la informacion requerida]'''
 
+    #Si hay un signo de pregunta en la opcion entonces obtiene los datos solicitados y los graba en el archivo
     if "?" in opcion:
         informacion = obtener_datos_pregunta(datos_csv, funcion)
         archivo_ayuda.write(informacion)
-    
+    #Si hay un numeral en la opcion entonces obtiene los datos solicitados y los graba en el archivo
     elif "#" in opcion:
         informacion = obtener_datos_numeral(datos_csv, funcion)
         archivo_ayuda.write(informacion)
 
 def crear_archivo_ayuda(datos_csv, opcion):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: crea y graba el archivo de ayuda]'''
 
     with open("ayuda_funcion.txt", "w") as archivo_ayuda:
         for funcion in datos_csv:
             grabar_archivo_ayuda(archivo_ayuda, datos_csv, funcion, opcion)
 
 def imprimir_datos(datos_csv, funcion, opcion):
+    '''[Autor: Joel Glauber]
+    [Ayuda: analiza la opcion ingresada y dependiendo de esta, imprime la informacion solicitada.]'''
+
+    #Si hay un numeral en la opcion entonces obtiene los datos solicitados y los imprime en pantalla
     if "#" in opcion:
         informacion = obtener_datos_numeral(datos_csv, funcion)
         print(informacion)
+    #Si hay un signo de pregunta en la opcion entonces obtiene los datos solicitados y los imprime en pantalla
     elif "?" in opcion:
         informacion = obtener_datos_pregunta(datos_csv, funcion)
         print(informacion)
 
 def opcion_pregunta(datos_csv, opcion):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: analiza si se quiere saber todo o solo de una funcion en especifico.]'''
 
+    #Si se quiere saber todo, imprime los datos para cada funcion
     if opcion == "?todo":
         for funcion in datos_csv:
             imprimir_datos(datos_csv, funcion, opcion)
+    #Si se quiere saber de una funcion especifica entonces imprime sobre esa funcion
     elif opcion[1:] in datos_csv.keys():
         imprimir_datos(datos_csv, opcion[1:], opcion)
     else:
         print("Esa funcion no existe")
 
 def opcion_numeral(datos_csv, opcion):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: analiza si se quiere saber todo o solo de una funcion en especifico.]'''
 
+    #Si se quiere saber todo, imprime los datos para cada funcion
     if opcion == "#todo":
         for funcion in datos_csv:
             imprimir_datos(datos_csv, funcion, opcion)
+    #Si se quiere saber de una funcion especifica entonces imprime sobre esa funcion
     elif opcion[1:] in datos_csv.keys():
         imprimir_datos(datos_csv, opcion[1:], opcion)
     else:
@@ -130,6 +145,7 @@ def analizar_opcion(datos_csv, opcion):
         print("\nCreando archivo de ayuda...")
         crear_archivo_ayuda(datos_csv, opcion)
         print("Archivo creado con exito!")
+    #Si se ingresa la opcion "imprimir #todo" se crea el archivo de ayuda
     elif opcion == "imprimir #todo":
         print("\nCreando archivo de ayuda...")
         crear_archivo_ayuda(datos_csv, opcion)
@@ -141,13 +157,19 @@ def analizar_opcion(datos_csv, opcion):
 def analizar_ingreso_usuario(datos_csv):
     '''[Autor: Joel Glauber]
     [Ayuda: solicita al autor que ingrese una de las opciones]'''
+
+    #Se solicita ingreso al usuario
     opcion = input("\nFuncion: ")
     while opcion:
+        #Analiza la opcion ingresada
         analizar_opcion(datos_csv, opcion)
+        #Se solicita ingreso al usuario
         opcion = input("\nFuncion: ")
 
 def imprimir_tabla(tabla, cantidad_guiones):
-    '''[Autor: Joel Glauber]'''
+    '''[Autor: Joel Glauber]
+    [Ayuda: Imprime la tabla de funciones]'''
+    
     print(f'{"-" * (cantidad_guiones)}')
     print(tabla)
     print(f'{"-" * (cantidad_guiones)}')
