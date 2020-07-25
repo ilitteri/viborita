@@ -158,12 +158,14 @@ def analizar_ingreso_usuario(datos_csv):
     '''[Autor: Joel Glauber]
     [Ayuda: solicita al autor que ingrese una de las opciones]'''
 
+    print("\nPresion ENTER para salir")
     #Se solicita ingreso al usuario
     opcion = input("\nFuncion: ")
     while opcion:
         #Analiza la opcion ingresada
         analizar_opcion(datos_csv, opcion)
         #Se solicita ingreso al usuario
+        print("Presion ENTER para salir\n")
         opcion = input("\nFuncion: ")
 
 def imprimir_tabla(tabla, cantidad_guiones):
@@ -174,10 +176,22 @@ def imprimir_tabla(tabla, cantidad_guiones):
     print(tabla)
     print(f'{"-" * (cantidad_guiones)}')
 
+def imprimir_instrucciones_uso():
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Imprime las instrucciones de uso del modulo]'''
+
+    print("?<funcion> ---> indica la descripcion asociada al uso, parametros, autor, y modulo de la funcion")
+    print("?todo ---> indica la descripcion asociada al uso, parametros, autor, y modulo de todas las funciones")
+    print("imprimir ?todo ---> lo mismo que ?todo pero lo graba en un archivo")
+    print("#<funcion> ---> indica todo lo relativo a la funcion")
+    print("#todo ---> indica todo lo relativo a todas las funciones")
+    print("imprimir #todo ---> lo mismo que #todo pero lo graba en un archivo")
+
 def main(datos_archivos_csv):
     '''[Autor: Joel Glauber]'''
 
     lista_funciones = sorted(datos_archivos_csv.keys())
     tabla, cantidad_guiones = obtener.tabla_funciones(lista_funciones)
     imprimir_tabla(tabla, cantidad_guiones)
+    imprimir_instrucciones_uso()
     analizar_ingreso_usuario(datos_archivos_csv)
