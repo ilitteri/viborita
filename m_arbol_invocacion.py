@@ -1,8 +1,7 @@
 def printear_arbol(arbol):
     '''[Autor: Andrés Kübler]
-    [Ayuda: Imprime el arbol de forma ordenada]'''
-
-    return print(arbol.rstrip("\n"))
+    [Ayuda: Imprime el arbol de forma ordenada y le quita el ultimo salto de linea]'''
+    print(arbol.rstrip("\n"))
 
 def encontrar_main_archivo(diccionario_informacion, funcion_main_dicc = None, funcion_main_imprimir = None):
     '''[Autor: Andrés Kübler]
