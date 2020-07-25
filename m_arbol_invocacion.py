@@ -1,19 +1,33 @@
 def printear_arbol(arbol):
     '''[Autor: Andrés Kübler]
     [Ayuda: Imprime el arbol de forma ordenada]'''
-    return print(arbol)
 
-def encontrar_main_archivo(diccionario_informacion):
+    return print(arbol.rstrip("\n"))
+
+def encontrar_main_archivo(diccionario_informacion, funcion_main_dicc = None, funcion_main_imprimir = None):
     '''[Autor: Andrés Kübler]
-    [Ayuda: Busca la funcion main en el diccionario y la devuelve 2 veces: la primera con el * y la segunda sin el mismo]'''
+    [Ayuda: Busca la funcion main en una lista de las claves del diccionario, y la devuelve como 2 variable 
+    diferente: la primera con el * y la segunda sin el mismo]'''
 
-    #Recorre las key del diccionario
-    for clave in diccionario_informacion.keys():
-        #Si la key arranca con * me la guardo como variable
-        if clave.startswith("*"):
-            funcion_main_dicc = clave
-            funcion_main_imprimir = clave.lstrip("*")
+    #Crea una variable con las claves del diccionario en forma de lista
+    lista_de_keys = list(diccionario_informacion.keys())
     
+    #Define un contador en 0 y una condición de corte
+    contador = 0
+    bandera = True
+
+    #Recorre los elementos de la lista_de_keys
+    while (contador < len(lista_de_keys)) and bandera:
+        #Se fija si el elemento es el main si comienza con un *
+        if lista_de_keys[contador].startswith("*"):
+            #Guarda la funcion en dos variables (una con el * y otra sin el mismo)
+            funcion_main_dicc = lista_de_keys[contador]
+            funcion_main_imprimir = lista_de_keys[contador].lstrip("*")
+            #Define la condición false para salir del ciclo
+            bandera = False
+        #Suma una posición al contador
+        contador += 1
+        
     return funcion_main_dicc,funcion_main_imprimir
 
 def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separacion = ""):
@@ -59,5 +73,5 @@ def main(diccionario_informacion):
 
     #Analiza las invocaciones del diccionario y arma un diagrama de las mismas y sus invocaciones internas
     arbol = obtener_arbol_invocaciones(diccionario_informacion)
-    ##Imprime el arbol
+    #Imprime el arbol
     printear_arbol(arbol)
