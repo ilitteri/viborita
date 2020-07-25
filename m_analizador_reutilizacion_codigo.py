@@ -63,7 +63,7 @@ def creacion_formato_tabla(diccionario_invocaciones , largo_maximo):
 
     # Creo la primer y ultima linea del archivo de texto  
     filas_txt.append(f'\t FUNCIONES\t{" "*(largo_maximo - 5)}')
-    cadena_totales = (f'\n\t Total Invocaciones{" "*(largo_maximo - 30)}')
+    cadena_totales = (f'\n\t Total Invocaciones\t{" "*(largo_maximo - 30)}')
 
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
