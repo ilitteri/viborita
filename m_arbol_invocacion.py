@@ -3,6 +3,19 @@ def printear_arbol(arbol):
     [Ayuda: Imprime el arbol de forma ordenada y le quita el ultimo salto de linea]'''
     print(arbol.rstrip("\n"))
 
+def analizar_recursividad_funcion(funcion,invocaciones):
+    '''[Autor: Andrés Kübler]
+    [Ayuda: Modifica la lista de invocaciones, quitando de ella la funcion pasada por parámetro, y la devuelve]'''
+
+    nueva_lista = []
+    #Recorre la lista de invocaciones
+    for funcion_invocada in invocaciones:
+        #Si la funcion_invocada es distinta de la función la agrega a la lista_nueva
+        if funcion_invocada != funcion:
+            nueva_lista.append(funcion_invocada)
+    
+    return nueva_lista
+
 def encontrar_main_archivo(diccionario_informacion, funcion_main_dicc = None, funcion_main_imprimir = None):
     '''[Autor: Andrés Kübler]
     [Ayuda: Busca la funcion main en una lista de las claves del diccionario, y la devuelve como 2 variable 
@@ -26,7 +39,7 @@ def encontrar_main_archivo(diccionario_informacion, funcion_main_dicc = None, fu
             bandera = False
         #Suma una posición al contador
         contador += 1
-        
+
     return funcion_main_dicc,funcion_main_imprimir
 
 def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separacion = ""):
@@ -50,6 +63,14 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
     #Crea una variable con las invocaciones de la función recorrida para ser reemplazada próximamente
     invocaciones = diccionario_informacion[funcion]["invocaciones"]
 
+    existe_funcion_recursiva = ""
+    #Si la funcion se llama a ella misma (es recursiva)
+    if (funcion in invocaciones) and (len(invocaciones) > 0):
+        #Modifica las invocaciones sacando de la lista la funcion recursiva
+        invocaciones = analizar_recursividad_funcion(funcion,invocaciones)
+        #Agrega la funcion recursiva al string
+        fexiste_uncion_recursiva += funcion
+
     #Revisa si la función invoca a otras
     if len(invocaciones) > 0:
         #Si invoca, se autollama pasandole como parametro: el diccionario; la primera invocación; un string vacio. Luego, lo agrega al string arbol
@@ -59,6 +80,11 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
     for invocacion_n in invocaciones[1:]:
         #Para cada invocacion, pasa como parametro la función y su longitud, y autollama la función 
         arbol += obtener_arbol_invocaciones(diccionario_informacion, invocacion_n, " " * len(str_invocacion))
+    
+    #Se fija si existe la funcion recursiva, y de ser así la agrega al arbol
+    if fexiste_uncion_recursiva != "":
+        arbol += f'{" " * len(str_invocacion)} ---> {funcion}({diccionario_informacion[funcion]["cantidad_lineas"]})'
+
     #Si la longitud de las invocaciones es nula, agrega un salto de linea
     if len(invocaciones) == 0:
         arbol += "\n"
