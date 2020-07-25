@@ -93,7 +93,7 @@ def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
     for numero in diccionario_invocaciones :
         if str(numero).isdigit() :
             # Esta cadena devuelve el nombre de la funcion si se ingresa su indice correspondiente
-            funcion_en_linea = diccionario_invocaciones["nombres"][funcion]
+            funcion_en_linea = diccionario_invocaciones["nombres"][numero]
         
             for funcion in diccionario_invocaciones[numero][funcion_en_linea]:
                 # Aqui agrego el caracteres correspondientes a cada funcion ("X", "numero" o "vacio")
