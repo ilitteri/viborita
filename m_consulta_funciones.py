@@ -10,13 +10,13 @@ def obtener_datos_numeral(datos_csv, funcion):
     cadena_numeral = ""
 
     cadena_numeral += f'{"*" * 79}\n'
-    cadena_numeral += f'Funcion: {funcion}\n'
+    cadena_numeral += f'Funcion: {funcion if "*" not in funcion else funcion[1:]}\n'
     cadena_numeral += ("-" * len(f'Funcion: {funcion}') + "\n")
     cadena_numeral += "\nInformacion:\n"
     cadena_numeral += ("-" * len("Informacion:") + "\n")
     if "*" in funcion:
         cadena_numeral += "Es la funcion principal\n"
-    cadena_numeral += f'Modulo: {datos_csv[funcion]["modulo"]}\n'
+    cadena_numeral += f'Modulo: {datos_csv[funcion]["modulo"] if "*" not in datos_csv[funcion]["modulo"] else datos_csv[funcion]["modulo"][1:]}\n'
     cadena_numeral += f'{datos_csv[funcion]["comentarios"]["autor"] if "Autor" in datos_csv[funcion]["comentarios"]["autor"] else "El autor es anonimo"}\n'
     cadena_numeral += f'Ayuda: {"Si" if datos_csv[funcion]["comentarios"]["ayuda"] else "No brinda ayuda"}\n'
     cadena_numeral += f'Parametros: {datos_csv[funcion]["cantidad_parametros"]}\n'
@@ -53,11 +53,11 @@ def obtener_datos_pregunta(datos_csv, funcion):
     else:
         ayuda = datos_csv[funcion]["comentarios"]["ayuda"] 
     parametros = datos_csv[funcion]["parametros"]
-    modulo = datos_csv[funcion]["modulo"]
+    modulo = datos_csv[funcion]["modulo"] if "*" not in datos_csv[funcion]["modulo"] else datos_csv[funcion]["modulo"][1:]
     autor = datos_csv[funcion]["comentarios"]["autor"]
 
     candena_pregunta += f'{"*" * 79}\n'
-    candena_pregunta += f'Funcion: {funcion}\n'
+    candena_pregunta += f'Funcion: {funcion if "*" not in funcion else funcion[1:]}\n'
     candena_pregunta += f'{ayuda if ayuda else "No brinda ayuda"}\n'
     candena_pregunta += f'Parametros formales: {parametros if parametros else "No tiene parametros formales"}\n'
     candena_pregunta += f'Modulo: {modulo}\n'
@@ -165,7 +165,7 @@ def analizar_ingreso_usuario(datos_csv):
         #Analiza la opcion ingresada
         analizar_opcion(datos_csv, opcion)
         #Se solicita ingreso al usuario
-        print("Presion ENTER para salir\n")
+        print("\nPresion ENTER para salir")
         opcion = input("\nFuncion: ")
 
 def imprimir_tabla(tabla, cantidad_guiones):
