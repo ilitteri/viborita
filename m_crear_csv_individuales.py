@@ -3,6 +3,8 @@ import m_obtener as obtener
 import m_grabar as grabar
 
 def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def):
+    '''[Autor: Ivan Litteri]'''
+    
     if linea_codigo[0:3] != "def" and linea_codigo[0:3] != "   " and linea_codigo != "\n":
             lineas_fuera_funcion.append(linea_codigo)
     elif linea_codigo[0:3] == "def":
@@ -40,6 +42,7 @@ def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, d
                     linea_fuente += f',"{linea}",'
             elif "'''" in linea_codigo or '"""' in linea_codigo:
                 if linea_codigo.count("'''") == 2 or linea_codigo.count('"""') == 2:
+                    bandera_comentario = False
                     if "Autor" in linea_codigo:
                         autor += f'{analizar_linea.autor_funcion(linea_codigo)}'
                     elif "Ayuda" in linea_codigo:
@@ -57,6 +60,7 @@ def analizar_linea_codigo(linea_codigo, ubicacion, nombre_modulo, ubicaciones, d
     return datos_fuente, datos_comentarios, linea_fuente, linea_comentarios, autor, ayuda, otros_comentarios, lineas_fuera_funcion, bandera_funcion, bandera_comentario, bandera_ayuda, contador_def
 
 def leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuente=[], datos_comentarios=[], linea_fuente="", linea_comentarios="", autor="", ayuda="", otros_comentarios="", lineas_fuera_funcion=[], bandera_funcion=False, bandera_comentario=False, bandera_ayuda=False, contador_def=0):
+    '''[Autor: Ivan Litteri]'''
 
     linea_codigo = codigo.readline().replace('"', "'")
     while linea_codigo:
@@ -70,13 +74,16 @@ def leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones, datos_fuen
     return datos_fuente, datos_comentarios, lineas_fuera_funcion
 
 def ordenar_datos(datos):
+    '''[Autor: Ivan Litteri]'''
     return sorted(datos)
 
 def crear_csv_individuales(ubicaciones):
+    '''[Autor: Ivan Litteri]'''
+
     archivos_fuente = []
     archivos_comentarios = []
     for ubicacion, nombre_modulo in ubicaciones:
-        with open(f'fuente_{nombre_modulo}.csv', "w") as fuente_modulo, open(f'comentarios_{nombre_modulo}.csv', "w") as comentarios_modulo, open(ubicacion, "r") as codigo:
+        with open(f'fuente_{nombre_modulo}.csv', "w") as fuente_modulo, open(f'comentarios_{nombre_modulo}.csv', "w") as comentarios_modulo, open(ubicacion, "r", encoding='utf-8') as codigo:
             datos_fuente, datos_comentarios, lineas_fuera_funcion = leer_lineas_codigo(codigo, ubicacion, nombre_modulo, ubicaciones)
             #Ordena las lineas a grabar en forma alfabetica
             datos_fuente_ordenados = sorted(datos_fuente)
@@ -90,7 +97,9 @@ def crear_csv_individuales(ubicaciones):
     
     return archivos_fuente, archivos_comentarios, lineas_fuera_funcion
 
-def main(nombre_archivo):
+def obtener_csv_individuales(nombre_archivo):
+    '''[Autor: Ivan Litteri]'''
+    
     ubicaciones = obtener.ubicaciones_modulos(nombre_archivo)
     archivos_fuente, archivos_comentarios, lineas_fuera_funcion = crear_csv_individuales(ubicaciones)
 

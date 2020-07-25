@@ -7,14 +7,14 @@ def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_f
     #Si la funcion no esta como key del diccionario, entonces la agrego y le doy su forma
     if nombre_funcion not in datos_por_funciones:
         datos_por_funciones[nombre_funcion] = {"parametros": None,
-                                                "modulo": None,
-                                                "lineas": None,
-                                                "cantidad_lineas": 0,
-                                                "invocaciones": [],
-                                                "cantidad_invocaciones": 0,
-                                                "cantidad_parametros": 0,
-                                                "cantidad_comentarios": len(otros_c),
-                                                }
+                                                        "modulo": None,
+                                                        "lineas": None,
+                                                        "cantidad_lineas": 0,
+                                                        "invocaciones": [],
+                                                        "cantidad_invocaciones": 0,
+                                                        "cantidad_parametros": 0,
+                                                        "cantidad_comentarios": len(otros_c),
+                                                        }
     elif nombre_funcion in datos_por_funciones:
         if f'{nombre_funcion}_{indice_copia-1}' in datos_por_funciones:
             nombre_funcion += f'_{indice_copia}'
@@ -23,14 +23,14 @@ def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_f
             nombre_funcion += f'_{indice_copia}'
         indice_copia += 1
         datos_por_funciones[nombre_funcion] = {"parametros": None,
-                                        "modulo": None,
-                                        "lineas": None,
-                                        "cantidad_lineas": 0,
-                                        "invocaciones": [],
-                                        "cantidad_invocaciones": 0,
-                                        "cantidad_parametros": 0,
-                                        "cantidad_comentarios": len(otros_c),
-                                        }
+                                                "modulo": None,
+                                                "lineas": None,
+                                                "cantidad_lineas": 0,
+                                                "invocaciones": [],
+                                                "cantidad_invocaciones": 0,
+                                                "cantidad_parametros": 0,
+                                                "cantidad_comentarios": len(otros_c),
+                                                }
     #Agrego los datos a sus respectivos lugares
     datos_por_funciones[nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
     datos_por_funciones[nombre_funcion]["modulo"] = modulo_funcion
@@ -73,7 +73,7 @@ def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, 
             
     return datos_por_autores, indice_copia
 
-def leer_archivos_csv(archivo_fuente, archivo_comentarios):
+def datos_csv_finales(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: recibe los archivos fuente unico y comentarios csv, los lee secuencialemente, extrayendo de cada linea los
     datos deseados y los organiza en diccionarios segun la necesidad]'''

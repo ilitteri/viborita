@@ -187,7 +187,7 @@ def imprimir_instrucciones_uso():
     print("#todo ---> indica todo lo relativo a todas las funciones")
     print("imprimir #todo ---> lo mismo que #todo pero lo graba en un archivo")
 
-def main(datos_archivos_csv):
+def consular_funciones(datos_archivos_csv):
     '''[Autor: Joel Glauber]'''
 
     lista_funciones = sorted(datos_archivos_csv.keys())

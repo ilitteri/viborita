@@ -40,7 +40,10 @@ def cantidad_invocaciones(datos, archivo_fuente):
             for nombre_funcion in datos:
                 if "cantidad_invocaciones" not in datos[nombre_funcion]:
                     datos[nombre_funcion]["cantidad_invocaciones"] = 0
-                if (nombre_funcion in linea_funcion and not f'_{nombre_funcion}' in linea_funcion) or (f'.{nombre_funcion}' in linea_funcion):
+                if (f'{nombre_funcion}(' in linea_funcion or f'{nombre_funcion[:-2]}(' in linea_funcion) and (not f'_{nombre_funcion}' in linea_funcion):
+                    datos[nombre_funcion]["cantidad_invocaciones"] += 1
+                    datos[funcion]["invocaciones"].append(nombre_funcion)
+                elif (f'{datos[nombre_funcion]["modulo"]}.{nombre_funcion}(' in linea_funcion) or (f'{datos[nombre_funcion]["modulo"]}.{nombre_funcion[:-2]}(' in linea_funcion):
                     datos[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos[funcion]["invocaciones"].append(nombre_funcion)
 
@@ -106,6 +109,7 @@ def tabla_funciones(lista_funciones, primera_fila = True):
     la consigna (5 columnas, x filas)]'''
     
     cantidad_guiones = 0
+    longitud_maxima_funcion = maxima_longitud(lista_funciones)
     #Creo una cadena vacia, para llenar luego con los nombres de las funciones
     tabla = ""
     #Recorro los indices de la lista
@@ -116,7 +120,7 @@ def tabla_funciones(lista_funciones, primera_fila = True):
             if primera_fila:
                 cantidad_guiones = len(tabla)
                 primera_fila = False
-        separacion = " " * (15-len(lista_funciones[i]))
+        separacion = " " * (longitud_maxima_funcion-len(lista_funciones[i]))
         fila = f'| {lista_funciones[i]}(){separacion}'
         #Sumo los nombres de las funciones separadas con una tabulacion
         tabla += fila
@@ -134,3 +138,7 @@ def longitud_maxima(columnas_datos, longitud):
             longitud[elemento] = len(columnas_datos[elemento])
     
     return longitud
+
+def maxima_longitud(lista_funciones):
+    '''[Autor: Ivan Litteri]'''
+    return len(max(lista_funciones, key=len))

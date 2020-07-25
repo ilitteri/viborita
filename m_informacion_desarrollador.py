@@ -2,7 +2,7 @@ import m_organizar_datos as organizar
 import m_obtener as obtener
 import m_grabar as grabar
 
-def ordenar_datos(datos_por_autor):
+def ordenar_datos_descendiente(datos_por_autor):
     '''[Autor: Ivan Litteri]
     [Ayuda: Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de 
     lineas de codigo que escribio cada autor]'''
@@ -80,10 +80,10 @@ def crear_archivo_txt(nombre_archivo, datos):
         #Escribe en el archivo
         grabar.cadena(archivo_txt, datos)
 
-def main(datos_archivos_csv):
+def obtener_informacion_desarrollador(datos_archivos_csv):
     '''[Autor: Ivan Litteri]'''
 
-    datos_ordenados = ordenar_datos(datos_archivos_csv)
+    datos_ordenados = ordenar_datos_descendiente(datos_archivos_csv)
     datos_formateados = formatear_datos(datos_ordenados)
     imprimir_participacion(datos_formateados)
     crear_archivo_txt("participacion.txt", datos_formateados)

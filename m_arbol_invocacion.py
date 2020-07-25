@@ -66,7 +66,7 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
 
     return arbol
 
-def main(diccionario_informacion):
+def grafica_arbol_invocaciones(diccionario_informacion):
     '''[Autor: Andrés Kübler]
     [Ayuda: Esta funcion es el main del punto 4; arma el arbol de funciones llamando a la función obtener_arbol_invocaciones, e imprime
     por pantalla sus invocaciones indicando que función llama a otra función]'''

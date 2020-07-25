@@ -39,7 +39,7 @@ def obtener_tabla(diccionario):
                         f'{datos_funcion["cantidad_declaraciones"]["for"]}', f'{datos_funcion["cantidad_declaraciones"]["while"]}', 
                         f'{datos_funcion["cantidad_declaraciones"]["break"]}', f'{diccionario[funcion]["cantidad_declaraciones"]["exit"]}',
                         f'{datos_funcion["cantidad_comentarios"]}', f'{"Si" if datos_funcion["comentarios"]["ayuda"] else "No"}', 
-                        f'{datos_funcion["comentarios"]["autor"].split(": ")[1] if datos_funcion["comentarios"]["autor"] else "Sin Autor"}']
+                        f'"{datos_funcion["comentarios"]["autor"].split(": ")[1] if datos_funcion["comentarios"]["autor"] else "Sin Autor"}"']
         #suma a la lista de listas cada una de las listas columna de datos que dependen de la key      
         lista_de_listas.append(columnas_datos) 
         #calcula las longitudes maximas de cada columna comparando elementos de mismo indice de diferentes listas
@@ -47,7 +47,7 @@ def obtener_tabla(diccionario):
     
     return lista_de_listas, longitud
 
-def main(datos_archivos_csv):
+def obtener_panel_general(datos_archivos_csv):
     '''[Autor: Santiago Vaccarelli]'''
     
     lista_de_listas, longitud = obtener_tabla(datos_archivos_csv)

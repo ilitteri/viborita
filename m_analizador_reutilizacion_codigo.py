@@ -129,7 +129,7 @@ def creacion_archivo_txt (filas_txt) :
             analizador.write(str(linea) + "\n" + "\n")
             print(str(linea) + "\n" + "\n")
 
-def main (datos_por_funciones) :
+def analizar_reutilizacion (datos_por_funciones) :
     """[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv

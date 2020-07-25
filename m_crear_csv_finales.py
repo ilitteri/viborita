@@ -4,12 +4,12 @@ import os
 import m_grabar as grabar
 
 def cerrar_archivos_individuales(datos):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]'''
+    '''[Autor: Ivan Litteri]'''
     for nombre_modulo in datos:
         datos[nombre_modulo]["contenido"].close()
 
 def leer_archivos_individuales(datos):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    '''[Autor: Luciano Federico Aguilera]
     [Ayuda: lee secuencialmente los datos de los archivos individuales que le llegan y los guarda en una lista]'''
     
     #Declara una lista vacia a llenar
@@ -28,7 +28,7 @@ def leer_archivos_individuales(datos):
     return lineas
 
 def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    '''[Autor: Luciano Federico Aguilera]
     [Ayuda: lee las lineas de los archivos individuales, las compara, y graba de forma ordenada alfabeticamente por funcion
     el archivo final]'''
 
@@ -45,14 +45,14 @@ def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
             #Graba la linea y luego la borra de la lista una vez encontrada
             if linea == linea_menor:
                 nombre_funcion, _, nombre_modulo, *otros_datos = linea.split('","')
-                if "*" in nombre_modulo and f'{nombre_funcion[1:]}()\n' in lineas_fuera_funcion:
+                if "*" in nombre_modulo and f'{nombre_funcion[1:]}()' in lineas_fuera_funcion:
                     grabar.cadena(archivo_final, '"*' + linea[1:])
                 else:
                     grabar.cadena(archivo_final, linea)
                 lineas.remove(linea)
 
 def abrir_archivos_individuales(archivos):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    '''[Autor: Ivan Litteri]
     [Ayuda: se guardan los datos a leer de los archivos individuales en un diccionario ya que la unica forma que encontramos
     de guardar variables dinamicas fue de esta forma, entonces se pueden tener abiertos "n" archivos. Y devuelve
     un diccionario con el contenido de cada modulo como value de la key (que seria el modulo)]'''
@@ -66,7 +66,7 @@ def abrir_archivos_individuales(archivos):
     return diccionario_archivos_abiertos
 
 def merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion):
-    '''[Autores: Luciano Aguilera, Ivan Litteri]
+    '''[Autor: Luciano Federico Aguilera]
     [Ayuda: abre los "n" archivos individuales y el archivo final en forma paralela, los lee secuencialmente, graba en 
     forma ordenada el archivo final, y luego los cierra una vez finalizado el proceso.]'''
 
@@ -89,8 +89,9 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
         #Borro el archivo que se encuentra en esa ubicacion.
         os.remove(ubicacion_archivo_csv_individual)
 
-def main(nombre_archivo):
-    archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = crear_csv_individuales.main(nombre_archivo)
+def obtener_csv_finales(nombre_archivo):
+    '''[Autor: Ivan Litteri]'''
+    archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = crear_csv_individuales.obtener_csv_individuales(nombre_archivo)
     merge("fuente_unico.csv", archivos_fuente_individuales, lineas_fuera_funcion)
     merge("comentarios.csv", archivos_comentarios_individuales, lineas_fuera_funcion)
 

@@ -7,7 +7,7 @@ def crear(datos):
     for funcion in datos:
         g.add_node(funcion)
         
-        for i in datos_por_invocaciones[funcion]["invocaciones"]:
+        for i in datos[funcion]["invocaciones"]:
             g.add_edge((funcion, i))
             
     g.draw('grafo.svg', prog='dot')
