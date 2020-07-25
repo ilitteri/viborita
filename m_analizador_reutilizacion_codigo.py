@@ -156,6 +156,3 @@ def analizar_reutilizacion (datos_por_funciones) :
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones , lista_funciones)
 
     creacion_archivo_txt (filas_txt)
-
-
-analizar_reutilizacion(datos_por_funciones)
