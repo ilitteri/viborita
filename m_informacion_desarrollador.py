@@ -2,27 +2,10 @@ import m_organizar_datos as organizar
 import m_obtener as obtener
 import m_grabar as grabar
 
-def ordenar_datos(datos_por_funciones):
+def ordenar_datos(datos_por_autor):
     '''[Autor: Ivan Litteri]
     [Ayuda: Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de 
     lineas de codigo que escribio cada autor]'''
-
-    datos_por_autor = {}
-    #Recorre los items del diccionario ordenado por funcion
-    for funcion, datos_funcion in datos_por_funciones.items():
-        #Declara la variable autor para que sea mas entendible el resto
-        autor = datos_funcion["comentarios"]["autor"]
-        #Si no esta en el diccionario, la agrego
-        if autor not in datos_por_autor:
-            datos_por_autor[autor] = {"lineas_totales": 0,
-                        "funciones": {}
-                        }
-        #Si no esta en el diccionario, la agrego
-        if funcion not in datos_por_autor[autor]["funciones"]:
-            datos_por_autor[autor]["funciones"][funcion] = 0
-        #Agrego los datos de interes
-        datos_por_autor[autor]["funciones"][funcion] += datos_funcion["cantidad_lineas"]
-        datos_por_autor[autor]["lineas_totales"] += datos_funcion["cantidad_lineas"]
 
     #Devuelve una lista ordenada por el total de lineas que escribio cada autor
     return sorted(datos_por_autor.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
@@ -62,8 +45,11 @@ def formatear_datos(datos_ordenados):
         for funcion, cantidad_lineas in datos_autor["funciones"].items():
             #Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion
             separacion = " " * (50-len(funcion))
-            #Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
-            datos_a_imprimir += f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n'
+            if "*" in funcion:
+                datos_a_imprimir += f'{separacion_2}{funcion[1:]}{separacion}{cantidad_lineas}\n'
+            else:    
+                #Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
+                datos_a_imprimir += f'{separacion_2}{funcion}{separacion}{cantidad_lineas}\n'
         #Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo
         porcentaje_lineas_autor = round(obtener.porcentaje_lineas_codigo(autor, datos_autor,  lineas_codigo_totales), 1)
         #Incrementa el contador de funciones

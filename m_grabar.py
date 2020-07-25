@@ -1,5 +1,5 @@
 def cadena(archivo, linea):
-    '''[Autores: Ivan Litteri]
+    '''[Autor: Ivan Litteri]
     [Ayuda: Graba una linea en el archivo que le llega por parametro]'''
 
     archivo.write(linea)

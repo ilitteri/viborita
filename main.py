@@ -8,12 +8,21 @@ import m_informacion_desarrollador as informacion_desarrollador
 
 
 def leer_archivos_csv(fuente, comentarios):
-    with open(fuente, "r") as archivo_fuente, open(comentarios, "r") as archivo_comentarios:
-        datos_por_funciones = organizar_datos.por_funciones(archivo_fuente, archivo_comentarios)
+    '''[Autor: Ivan Litteri]
+    [Ayuda: le llegan por parametro los archivos csv y devuelve un diccionario ordenado con los datos leidos de los
+    mismos.]'''
 
-    return datos_por_funciones
+    #Abre los archivos
+    with open(fuente, "r") as archivo_fuente, open(comentarios, "r") as archivo_comentarios:
+        #Llama a una funcion que lee y devuelve los datos ordenados
+        datos_por_funciones, datos_por_autores = organizar_datos.leer_archivos_csv(archivo_fuente, archivo_comentarios)
+
+    return datos_por_funciones, datos_por_autores
 
 def imprimir_menu_interaccion():
+    '''[Autor: Ivan Litteri]
+    [Ayuda: muestra en pantalla las opciones a elegir del menu]'''
+
     titulo = "ANALIZADOR Y EVALUADOR DE DISEÑO MODULAR DE APLICACIONES"
     print(f'\n{"*" * len(titulo)}\n{titulo}\n{"*" * len(titulo)}')
     print("1. Panel General de Funciones")
@@ -24,6 +33,9 @@ def imprimir_menu_interaccion():
     print("6. Ayuda")
 
 def ayuda_menu(opcion):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: Muestra en pantalla una breve descripcion de lo que trata cada opcion del menu]'''
+
     titulo = "AYUDA DE OPCIONES"
     print(f'{"*" * len(titulo)}\n{titulo}\n{"*" * len(titulo)}')
     print(f'(1) - Muestra en pantalla, una tabla con la cantidad de declaraciones de la aplicacion (for, if/elif, break, exit, while, for); también genera el archivo “panel_general.csv” con esta informacion.')
@@ -34,38 +46,57 @@ def ayuda_menu(opcion):
 
     return input("Presione cualquier tecla para volver al menu")
 
-def menu_interaccion(datos_por_funciones):
+def menu_interaccion(datos_por_funciones, datos_por_autores):
+    '''[Autores: Andres Kübler, Ivan Litteri]
+    [Ayuda: se queda a la espera del ingreso por consola del usuario, y en base a lo que se ingresa actua.]'''
+
+    #Muestra el menu de interaccion en consola
     imprimir_menu_interaccion()
+    #Solicita al usuario el ingreso de una opcion mostrada en el menu
     opcion = input("Ingrese una opcion o presione ENTER para salir: ")
+    #Imprime un enter
     print()
+    #Mientras la opccion ingresada no sea un espacio o enter...
     while opcion:
+        #Si la opcion ingresada es 1 o "panel general de funciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         if opcion == "1" or opcion.lower() == "panel general de funciones":
             panel_general_funciones.main(datos_por_funciones)
             imprimir_menu_interaccion()
+        #Si la opcion ingresada es 2 o "consultar funciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif opcion == "2" or opcion.lower() == "consultar funciones":
             consulta_funciones.main(datos_por_funciones)
             imprimir_menu_interaccion()
+        #Si la opcion ingresada es 3 o "analizar reutilizacion de codigo" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif opcion == "3" or opcion.lower() == "analizar reutilizacion de codigo":
             analizador_reutilizacion_codigo.main(datos_por_funciones)
             imprimir_menu_interaccion()
+        #Si la opcion ingresada es 4 o "arbol de invocaciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif opcion == "4" or opcion.lower() == "arbol de invocaciones":
             arbol_invocacion.main(datos_por_funciones)
             imprimir_menu_interaccion()
+        #Si la opcion ingresada es 5 o "informacion de desarrollador" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif opcion == "5" or opcion.lower() == "informacion de desarrollador":
-            informacion_desarrollador.main(datos_por_funciones)
+            informacion_desarrollador.main(datos_por_autores)
             imprimir_menu_interaccion()
+        #Si la opcion ingresada es 6 o "ayuda" muestra en consola la ayuda para el uso del menu
         elif opcion == "6" or opcion.lower() == "ayuda":
             ayuda_menu(opcion)
             imprimir_menu_interaccion()
+        #Si no se ingresa ninguna de las opciones anteriores vuelve a preguntar
         else:
             print("Opcion incorrecta!, intente denuevo...")
             print()
+        #Solicita al usuario el ingreso de una opcion mostrada en el menu
         opcion = input("Ingrese una opcion o presione ENTER para salir: ")
         print()
 
 def main():
+    '''[Autores: Andres Kübler, Ivan Litteri]'''
+
+    #Crea los archivos csv fuente_unico y comentarios
     crear_csv_finales.main("programas.txt")
-    datos_por_funciones = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
-    menu_interaccion(datos_por_funciones)
+    datos_por_funciones, datos_por_autores = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
+    #Abre el menu de interaccion
+    menu_interaccion(datos_por_funciones, datos_por_autores)
     
 main()

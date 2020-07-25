@@ -31,15 +31,15 @@ def obtener_tabla(diccionario):
     #crea una lista de listas en donde el primer elemento es la lista de titulos
     lista_de_listas = [columnas_titulo]
     
-    for key, values in diccionario.items(): 
+    for funcion, datos_funcion in diccionario.items(): 
         #crea una lista de strings con los elementos del diccionario como los pide para la tabla y el csv   
-        columnas_datos = [f'{key}.{values["modulo"]}', f'{values["cantidad_parametros"]}', 
-                        f'{values["cantidad_lineas"]}', f'{values["cantidad_invocaciones"]}', 
-                        f'{values["cantidad_declaraciones"]["returns"]}', f'{values["cantidad_declaraciones"]["if/elif"]}', 
-                        f'{values["cantidad_declaraciones"]["for"]}', f'{values["cantidad_declaraciones"]["while"]}', 
-                        f'{values["cantidad_declaraciones"]["break"]}', f'{diccionario[key]["cantidad_declaraciones"]["exit"]}',
-                        f'{values["cantidad_comentarios"]}', 
-                        f'{"Si" if values["comentarios"]["ayuda"] else "No"}', f'{values["comentarios"]["autor"].split(": ")[1] if values["comentarios"]["autor"] else "Sin Autor"}']
+        columnas_datos = [f'{funcion if not "*" in funcion else funcion[1:]}.{datos_funcion["modulo"] if not "*" in datos_funcion["modulo"] else datos_funcion["modulo"][1:]}', 
+                        f'{datos_funcion["cantidad_parametros"]}', f'{datos_funcion["cantidad_lineas"]}', f'{datos_funcion["cantidad_invocaciones"]}', 
+                        f'{datos_funcion["cantidad_declaraciones"]["returns"]}', f'{datos_funcion["cantidad_declaraciones"]["if/elif"]}', 
+                        f'{datos_funcion["cantidad_declaraciones"]["for"]}', f'{datos_funcion["cantidad_declaraciones"]["while"]}', 
+                        f'{datos_funcion["cantidad_declaraciones"]["break"]}', f'{diccionario[funcion]["cantidad_declaraciones"]["exit"]}',
+                        f'{datos_funcion["cantidad_comentarios"]}', f'{"Si" if datos_funcion["comentarios"]["ayuda"] else "No"}', 
+                        f'{datos_funcion["comentarios"]["autor"].split(": ")[1] if datos_funcion["comentarios"]["autor"] else "Sin Autor"}']
         #suma a la lista de listas cada una de las listas columna de datos que dependen de la key      
         lista_de_listas.append(columnas_datos) 
         #calcula las longitudes maximas de cada columna comparando elementos de mismo indice de diferentes listas
