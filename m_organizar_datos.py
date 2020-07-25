@@ -1,20 +1,36 @@
 import m_obtener as obtener
 
-def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c):
+def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia):
     '''[Autor: Ivan Litteri]
     [Ayuda: recibe los datos extraidos de una linea leida de los archivos csv y los guarda en el diccionario final.]'''
 
     #Si la funcion no esta como key del diccionario, entonces la agrego y le doy su forma
     if nombre_funcion not in datos_por_funciones:
         datos_por_funciones[nombre_funcion] = {"parametros": None,
-                                                        "modulo": None,
-                                                        "lineas": None,
-                                                        "cantidad_lineas": 0,
-                                                        "invocaciones": [],
-                                                        "cantidad_invocaciones": 0,
-                                                        "cantidad_parametros": 0,
-                                                        "cantidad_comentarios": len(otros_c),
-                                                        }
+                                                "modulo": None,
+                                                "lineas": None,
+                                                "cantidad_lineas": 0,
+                                                "invocaciones": [],
+                                                "cantidad_invocaciones": 0,
+                                                "cantidad_parametros": 0,
+                                                "cantidad_comentarios": len(otros_c),
+                                                }
+    elif nombre_funcion in datos_por_funciones:
+        if f'{nombre_funcion}_{indice_copia-1}' in datos_por_funciones:
+            nombre_funcion += f'_{indice_copia}'
+        else:
+            indice_copia = 0
+            nombre_funcion += f'_{indice_copia}'
+        indice_copia += 1
+        datos_por_funciones[nombre_funcion] = {"parametros": None,
+                                        "modulo": None,
+                                        "lineas": None,
+                                        "cantidad_lineas": 0,
+                                        "invocaciones": [],
+                                        "cantidad_invocaciones": 0,
+                                        "cantidad_parametros": 0,
+                                        "cantidad_comentarios": len(otros_c),
+                                        }
     #Agrego los datos a sus respectivos lugares
     datos_por_funciones[nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
     datos_por_funciones[nombre_funcion]["modulo"] = modulo_funcion
@@ -40,9 +56,9 @@ def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_f
                                                                                     }
     obtener.cantidad_declaraciones(datos_por_funciones, lineas_funcion, nombre_funcion)
 
-    return datos_por_funciones
+    return datos_por_funciones, indice_copia
 
-def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion):
+def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia):
     '''[Autor: Ivan Litteri]
     [Ayuda: recibe los datos extraidos de una linea leida de los archivos csv y los guarda en el diccionario final.]'''
 
@@ -55,7 +71,7 @@ def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, 
         datos_por_autores[autor_funcion]["funciones"][nombre_funcion] = len(lineas_funcion)
         datos_por_autores[autor_funcion]["lineas_totales"] += len(lineas_funcion)
             
-    return datos_por_autores
+    return datos_por_autores, indice_copia
 
 def leer_archivos_csv(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
@@ -66,6 +82,8 @@ def leer_archivos_csv(archivo_fuente, archivo_comentarios):
     datos_por_autores = {}
     #Declaro el diccionario vacio para llenar luego
     datos_por_funciones = {}
+
+    indice_copia = 0
 
     #Cargo la primera linea del archivo fuente
     linea_fuente = archivo_fuente.readline()
@@ -79,8 +97,8 @@ def leer_archivos_csv(archivo_fuente, archivo_comentarios):
         nombre_funcion_c, autor_funcion, ayuda_funcion, *otros_c = linea_comentarios.split('","')
         nombre_funcion = nombre_funcion_f = nombre_funcion_c = nombre_funcion_f.replace('"', '')
         #Actualiza los diccionarios con los datos extraidos de las lineas
-        actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c)
-        actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion)
+        datos_por_funciones, indice_copia = actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia)
+        datos_por_autores, indice_copia = actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia)
         #Avanzo de linea en el archivo
         linea_fuente = archivo_fuente.readline()
         #Avanzo de linea en el archivo
