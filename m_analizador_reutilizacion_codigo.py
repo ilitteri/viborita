@@ -6,13 +6,15 @@ def buscar_invocaciones(datos_por_funciones):
     
     cuenta_lineas = 0
     diccionario_invocaciones = {"total": {} , "indices" : {} }
-    
+    largo_maximo = 0 
     #Tomo las funciones recogidas en el diccionario principal de m_organizar_datos
     lista_funciones = list(datos_por_funciones.keys())
     #Creo un diccionario que servira posteriormente para el armado de la tabla
     for nombre_funcion in lista_funciones :
         # Aqui declaro la variable que estara en la tabla como indice para facilitar el manejo
         cuenta_lineas += 1
+        if len(nombre_funcion) > largo_maximo :
+            largo_maximo = len(nombre_funcion)
         #Defino un diccionario dentro de cada indice para organizar la informacion 
         diccionario_invocaciones [cuenta_lineas] = {}
         # Creo un  diccionario dentro del anterior para almacenar las funciones a la que pertenecen las lineas de codigo junto con sus invocaciones
@@ -26,7 +28,7 @@ def buscar_invocaciones(datos_por_funciones):
             diccionario_invocaciones [cuenta_lineas] [nombre_funcion] [funcion] = 0
     
     
-    return diccionario_invocaciones , lista_funciones 
+    return diccionario_invocaciones , lista_funciones , largo_maximo
 
 def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por_funciones ):  
 
@@ -64,7 +66,7 @@ def contar_interacciones(diccionario_invocaciones , lista_funciones  , datos_por
     return diccionario_invocaciones
 
 
-def creacion_formato_tabla(diccionario_invocaciones):
+def creacion_formato_tabla(diccionario_invocaciones , largo_maximo):
     """[Autor: Luciano Federico Aguilera]"""
     #Defino variables que usare mas adelante
     # Creo una lista cuyos elementos seran las lineas del archivo txt
@@ -72,8 +74,8 @@ def creacion_formato_tabla(diccionario_invocaciones):
     indice_2 = 1
 
     # Creo la primer linea del archivo de texto  
-    filas_txt.append(str("\t FUNCIONES" + " "*16))
-    cadena_totales = "\n\t Total Invocaciones " + " "*7
+    filas_txt.append(str("\t FUNCIONES" + " "*(largo_maximo - 5)))
+    cadena_totales = "\n\t Total Invocaciones " + " "*(largo_maximo - 20)
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
         # Filtro las keys que no contienen datos importantes
@@ -82,7 +84,7 @@ def creacion_formato_tabla(diccionario_invocaciones):
             
             funcion_en_linea = str(diccionario_invocaciones[funcion]).split(":")[0].replace("{", "").replace("'","")
             # Hago correcciones para que la tabla quede pareja
-            cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea) + " " + " " * (22-len(str(funcion_en_linea)) )
+            cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea).replace("*","") + " " + " " * (largo_maximo-len(str(funcion_en_linea)) )
             # Corrijo los espacios para que la tabla queda pareja
             if funcion <= 9 :
                 cadena_de_texto += " "
@@ -132,11 +134,11 @@ def main (datos_por_funciones) :
     [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
 
-    diccionario_invocaciones , lista_funciones  = buscar_invocaciones(datos_por_funciones )
+    diccionario_invocaciones , lista_funciones , largo_maximo = buscar_invocaciones(datos_por_funciones )
 
     diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , lista_funciones , datos_por_funciones )
 
-    filas_txt  = creacion_formato_tabla(diccionario_invocaciones)
+    filas_txt  = creacion_formato_tabla(diccionario_invocaciones , largo_maximo)
 
     filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
 
