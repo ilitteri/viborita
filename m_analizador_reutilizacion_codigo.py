@@ -74,8 +74,8 @@ def creacion_formato_tabla(diccionario_invocaciones , largo_maximo):
     indice_2 = 1
 
     # Creo la primer linea del archivo de texto  
-    filas_txt.append(str("\t FUNCIONES" + " "*(largo_maximo - 5)))
-    cadena_totales = "\n\t Total Invocaciones " + " "*(largo_maximo - 20)
+    filas_txt.append(str("\t FUNCIONES" + "\t" + " "*(largo_maximo - 5)))
+    cadena_totales = "\n\t Total Invocaciones " + "\t" + " "*(largo_maximo - 20)
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
         # Filtro las keys que no contienen datos importantes
@@ -84,7 +84,7 @@ def creacion_formato_tabla(diccionario_invocaciones , largo_maximo):
             
             funcion_en_linea = str(diccionario_invocaciones[funcion]).split(":")[0].replace("{", "").replace("'","")
             # Hago correcciones para que la tabla quede pareja
-            cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea).replace("*","") + " " + " " * (largo_maximo-len(str(funcion_en_linea)) )
+            cadena_de_texto =  "\t" + " " + str(indice_2) + " " + str(funcion_en_linea).replace("*","") + "\t" + " " * (largo_maximo-len(str(funcion_en_linea)) )
             # Corrijo los espacios para que la tabla queda pareja
             if funcion <= 9 :
                 cadena_de_texto += " "
