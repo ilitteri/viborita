@@ -1,4 +1,4 @@
-import m_crear_csv_individuales as crear_csv_individuales
+import m_csv_individuales as csv_individuales
 import m_obtener as obtener
 import os
 import m_grabar as grabar
@@ -44,8 +44,8 @@ def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
         for linea in lineas:
             #Graba la linea y luego la borra de la lista una vez encontrada
             if linea == linea_menor:
-                nombre_funcion, _, nombre_modulo, *otros_datos = linea.split('","')
-                if "*" in nombre_modulo and f'{nombre_funcion[1:]}()' in lineas_fuera_funcion:
+                funcion, _, modulo, *otros_datos = linea.split('","')
+                if "*" in modulo and (f'{funcion[1:]}()' in lineas_fuera_funcion or f'{funcion[1:]}()\n' in lineas_fuera_funcion):
                     grabar.cadena(archivo_final, '"*' + linea[1:])
                 else:
                     grabar.cadena(archivo_final, linea)
@@ -89,9 +89,13 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
         #Borro el archivo que se encuentra en esa ubicacion.
         os.remove(ubicacion_archivo_csv_individual)
 
-def obtener_csv_finales(nombre_archivo):
+def crear_csv_finales(nombre_archivo):
     '''[Autor: Ivan Litteri]'''
-    archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = crear_csv_individuales.obtener_csv_individuales(nombre_archivo)
+
+    ubicaciones = obtener.ubicaciones_modulos(nombre_archivo)
+
+    archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = csv_individuales.crear_csv_individuales(ubicaciones)
+    
     merge("fuente_unico.csv", archivos_fuente_individuales, lineas_fuera_funcion)
     merge("comentarios.csv", archivos_comentarios_individuales, lineas_fuera_funcion)
 

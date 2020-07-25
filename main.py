@@ -1,4 +1,4 @@
-import m_crear_csv_finales as crear_csv_finales
+import m_csv_finales as csv_finales
 import m_organizar_datos as organizar_datos
 import m_panel_general_funciones as panel_general_funciones
 import m_consulta_funciones as consulta_funciones
@@ -94,11 +94,11 @@ def main():
     '''[Autor: Andrés Kübler]'''
 
     #Crea los archivos csv fuente_unico y comentarios
-    crear_csv_finales.obtener_csv_finales("programas.txt")
+    csv_finales.crear_csv_finales("programas.txt")
     datos_por_funciones, datos_por_autores = leer_archivos_csv("fuente_unico.csv", "comentarios.csv")
     
-    for funcion in datos_por_funciones:
-        print(f'{funcion} - {datos_por_funciones[funcion]["invocaciones"]}')
+    #for funcion in datos_por_funciones:
+    #    print(f'{funcion} - {datos_por_funciones[funcion]["invocaciones"]}')
     
     #Abre el menu de interaccion
     menu_interaccion(datos_por_funciones, datos_por_autores)

@@ -82,18 +82,21 @@ def comentario_numeral(linea_codigo, bandera_otro_comentario = False, bandera_li
     #Declara inicialmente como una cadena vacia para luego llenarla desde 0
     otro_comentario = ""
     posible_linea = ""
+    i = 0
+    linea = linea_codigo.strip()
 
     if not linea_codigo.startswith("#"):
         #Recorre caracter a caracter la linea que entra por parametro
-        for caracter in linea_codigo.strip(): 
+        while i < len(linea):
             #Cuando el caracter se trate del numeral, se habilita la bandera para que se empiece a guardar caracteres en la cadena inicializada anteriormente
-            if caracter == "#":
+            if linea[i] == "#":
                 bandera_linea = False
                 bandera_otro_comentario = True
             if bandera_linea:
-                posible_linea += caracter
+                posible_linea += linea[i]
             if bandera_otro_comentario:
-                otro_comentario += caracter
+                otro_comentario += linea[i]
+            i += 1
     else:
         otro_comentario = linea_codigo
 
@@ -137,4 +140,3 @@ def largo_ayuda(ayuda):
         i += 1
 
     return ayuda_recortada
-
