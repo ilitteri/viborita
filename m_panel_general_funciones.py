@@ -1,4 +1,3 @@
-import m_organizar_datos as organizar_datos
 import m_obtener as obtener
 import m_grabar as grabar
 
@@ -16,9 +15,9 @@ def imprimir_panel_general(lista_de_listas, longitud):
 def crear_panel_general(lista_de_listas):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: Crea el archivo csv de panel general y le graba los datos]'''
-    
     with open("panel_general.csv", "w") as archivo_panel_general:
-        grabar.panel_control_csv(archivo_panel_general, lista_de_listas)
+        for linea in lista_de_listas:
+            archivo_panel_general.write(f'{",".join(linea)}\n')
 
 def obtener_tabla(diccionario):
     '''[Autor: Santiago Vaccarelli]
