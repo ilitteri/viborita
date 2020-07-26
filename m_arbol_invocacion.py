@@ -69,7 +69,7 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
         #Modifica las invocaciones sacando de la lista la funcion recursiva
         invocaciones = analizar_recursividad_funcion(funcion,invocaciones)
         #Agrega la funcion recursiva al string
-        fexiste_uncion_recursiva += funcion
+        existe_funcion_recursiva += funcion
 
     #Revisa si la función invoca a otras
     if len(invocaciones) > 0:
@@ -82,8 +82,8 @@ def obtener_arbol_invocaciones(diccionario_informacion, funcion = None, separaci
         arbol += obtener_arbol_invocaciones(diccionario_informacion, invocacion_n, " " * len(str_invocacion))
     
     #Se fija si existe la funcion recursiva, y de ser así la agrega al arbol
-    if fexiste_uncion_recursiva != "":
-        arbol += f'{" " * len(str_invocacion)} ---> {funcion}({diccionario_informacion[funcion]["cantidad_lineas"]})'
+    if existe_funcion_recursiva != "":
+        arbol += f'{" " * len(str_invocacion)} ---> {funcion}({diccionario_informacion[funcion]["cantidad_lineas"]})\n'
 
     #Si la longitud de las invocaciones es nula, agrega un salto de linea
     if len(invocaciones) == 0:

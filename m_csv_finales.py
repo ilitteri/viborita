@@ -1,14 +1,13 @@
 import m_csv_individuales as csv_individuales
 import m_obtener as obtener
 import os
-import m_grabar as grabar
 
-def cerrar_archivos_individuales(datos):
+def cerrar_csv_individuales(datos):
     '''[Autor: Ivan Litteri]'''
     for nombre_modulo in datos:
         datos[nombre_modulo]["contenido"].close()
 
-def leer_archivos_individuales(datos):
+def leer_csv_individuales(datos):
     '''[Autor: Luciano Federico Aguilera]
     [Ayuda: lee secuencialmente los datos de los archivos individuales que le llegan y los guarda en una lista]'''
     
@@ -27,7 +26,7 @@ def leer_archivos_individuales(datos):
     
     return lineas
 
-def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
+def grabar_csv_final_ordenado(archivo_final, archivos_individuales, lineas_fuera_funcion):
     '''[Autor: Luciano Federico Aguilera]
     [Ayuda: lee las lineas de los archivos individuales, las compara, y graba de forma ordenada alfabeticamente por funcion
     el archivo final]'''
@@ -35,7 +34,7 @@ def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
     #Obtiene la menor linea, en este caso la siguiente a imprimir
     obtener_primera_linea = lambda x: min(x)
     #Lista de lineas leidas de los archivos individuales
-    lineas = leer_archivos_individuales(archivos_individuales)
+    lineas = leer_csv_individuales(archivos_individuales)
 
     #Mientras la lista de lineas no este vacia
     while lineas:
@@ -46,12 +45,12 @@ def ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion):
             if linea == linea_menor:
                 funcion, _, modulo, *otros_datos = linea.split('","')
                 if "*" in modulo and (f'{funcion[1:]}()' in lineas_fuera_funcion or f'{funcion[1:]}()\n' in lineas_fuera_funcion):
-                    grabar.cadena(archivo_final, '"*' + linea[1:])
+                    archivo_final.write('"*' + linea[1:])
                 else:
-                    grabar.cadena(archivo_final, linea)
+                    archivo_final.write(linea)
                 lineas.remove(linea)
 
-def abrir_archivos_individuales(archivos):
+def abrir_csv_individuales(archivos):
     '''[Autor: Ivan Litteri]
     [Ayuda: se guardan los datos a leer de los archivos individuales en un diccionario ya que la unica forma que encontramos
     de guardar variables dinamicas fue de esta forma, entonces se pueden tener abiertos "n" archivos. Y devuelve
@@ -71,15 +70,15 @@ def merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion):
     forma ordenada el archivo final, y luego los cierra una vez finalizado el proceso.]'''
 
     #Abre los archivos "n" individuales y el archivo final
-    archivos_individuales = abrir_archivos_individuales(archivos_individuales)
+    archivos_individuales = abrir_csv_individuales(archivos_individuales)
     archivo_final= open(nombre_archivo_final, "w")
     #Graba en forma ordenada las lineas de los individuales en el archivo final
-    ordenar_lineas(archivo_final, archivos_individuales, lineas_fuera_funcion)
+    grabar_csv_final_ordenado(archivo_final, archivos_individuales, lineas_fuera_funcion)
     #Cierra todos los archivos abiertos
-    cerrar_archivos_individuales(archivos_individuales)
+    cerrar_csv_individuales(archivos_individuales)
     archivo_final.close()
 
-def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
+def borrar_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]
     [Ayuda: Borra los archivos .csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen 
     de una funcion a la que le llega por parametro los nombres de los archivos .csv individuales.]'''
@@ -92,12 +91,12 @@ def borrar_archivos_csv_individuales(nombres_archivos_csv_individuales):
 def crear_csv_finales(nombre_archivo):
     '''[Autor: Ivan Litteri]'''
 
-    ubicaciones = obtener.ubicaciones_modulos(nombre_archivo)
+    info_ubicaciones = obtener.informacion_ubicaciones(nombre_archivo)
 
-    archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = csv_individuales.crear_csv_individuales(ubicaciones)
+    archivos_fuente_individuales, archivos_comentarios_individuales, lineas_fuera_funcion = csv_individuales.crear_csv_individuales(info_ubicaciones)
     
     merge("fuente_unico.csv", archivos_fuente_individuales, lineas_fuera_funcion)
     merge("comentarios.csv", archivos_comentarios_individuales, lineas_fuera_funcion)
 
     nombres_archivos_csv_individuales = list(zip(*(archivos_fuente_individuales+archivos_comentarios_individuales)))[0]
-    borrar_archivos_csv_individuales(nombres_archivos_csv_individuales)
+    borrar_csv_individuales(nombres_archivos_csv_individuales)

@@ -1,6 +1,6 @@
 import m_obtener as obtener
 
-def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia):
+def actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia):
     '''[Autor: Ivan Litteri]
     [Ayuda: recibe los datos extraidos de una linea leida de los archivos csv y los guarda en el diccionario final.]'''
 
@@ -58,7 +58,7 @@ def actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_f
 
     return datos_por_funciones, indice_copia
 
-def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia):
+def actualizar_diccionario_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia):
     '''[Autor: Ivan Litteri]
     [Ayuda: recibe los datos extraidos de una linea leida de los archivos csv y los guarda en el diccionario final.]'''
 
@@ -73,7 +73,7 @@ def actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, 
             
     return datos_por_autores, indice_copia
 
-def datos_csv_finales(archivo_fuente, archivo_comentarios):
+def leer_archivos_csv(archivo_fuente, archivo_comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: recibe los archivos fuente unico y comentarios csv, los lee secuencialemente, extrayendo de cada linea los
     datos deseados y los organiza en diccionarios segun la necesidad]'''
@@ -97,8 +97,8 @@ def datos_csv_finales(archivo_fuente, archivo_comentarios):
         nombre_funcion_c, autor_funcion, ayuda_funcion, *otros_c = linea_comentarios.split('","')
         nombre_funcion = nombre_funcion_f = nombre_funcion_c = nombre_funcion_f.replace('"', '')
         #Actualiza los diccionarios con los datos extraidos de las lineas
-        datos_por_funciones, indice_copia = actualizar_datos_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia)
-        datos_por_autores, indice_copia = actualizar_datos_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia)
+        datos_por_funciones, indice_copia = actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia)
+        datos_por_autores, indice_copia = actualizar_diccionario_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia)
         #Avanzo de linea en el archivo
         linea_fuente = archivo_fuente.readline()
         #Avanzo de linea en el archivo

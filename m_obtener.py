@@ -1,7 +1,7 @@
 import os
 import platform
 
-def ubicaciones_modulos(nombre_archivo):
+def informacion_ubicaciones(nombre_archivo):
     '''[Autor: Ivan Litteri]
     [Ayuda: Lee el archivo principal que le llega por parametro (en nuestro caso el .txt), y retorna una lista con las 
     lineas de ese archivo (en este caso cada linea corresponde a las ubicaciones de los archivos de la aplicacion a 
@@ -19,10 +19,6 @@ def ubicaciones_modulos(nombre_archivo):
 
     return ubicaciones
 
-def nombres_modulos(ubicaciones_modulos):
-    '''[Autor: Ivan Litteri]'''
-    return [ubicacion_modulo.split("\\")[-1] for ubicacion_modulo in ubicaciones_modulos]
-
 def ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales):
     '''[Autor: Ivan Litteri]'''
 
@@ -34,6 +30,8 @@ def cantidad_invocaciones(datos, archivo_fuente):
     [Ayuda: le llega por parametro una linea, y una lista con los nombres de las funciones, analiza por cada
     nombre de funcion si este esta en la linea, en caso verdadero incrementa en uno el contador de invocaciones
     de esa funcion]'''
+
+
 
     for funcion in datos:
         for linea_funcion in datos[funcion]["lineas"]:
