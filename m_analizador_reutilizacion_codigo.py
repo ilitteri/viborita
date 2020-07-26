@@ -1,7 +1,7 @@
 
 def buscar_invocaciones(datos_por_funciones):
-    """[Autor: Luciano Federico Aguilera]
-    [Ayuda: Busca las funciones presentes en el diccionario creado anteriormente y las agrega en un diccionario con un numero de indice ]"""
+    '''[Autor: Luciano Federico Aguilera]
+    [Ayuda: Busca las funciones presentes en el diccionario creado anteriormente y las agrega en un diccionario con un numero de indice ]'''
     
     cuenta_lineas = 0
     diccionario_invocaciones = {"total": {} , "indices" : {} , "nombres" : {} }
@@ -26,10 +26,10 @@ def buscar_invocaciones(datos_por_funciones):
     
     return diccionario_invocaciones , tupla_funciones , largo_maximo
 
-def contar_interacciones(diccionario_invocaciones , tupla_funciones  , datos_por_funciones ):  
+def contar_interacciones(diccionario_invocaciones, tupla_funciones, datos_por_funciones ):  
 
-    """[Autor: Luciano Federico Aguilera]
-    [Ayuda : Busca coincidencias entre las funciones listadas en tupla_funciones y las presentes en la lista datos_por_funcion para su correspondiente funcion y agrego esa informacion en diccionario_invocaciones ]"""
+    '''[Autor: Luciano Federico Aguilera]
+    [Ayuda : Busca coincidencias entre las funciones listadas en tupla_funciones y las presentes en la lista datos_por_funcion para su correspondiente funcion y agrego esa informacion en diccionario_invocaciones ]'''
    
     lineas = 0
     cuenta_linea = 0
@@ -54,9 +54,9 @@ def contar_interacciones(diccionario_invocaciones , tupla_funciones  , datos_por
     return diccionario_invocaciones
 
 
-def creacion_formato_tabla(diccionario_invocaciones , largo_maximo):
-    """[Autor: Luciano Federico Aguilera]
-    [Ayuda: Esta funcion recive el diccionario y largo de la funcion con mas caracteres para armar el formato de la tabla y devuelve una lista de lineas del archivo txt final]"""
+def creacion_formato_tabla(diccionario_invocaciones, largo_maximo):
+    '''[Autor: Luciano Federico Aguilera]
+    [Ayuda: Esta funcion recive el diccionario y largo de la funcion con mas caracteres para armar el formato de la tabla y devuelve una lista de lineas del archivo txt final]'''
     # Creo una lista cuyos elementos seran las lineas del archivo txt
     filas_txt = []
     indice_de_lineas = 1
@@ -85,10 +85,10 @@ def creacion_formato_tabla(diccionario_invocaciones , largo_maximo):
     filas_txt.append(cadena_totales)       
     return filas_txt
 
-def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
+def asignacion_valores_tabla(filas_txt, diccionario_invocaciones) :
 
-    """[Autor: Luciano Federico Aguilera]
-    [Ayuda: Esta funcion recive filas_txt y agrega a las lineas el valor correspondiente a cada funcion tambien recibe diccionario_invocaciones ]"""
+    '''[Autor: Luciano Federico Aguilera]
+    [Ayuda: Esta funcion recive filas_txt y agrega a las lineas el valor correspondiente a cada funcion tambien recibe diccionario_invocaciones ]'''
 
     for numero in diccionario_invocaciones :
         if str(numero).isdigit() :
@@ -110,26 +110,22 @@ def asignacion_valores_tabla (filas_txt, diccionario_invocaciones) :
     return filas_txt
     
 
-def creacion_archivo_txt (filas_txt) :
-    """[Autor: Luciano Federico Aguilera]
-    [Ayuda:Esta funcion crea un archivo txt llamado anatizador.txt e imprime las lineas por consola a partir de los elementos de la lista filas_txt]"""
+def creacion_archivo_txt(filas_txt) :
+    '''[Autor: Luciano Federico Aguilera]
+    [Ayuda:Esta funcion crea un archivo txt llamado anatizador.txt e imprime las lineas por consola a partir de los elementos de la lista filas_txt]'''
     
     with open("analizador.txt" , "w") as analizador :
         for linea in filas_txt:
             analizador.write(f'{linea}\n\n')
             print(f'{linea}\n\n')
 
-def analizar_reutilizacion (datos_por_funciones) :
-    """[Autor: Luciano Federico Aguilera]
-    [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]"""
+def analizar_reutilizacion(datos_por_funciones) :
+    '''[Autor: Luciano Federico Aguilera]
+    [Ayuda:Esta funcion sirve como main para llamar a las demas funciones]'''
     # Defino el nombre nombre del archivo que usamos para obtener los datos que fue creado en creador csv
 
-    diccionario_invocaciones , tupla_funciones , largo_maximo = buscar_invocaciones(datos_por_funciones )
-
-    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones , tupla_funciones , datos_por_funciones )
-
-    filas_txt  = creacion_formato_tabla(diccionario_invocaciones , largo_maximo)
-
-    filas_txt = asignacion_valores_tabla (filas_txt, diccionario_invocaciones)
-
-    creacion_archivo_txt (filas_txt)
+    diccionario_invocaciones, tupla_funciones, largo_maximo = buscar_invocaciones(datos_por_funciones)
+    diccionario_invocaciones = contar_interacciones(diccionario_invocaciones, tupla_funciones, datos_por_funciones)
+    filas_txt = creacion_formato_tabla(diccionario_invocaciones, largo_maximo)
+    filas_txt = asignacion_valores_tabla(filas_txt, diccionario_invocaciones)
+    creacion_archivo_txt(filas_txt)

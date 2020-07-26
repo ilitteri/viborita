@@ -1,6 +1,6 @@
 from pygraphviz import AGraph
 
-def crear(datos):
+def crear_grafo_invocaciones(datos):
 
     g = AGraph(directed=True)
     

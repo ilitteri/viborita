@@ -1,8 +1,7 @@
 import m_organizar_datos as organizar
 import m_obtener as obtener
-import m_grabar as grabar
 
-def ordenar_datos_descendiente(datos_por_autor):
+def ordenar_diccionario_autores(datos_por_autor):
     '''[Autor: Ivan Litteri]
     [Ayuda: Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de 
     lineas de codigo que escribio cada autor]'''
@@ -10,7 +9,7 @@ def ordenar_datos_descendiente(datos_por_autor):
     #Devuelve una lista ordenada por el total de lineas que escribio cada autor
     return sorted(datos_por_autor.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
 
-def formatear_datos(datos_ordenados):
+def formatear_participacion(datos_ordenados):
     '''[Autor: Ivan Litteri]
     [Ayuda: Formatea los datos del diccionario como se pide en la consigna y devuelve una cadena con los datos 
     formateados]'''
@@ -67,23 +66,23 @@ def formatear_datos(datos_ordenados):
 
     return datos_a_imprimir
 
-def imprimir_participacion(datos):
+def mostrar_participacion(datos):
     '''[Autor: Ivan Litteri]'''
     print(datos)
 
-def crear_archivo_txt(nombre_archivo, datos):
+def crear_participacion_txt(nombre_archivo, datos):
     '''[Autor: Ivan Litteri]
     [Ayuda: Crea y graba el archivo de participacion txt con los datos formateados]'''
 
     #Abre el archivo para escribir y lo cierra al finalizar la grabacion
     with open(nombre_archivo, "w") as archivo_txt:
         #Escribe en el archivo
-        grabar.cadena(archivo_txt, datos)
+        archivo_txt.write(datos)
 
 def obtener_informacion_desarrollador(datos_archivos_csv):
     '''[Autor: Ivan Litteri]'''
 
-    datos_ordenados = ordenar_datos_descendiente(datos_archivos_csv)
-    datos_formateados = formatear_datos(datos_ordenados)
-    imprimir_participacion(datos_formateados)
-    crear_archivo_txt("participacion.txt", datos_formateados)
+    datos_ordenados = ordenar_diccionario_autores(datos_archivos_csv)
+    datos_formateados = formatear_participacion(datos_ordenados)
+    mostrar_participacion(datos_formateados)
+    crear_participacion_txt("participacion.txt", datos_formateados)

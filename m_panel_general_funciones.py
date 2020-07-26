@@ -1,7 +1,6 @@
 import m_obtener as obtener
-import m_grabar as grabar
 
-def imprimir_panel_general(lista_de_listas, longitud):
+def mostrar_panel_general(lista_de_listas, longitud):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: imprime la lista de listas con los espacion necesarios para que quede parejo]'''
 
@@ -12,14 +11,20 @@ def imprimir_panel_general(lista_de_listas, longitud):
         #imprime los elementos de la lista juntos y con los espacios correspondientes a cada elemento
         print("\t".join(lista_de_listas[lista]))
 
-def crear_panel_general(lista_de_listas):
+def grabar_panel_control_csv(archivo, lineas):
+    '''[Autor: Santiago Vaccarelli]
+    [Ayuda: graba las lineas que le llegan por parametro al archivo]'''
+
+    for linea in lineas:
+        archivo.write(f'{",".join(linea)}\n')
+
+def crear_panel_general_csv(lista_de_listas):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: Crea el archivo csv de panel general y le graba los datos]'''
     with open("panel_general.csv", "w") as archivo_panel_general:
-        for linea in lista_de_listas:
-            archivo_panel_general.write(f'{",".join(linea)}\n')
+        grabar_panel_control_csv(archivo_panel_general, lista_de_listas)
 
-def obtener_tabla(diccionario):
+def generar_tabla_panel_general(diccionario):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: toma como parametro el diccionario con los datos de todas las funciones y crea variables (columnas_datos, lista_de_listas)para usar otras funciones (longitudes_maximas,imprimir_tabla)]'''
 
@@ -49,6 +54,6 @@ def obtener_tabla(diccionario):
 def obtener_panel_general(datos_archivos_csv):
     '''[Autor: Santiago Vaccarelli]'''
     
-    lista_de_listas, longitud = obtener_tabla(datos_archivos_csv)
-    crear_panel_general(lista_de_listas)
-    imprimir_panel_general(lista_de_listas, longitud)
+    lista_de_listas, longitud = generar_tabla_panel_general(datos_archivos_csv)
+    crear_panel_general_csv(lista_de_listas)
+    mostrar_panel_general(lista_de_listas, longitud)

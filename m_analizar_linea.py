@@ -121,22 +121,25 @@ def imports(linea_codigo, bandera_import = False):
     
     return datos_import
 
-def largo_ayuda(ayuda):
+def largo_linea(ayuda):
     '''[Autor: Joel Glauber]
     [Ayuda: analiza un comentario de ayuda con mas de 80 caracteres, y devuelve el mismo, pero cada 80 caracteres, agrega
     un enter (para la grabacion del archivo de ayuda de funcion del punto 2)]'''
 
     #Declara una cadena vacia para llenar con los caracteres de el comentario de ayuda
-    ayuda_recortada = ""
+    linea_recortada = ""
     #Declaro una variable global como 0 para usarla de indice
     i = 0
-    while i < len(ayuda):
+    while (i < len(ayuda)):
         #Si se llega a una posicion que es multiplo de 79 (cada vez que se llega a 80 caracteres de longitud) y agrega un enter
-        if i % 79 == 0:
-            ayuda_recortada += "\n"
+        if( i % 78 == 0) and (i != 0):
+            if ayuda[i].isalpha():
+                linea_recortada += "-\n"
+            else:
+                linea_recortada += "\n"
         #Agregar el caracter a la cadena final
-        ayuda_recortada += ayuda[i]
+        linea_recortada += ayuda[i]
         #Incrementa el indice
         i += 1
 
-    return ayuda_recortada
+    return linea_recortada
