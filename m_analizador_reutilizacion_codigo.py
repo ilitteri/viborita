@@ -63,24 +63,28 @@ def creacion_formato_tabla(diccionario_invocaciones, largo_maximo):
 
     # Creo la primer y ultima linea del archivo de texto  
     filas_txt.append(f'\t FUNCIONES\t{" "*(largo_maximo - 5)}')
-    cadena_totales = (f'\n\t Total Invocaciones\t{" "*(largo_maximo - 30)}')
+    cadena_totales = (f'\n\t Total Invocaciones{" " * (largo_maximo-11)}')
 
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones :
         if str(funcion).isdigit() :
-            filas_txt [0] += (f'\t{funcion}\t') 
+            filas_txt [0] += (f' {funcion} ') 
             funcion_en_linea = diccionario_invocaciones["nombres"][funcion]
             if "*" in funcion_en_linea :
                 funcion_en_linea = funcion_en_linea.replace("*","")
             cadena_de_texto =  (f'\t {indice_de_lineas} {funcion_en_linea}\t{" " * (largo_maximo-len(str(funcion_en_linea)) )}')
-
-            if funcion <= 9 :
-                cadena_de_texto += " "
             filas_txt.append(cadena_de_texto )
             indice_de_lineas += 1  
 
             # Concateno a los totales que estaban el el diccionario a la tabla
-            cadena_totales += (f'\t{diccionario_invocaciones ["total"] [funcion]}\t')
+            cadena_totales += (f' {diccionario_invocaciones ["total"] [funcion]} ')
+
+            if 9 < funcion < 100 :
+                cadena_totales += " "
+            elif funcion >= 100 :
+                cadena_totales += "  "
+                
+            
 
     filas_txt.append(cadena_totales)       
     return filas_txt
@@ -97,15 +101,21 @@ def asignacion_valores_tabla(filas_txt, diccionario_invocaciones) :
         
             for funcion in diccionario_invocaciones[numero][funcion_en_linea]:
                 # Aqui agrego el caracteres correspondientes a cada funcion ("X", "numero" o "vacio")
+                
                 if diccionario_invocaciones[numero][funcion_en_linea][funcion] > 0 :
-                    filas_txt[numero] +=(f'\t{diccionario_invocaciones[numero][funcion_en_linea][funcion]}\t')
+                    filas_txt[numero] +=(f' {diccionario_invocaciones[numero][funcion_en_linea][funcion]} ')
                 
                 else:
                     indice = diccionario_invocaciones["indices"][funcion]
                     if diccionario_invocaciones[indice][funcion][funcion_en_linea] > 0  :
-                        filas_txt[numero] += (f'\tX\t')
+                        filas_txt[numero] += (" X ")
                     else :
-                        filas_txt[numero] += (f'\t \t')
+                        filas_txt[numero] += ("   ")
+                
+                if 9 < numero < 100 :
+                    filas_txt[numero] += " "
+                elif numero >= 100 :
+                    filas_txt[numero] += "  "
 
     return filas_txt
     
@@ -116,8 +126,8 @@ def creacion_archivo_txt(filas_txt) :
     
     with open("analizador.txt" , "w") as analizador :
         for linea in filas_txt:
-            analizador.write(f'{linea}\n\n')
-            print(f'{linea}\n\n')
+            analizador.write(f'{linea}\n')
+            print(f'{linea}')
 
 def analizar_reutilizacion(datos_por_funciones) :
     '''[Autor: Luciano Federico Aguilera]
