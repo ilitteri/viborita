@@ -71,34 +71,12 @@ def cantidad_declaraciones(datos_fuente, lineas_funcion, nombre_funcion):
 
     return datos_fuente
 
-def lineas_codigo_totales(datos_por_cantidad_lineas_autor):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: le llega por parametro el diccionario ordenado por cantidad de lineas totales por autor (si se pasase otro
-    no funcionaria) y devuelve la cantidad de lineas totales de todos los codigos involucrados en la aplicacion]'''
-    return sum(datos_por_cantidad_lineas_autor[autor]["funciones"][funcion] for autor in datos_por_cantidad_lineas_autor for funcion in datos_por_cantidad_lineas_autor[autor]["funciones"])
-
 def porcentaje_lineas_codigo(autor, datos_autor, lineas_codigo_totales):
     '''[Autor: Ivan Litteri]
     [Ayuda: le llega por parametro el diccionario ordenado por cantidad de lineas totales por autor (si se pasase otro
     no funcionaria), el autor que se desea evaluar y devuelve el porcentaje de lineas de codigo que ese autor escribio]'''
     
     return (datos_autor["lineas_totales"] / lineas_codigo_totales) * 100
-
-def lista_funciones(archivo_fuente):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: le llegan un objeto de text.IO (datos del archivo fuente_unico) y devuelve una lista con los nombres de todas
-    las funciones]'''
-
-    funciones = []
-    #Obtiene la primera linea del archivo
-    linea_fuente = archivo_fuente.readline()
-    while linea_fuente:
-        #Agrega a la lista de funciones la funcion correspondiente al primer campo de la linea
-        funciones.append(linea_fuente.split('","')[0])
-        #Avanza de linea en el archivo
-        linea_fuente = archivo_fuente.readline()
-
-    return funciones
 
 def tabla_funciones(lista_funciones, primera_fila = True):
     '''[Autor: Joel Glauber]
@@ -122,7 +100,7 @@ def tabla_funciones(lista_funciones, primera_fila = True):
         fila = f'| {lista_funciones[i]}(){separacion}'
         #Sumo los nombres de las funciones separadas con una tabulacion
         tabla += fila
-
+    tabla += "|"
     return tabla, cantidad_guiones
 
 def longitud_maxima(columnas_datos, longitud):

@@ -102,25 +102,6 @@ def comentario_numeral(linea_codigo, bandera_otro_comentario = False, bandera_li
 
     return otro_comentario, posible_linea
 
-def imports(linea_codigo, bandera_import = False):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: esta funcion analiza la linea que le llega por parametro que anteriormente fue filtrada como
-    linea de import, devuelve en caso de ser un import general un diccionario con el modulo importado como
-    value; y un diccionario con una lista como value cuyo primer elemento es el modulo importado, y el segundo
-    elemento es una lista de las funciones que se importaron de ese modulo.]'''
-
-    datos_import = {}
-
-    #Si la linea es del estilo import modulo...
-    if linea_codigo.startswith("import"):
-        datos["modulo_importado"] = [linea_codigo.split(" ")[1]]
-    #Si la linea es del estilo from modulo import...
-    elif linea_codigo.startswith("from"):
-        recorte = linea_codigo.split(" ")
-        datos["modulo_importado"] = [recorte[1], recorte[3:]]
-    
-    return datos_import
-
 def largo_linea(ayuda):
     '''[Autor: Joel Glauber]
     [Ayuda: analiza un comentario de ayuda con mas de 80 caracteres, y devuelve el mismo, pero cada 80 caracteres, agrega

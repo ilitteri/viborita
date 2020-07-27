@@ -202,8 +202,7 @@ def leer_modulo(archivo_modulo, nombre_modulo, info_ubicaciones, lineas_fuera_fu
     
 
 def crear_csv_individuales(info_ubicaciones):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: ]'''
+    '''[Autor: Ivan Litteri]'''
 
     archivos_fuente = [] #Lista de nombres de archivos fuente_csv
     archivos_comentarios = [] #Lista de nombres de archivos comentarios_csv

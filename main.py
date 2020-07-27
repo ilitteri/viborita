@@ -64,7 +64,7 @@ def menu_interaccion(datos_por_funciones, datos_por_autores):
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 2 o "consultar funciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif opcion == "2" or opcion.lower() == "consultar funciones":
-            consulta_funciones.consular_funciones(datos_por_funciones)
+            consulta_funciones.consultar_funciones(datos_por_funciones)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 3 o "analizar reutilizacion de codigo" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif opcion == "3" or opcion.lower() == "analizar reutilizacion de codigo":
