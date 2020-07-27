@@ -13,7 +13,7 @@ analizando.
 
 *Autor: Andrés Kübler*
 
-Es la funcion principal del modulo, llama a la funcion crear_csv_finales(nombre_archivo) del módulo [m_crear_csv_finales.py](#m_crear_csv_finales.py) que crea los archivos fuente_unico.csv y comentarios.csv, luego llama a la funcion 
+Es la funcion principal del modulo, llama a la funcion crear_csv_finales(nombre_archivo) del módulo [m_crear_csv_finales.py](##m_crear_csv_finales.py) que crea los archivos fuente_unico.csv y comentarios.csv, luego llama a la funcion 
 *obtener_datos_csv(fuente, comentarios)*. Una vez que ya se tienen los datos, se llama a la funcion *menu_interaccion()* que valga la redundancia, ejecuta el menu de interacción.
 
 #### obtener_datos_csv(*fuente, comentarios*)
