@@ -1,3 +1,4 @@
+[vease](#abcdefg)
 # Analizador Y Evaluador De Diseño Modular De Aplicaciones 
 
 # Grupo Viborita
@@ -9,6 +10,7 @@ Se trata del módulo principal, en el se ejecuta el menu de interaccion que ser�
 analizando.
 
 ### Funciones
+
 #### main() 
 
 *Autor: Andrés Kübler*
@@ -143,6 +145,98 @@ Devuelve ```lineas``` que es la lista de todas las lineas de todos los archivos 
 ```datos``` es el diccionario que tiene el contenido de los archivos individuales.
 
 Cierra cada uno de los archivos individuales.
+
+# abcdefg
+
+## [*m_analizador_reutilizacion.py*(datos_por_funciones)](./m_analizador_reutilizacion_codigo.py)
+
+### Descripción
+
+Este modulo grafica la reutilizacion de  los modulos de una aplicacion y crea un archivo de tipo .txt ```analizador.txt```,
+en el puede observarse la cantidad de invocaciones que tienen las distintas funciones y si son invocadas se ve una "X" que representa esto
+al final del archivo se observa los totales de invocaciones para todas las funciones.
+
+Recive un diccionario ```datos_por_funciones``` creado en el modulo [m_organizar_datos.py](# funciones :) 
+
+``` 
+diccionario = {"funcion_1": {"parametros": (str),
+                             "modulo": (str),
+                             "lineas": (lista),
+                             "invocaciones": (lista),
+                             "cantidad_lineas": (int),
+                             "cantidad_invocaciones": (int),
+                             "comentarios": {"ayuda": (str),
+                                             "autor": (str),
+                                             "otros": (str)
+					     }
+                             "cantidad_decalraciones": {"returns": (int)
+                                                        "if/elif": (int)
+                                                        "for": (int)
+                                                        "while": (int)
+                                                        "break": (int)
+                                                        "exit": (int)
+                                                        "coment": (int),
+							},
+                                                       
+             "funcion_2": {...},
+             "funcion_n": {...}
+	      }
+
+
+
+```
+
+Devuelve un archivo llamado ```analizador.txt``` que contiene a la tabla de reutilizacion e imprime por ```consola``` la misma tabla
+                                                 
+
+### Funciones 2
+
+#### buscar_invocaciones ( *datos_por_funciones* )
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion crea una tupla a partir de las ```funcion_n (str) ```y las ```invocaciones (list)``` del diccionario ```datos_por_funcion(dict)``` de ```m_organizar_datos.py``` , crea un diccionario donde organizar los datos para la tabla de reutilizacion y le agrega como ```keys``` del mismo en un contador que funcionara posteriormente como indices de la tabla y le asigna a cada funcion en ```tupla_funciones``` un indice , en el diccionario tambien se agregan tres ```keys``` mas  ```"total"```(que contiene un diccionario con los indices como keys y sus totales) ,```"indices"```(que contiene un diccionario que tiene como keys las funciones contenidas en la tupla y contienen a su respectivo indice) y ```"nombres"```(que contiene los indices como keys que contienen a sus respectivas funciones  ) estas ultimas dos keys tienen la finalidad de ahorrar lineas y hacer mas entendible el codigo, tambien guarda la funcion que tenga mayor cantidad de caracteres para utilizarlo en ```creacion_formato_tabla```
+
+retorna ( *diccionario_invocaciones , tupla_funciones , largo_maximo* )
+
+[ m_organizar_datos.py ](#-Funciones-2) 
+
+#### contar_interacciones ( *diccionario_invocaciones , tupla_funciones , datos_por_funciones* )
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion cuenta las veces que fue utilizada una funcion dentro de cada funcion listada en la tupla y agrega los totales de cada indice a la key totales del diccionario para esto utiliza ```datos_por_funciones``` y ```tupla_funciones```  creados en ```buscar_invocaciones``` .
+
+retorna ( *diccionario_invocaciones , tupla_funciones , largo_maximo* )
+
+#### creacion_formato_tabla ( *diccionerio_invocaciones, largo_maximo* )
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion crea una lista que contendra las cadenas de texto correspondientes a cada linea del *analizador.txt* o bien que seran impresas por pantalla y agrega los indices junto con sus correspondientes funciones a cada linea la funcion toma en cuenta la funcion con mayor cantidad de caracteres para evitar errores de superposicion en la tabla.
+
+retorna ( ```diccionario_invocaciones``` )
+
+#### asignacion_valores_tabla ( *filas_txt, diccionario_invocaciones* )
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion concatena a su correspondiente linea segun corresponda un numero(si la funcion en la columna es invocada por la funcion de la fila) ,una "X"(si la funcion de la fila es invocada por la funcion en la columna) o un espacio vacio (si la funcione en la fila y la columna no interactuan) 
+retorna ( filas_txt )
+
+#### creacion_archivo_txt( *filas_txt* )
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion crea el ```analizador.txt``` y graba en el linea por linea los elementos de ```filas_txt``` generada en ```buscar_invocaciones```
+a la vez que imprime por ```consola``` las mismas lineas.
+
+#### *analizar_reutilizacion*(datos_por_funcion)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funciones es la principal y llama a todas las sub_funciones anteriores , esta funcion es la que sera llamada en ```main.py```  
+
 
 
 ## Grafo de llamada de funciones
