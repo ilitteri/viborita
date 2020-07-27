@@ -154,7 +154,7 @@ Este modulo grafica la reutilizacion de  los modulos de una aplicacion y crea un
 en el puede observarse la cantidad de invocaciones que tienen las distintas funciones y si son invocadas se ve una "X" que representa esto
 al final del archivo se observa los totales de invocaciones para todas las funciones.
 
-Recive un diccionario ```datos_por_funciones``` creado en el modulo [m_organizar_datos.py](# funciones :) 
+Recive un diccionario ```datos_por_funciones``` creado en el modulo [m_organizar_datos.py](#Organizar-datos) 
 
 ``` 
 diccionario = {"funcion_1": {"parametros": (str),
@@ -193,11 +193,9 @@ Devuelve un archivo llamado ```analizador.txt``` que contiene a la tabla de reut
 
 *Autor : Luciano Federico Aguilera*
 
-Esta funcion crea una tupla a partir de las ```funcion_n (str) ```y las ```invocaciones (list)``` del diccionario ```datos_por_funcion(dict)``` de ```m_organizar_datos.py``` , crea un diccionario donde organizar los datos para la tabla de reutilizacion y le agrega como ```keys``` del mismo en un contador que funcionara posteriormente como indices de la tabla y le asigna a cada funcion en ```tupla_funciones``` un indice , en el diccionario tambien se agregan tres ```keys``` mas  ```"total"```(que contiene un diccionario con los indices como keys y sus totales) ,```"indices"```(que contiene un diccionario que tiene como keys las funciones contenidas en la tupla y contienen a su respectivo indice) y ```"nombres"```(que contiene los indices como keys que contienen a sus respectivas funciones  ) estas ultimas dos keys tienen la finalidad de ahorrar lineas y hacer mas entendible el codigo, tambien guarda la funcion que tenga mayor cantidad de caracteres para utilizarlo en ```creacion_formato_tabla```
+Esta funcion crea una tupla a partir de las ```funcion_n (str) ```y las ```invocaciones (list)``` del diccionario ```datos_por_funcion(dict)``` de [m_organizar_datos.py](#Organizar-datos)  , crea un diccionario donde organizar los datos para la tabla de reutilizacion y le agrega como ```keys``` del mismo en un contador que funcionara posteriormente como indices de la tabla y le asigna a cada funcion en ```tupla_funciones``` un indice , en el diccionario tambien se agregan tres ```keys``` mas  ```"total"```(que contiene un diccionario con los indices como keys y sus totales) ,```"indices"```(que contiene un diccionario que tiene como keys las funciones contenidas en la tupla y contienen a su respectivo indice) y ```"nombres"```(que contiene los indices como keys que contienen a sus respectivas funciones  ) estas ultimas dos keys tienen la finalidad de ahorrar lineas y hacer mas entendible el codigo, tambien guarda la funcion que tenga mayor cantidad de caracteres para utilizarlo en ```creacion_formato_tabla```
 
 retorna ( *diccionario_invocaciones , tupla_funciones , largo_maximo* )
-
-[ m_organizar_datos.py ](#-Funciones-2) 
 
 #### contar_interacciones ( *diccionario_invocaciones , tupla_funciones , datos_por_funciones* )
 
