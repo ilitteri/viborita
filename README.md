@@ -1,4 +1,4 @@
-[vease](#m-crear-csv-finales.py)
+[vease](#m-crear-csv-finales)
 # Analizador Y Evaluador De Diseño Modular De Aplicaciones 
 
 # Grupo Viborita
@@ -63,7 +63,7 @@ función correspondiente.
 Para salir del menú de opciones se debe presionar ENTER.
 
 
-# m\_crear\_csv\_finales.py
+# m crear csv finales
 
 ### Descripción
 Obtiene informacion del archivo "programas.txt" que usa para crear un archivo csv individual para cada una de las ubicaciones, hace un merge de esos archivos y luego los borra.
