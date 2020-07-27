@@ -6,10 +6,12 @@ def buscar_invocaciones(datos_por_funciones):
     cuenta_lineas = 0
     diccionario_invocaciones = {"total": {} , "indices" : {} , "nombres" : {} }
     largo_maximo = 0 
+    #Guardo las keys del diccionario como una tupla
     tupla_funciones = tuple(datos_por_funciones.keys())
-    
+    #Recorro la tupla de funciones
     for nombre_funcion in tupla_funciones :
         cuenta_lineas += 1
+        #Guardo la funcion con mayor cantidad de caracteres
         if len(nombre_funcion) > largo_maximo :
             largo_maximo = len(nombre_funcion)
         diccionario_invocaciones [cuenta_lineas] = {}
@@ -17,9 +19,10 @@ def buscar_invocaciones(datos_por_funciones):
         #Defino los totales para agregarlos posteriormente a la tabla
         diccionario_invocaciones ["total"] [cuenta_lineas] = 0
         # Agrego una key para relacionar los nombres de las variables con sus indices para ahorrar codigo
-        # Tambien hago lo mismo para hacer lo inverso
         diccionario_invocaciones ["indices"] [nombre_funcion] = cuenta_lineas
+        # Tambien hago lo mismo para relacionar los indices con sus variables
         diccionario_invocaciones ["nombres"] [cuenta_lineas] = nombre_funcion
+        #Una vez creado el diccionario defino en 0 las invocaciones de cada funcion dentro de las demas 
         for funcion in tupla_funciones :
             diccionario_invocaciones [cuenta_lineas] [nombre_funcion] [funcion] = 0
     
@@ -33,6 +36,7 @@ def contar_interacciones(diccionario_invocaciones, tupla_funciones, datos_por_fu
    
     lineas = 0
     cuenta_linea = 0
+    #Recorro los indices de las funciones listadas
     while lineas < len(tupla_funciones) :
         nombre = tupla_funciones [lineas]
         cuenta_linea += 1
@@ -70,15 +74,17 @@ def creacion_formato_tabla(diccionario_invocaciones, largo_maximo):
         if str(funcion).isdigit() :
             filas_txt [0] += (f' {funcion} ') 
             funcion_en_linea = diccionario_invocaciones["nombres"][funcion]
+            #Filtro el caracter "*" que fue usado para identificar a la funcion principal en otros modulos
             if "*" in funcion_en_linea :
                 funcion_en_linea = funcion_en_linea.replace("*","")
+            #Apendeo la cadena de texto que corresponde al lateral izquierdo de la tabla e incluye a laas funciones y sus indices
             cadena_de_texto =  (f'\t {indice_de_lineas} {funcion_en_linea}\t{" " * (largo_maximo-len(str(funcion_en_linea)) )}')
             filas_txt.append(cadena_de_texto )
             indice_de_lineas += 1  
 
             # Concateno a los totales que estaban el el diccionario a la tabla
             cadena_totales += (f' {diccionario_invocaciones ["total"] [funcion]} ')
-
+            #Corrijo el espaciado en caso de que el numero de funciones sea muy elevado
             if 9 < funcion < 100 :
                 cadena_totales += " "
             elif funcion >= 100 :
@@ -111,7 +117,7 @@ def asignacion_valores_tabla(filas_txt, diccionario_invocaciones) :
                         filas_txt[numero] += (" X ")
                     else :
                         filas_txt[numero] += ("   ")
-                
+                #Corrijo el espaciado en caso de que el numero de funciones sea muy elevado
                 if 9 < numero < 100 :
                     filas_txt[numero] += " "
                 elif numero >= 100 :
@@ -123,7 +129,7 @@ def asignacion_valores_tabla(filas_txt, diccionario_invocaciones) :
 def creacion_archivo_txt(filas_txt) :
     '''[Autor: Luciano Federico Aguilera]
     [Ayuda:Esta funcion crea un archivo txt llamado anatizador.txt e imprime las lineas por consola a partir de los elementos de la lista filas_txt]'''
-    
+    #Escribo el archivo txt a la vez que imprimo por pantalla
     with open("analizador.txt" , "w") as analizador :
         for linea in filas_txt:
             analizador.write(f'{linea}\n')
