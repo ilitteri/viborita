@@ -14,7 +14,7 @@ analizando.
 
 *Autor: Andrés Kübler*
 
-Es la funcion principal del modulo, llama a la funcion crear_csv_finales(nombre_archivo) del módulo [*m_crear_csv_finales.py*](#Crea-CSV-Finales) que crea los archivos fuente_unico.csv y comentarios.csv, luego llama a la funcion 
+Es la funcion principal del modulo, llama a la funcion crear_csv_finales(nombre_archivo) del módulo [*m_crear_csv_finales.py*](#Crear-CSV-Finales) que crea los archivos fuente_unico.csv y comentarios.csv, luego llama a la funcion 
 *obtener_datos_csv(fuente, comentarios)*. Una vez que ya se tienen los datos, se llama a la funcion *menu_interaccion()* que valga la redundancia, ejecuta el menu de interacción.
 
 #### obtener_datos_csv(*fuente, comentarios*)
@@ -62,7 +62,7 @@ función correspondiente.
 Para salir del menú de opciones se debe presionar ENTER.
 
 
-## [Crear CSV Finales](./m_crear_csv_finales.py)
+## [Crear CSV Finales](./m_csv_finales.py)
 
 ### Descripción
 Obtiene informacion del archivo "programas.txt" que usa para crear un archivo csv individual para cada una de las ubicaciones, hace un merge de esos archivos y luego los borra.
