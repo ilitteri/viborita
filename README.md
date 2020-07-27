@@ -1,4 +1,4 @@
-[vease](#main.py)
+[Analizador de reutilizacion de codigo](#Analizador-de-reutilizacion-de-codigo)
 # Analizador Y Evaluador De Diseño Modular De Aplicaciones 
 
 # Grupo Viborita
@@ -146,9 +146,7 @@ Devuelve ```lineas``` que es la lista de todas las lineas de todos los archivos 
 
 Cierra cada uno de los archivos individuales.
 
-# abcdefg
-
-## [*m_analizador_reutilizacion.py*(datos_por_funciones)](./m_analizador_reutilizacion_codigo.py)
+## [Analizador de reutilizacion de codigo](./m_analizador_reutilizacion_codigo.py)
 
 ### Descripción
 
@@ -189,7 +187,7 @@ diccionario = {"funcion_1": {"parametros": (str),
 Devuelve un archivo llamado ```analizador.txt``` que contiene a la tabla de reutilizacion e imprime por ```consola``` la misma tabla
                                                  
 
-### Funciones 2
+### Funciones
 
 #### buscar_invocaciones ( *datos_por_funciones* )
 
