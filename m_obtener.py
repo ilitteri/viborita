@@ -8,13 +8,21 @@ def informacion_ubicaciones(nombre_archivo):
     anlizar).]'''
 
     ubicaciones = []
+    #Obtiene el sistema operativo en el que se esta ejecutando la aplicacion
     os = platform.system()
+    #Abre el archivo de programas para obtener las ubicaciones
     with open(nombre_archivo, "r") as archivo_programas:
+        #Carga la primera linea del archivo, que corresponde a la primera ubicacion
         ubicacion = archivo_programas.readline().strip()
+        #Mientras haya linea para leer en el archivo
         while ubicacion:
+            #Si el OS es Linux o MacOS obtiene el nombre del archivo separando con "/"
             if (os == "Linux") or (os == "Darwin"):
+                #Agrego a la lista de ubicaciones una tupla con la ubicacion y el nombre del archivo
                 ubicaciones.append((ubicacion, ubicacion.split("/")[-1]))
+            #Si el OS es Windows obtiene el nombre del archivo separando con "\"
             elif (os == "Windows"):
+                #Agrego a la lista de ubicaciones una tupla con la ubicacion y el nombre del archivo
                 ubicaciones.append((ubicacion, ubicacion.split("\\")[-1]))
             ubicacion = archivo_programas.readline().strip()
 
@@ -30,8 +38,11 @@ def cantidad_invocaciones(datos_csv):
     '''[Autor: Ivan Litteri]
     [Ayuda: agrega invocaciones a la lista de invocaciones si una funcion invoca alguna funcion, e incrementa la cantidad de veces que es invocada esa funcion.]'''
 
+    #Recorre todas las funciones
     for funcion in datos_csv:
+        #Por cada funcion itera sobre todas las lineas de esa funcion
         for linea_funcion in datos_csv[funcion]["lineas"]:
+            #Por cada linea itero todas las funciones, fijandome si esa funcion es invocada en la linea
             for nombre_funcion in datos_csv:
                 if ("cantidad_invocaciones" not in datos_csv[nombre_funcion]):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] = 0
@@ -42,12 +53,14 @@ def cantidad_invocaciones(datos_csv):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos_csv[funcion]["invocaciones"].append(nombre_funcion)
 
+    #Devuelve el diccionario actualizado
     return datos_csv
 
 def cantidad_declaraciones(datos_csv, lineas_funcion, nombre_funcion):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: incrementa la cantidad de declaraciones en caso de encontrarlas mientras recorre cada linea.]'''
 
+    #Recorre todas las lineas de la funcion e incrementa la declaracion que sea valida en caso de encontrarla
     for linea_funcion in lineas_funcion:
         if ("for" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["for"] += linea_funcion.count("for")
@@ -64,6 +77,7 @@ def cantidad_declaraciones(datos_csv, lineas_funcion, nombre_funcion):
         elif ("exit" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["exit"] += 1
 
+    #Devuelve el diccionario actualizado 
     return datos_csv
 
 def porcentaje_lineas_codigo(autor, datos_csv, lineas_codigo_totales):
