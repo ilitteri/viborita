@@ -12,6 +12,8 @@
 
 ## [main](./main.py)
 
+[*Indice*](#Índice-de-Módulos)
+
 ### Descripción
 Se trata del módulo principal, en el se ejecuta el menu de interaccion que será utilizado por el usuario para acceder a la informacion que desee de la aplicación que se esta 
 analizando.
@@ -73,6 +75,8 @@ Para salir del menú de opciones se debe presionar ENTER.
 
 
 ## [Crear CSV Finales](./m_csv_finales.py)
+
+[*Indice*](#Índice-de-Módulos)
 
 ### Descripción
 Obtiene informacion del archivo "programas.txt" que usa para crear un archivo csv individual para cada una de las ubicaciones, hace un merge de esos archivos y luego los borra.
@@ -156,6 +160,8 @@ Devuelve ```lineas``` que es la lista de todas las lineas de todos los archivos 
 Cierra cada uno de los archivos individuales.
 
 ## [Organizar Datos](./m_organizar_datos.py)
+
+[*Indice*](#Índice-de-Módulos)
 
 ### Descripción
 
@@ -263,6 +269,8 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 ## [Panel General de Funciones](./m_panel_general_funciones.py)
 
+[*Indice*](#Índice-de-Módulos)
+
 ### Descripción 
 
 ...
@@ -305,6 +313,8 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 ```datos_archivos_csv``` 
 
 ## [Consulta de Funciones](./m_consulta_funciones.py)
+
+[*Indice*](#Índice-de-Módulos)
 
 ### Descripción
 
@@ -452,6 +462,8 @@ Devuelve una cadena formateada con la información que se pide de la funcion que
 
 ## [Analizador de Reutilización de Código](./m_analizador_reutilizacion_codigo.py)
 
+[*Indice*](#Índice-de-Módulos)
+
 ### Descripción
 
 Este modulo grafica la reutilizacion de  los modulos de una aplicacion y crea un archivo de tipo .txt ```analizador.txt```,
@@ -515,6 +527,8 @@ Esta funciones es la principal y llama a todas las sub_funciones anteriores , es
 
 ## [Árbol de Invocaciones](./m_arbol_invocacion.py)
 
+[*Indice*](#Índice-de-Módulos)
+
 ### Descripción
 
 Es el punto número 4 del Trabajo Práctico, consta en la imresión por pantalla de un árbol de invocaciones de las funciones y su respectiva cantidad de lineas.
@@ -545,6 +559,8 @@ Esta función busca la funcion principal del programa en el diccionario pasado p
 es a traves de un ciclo con condición de corte. Finalmente devuelve la función principal como string
 
 ## [Información por Desarrollador](./m_informacion_desarrollador.py)
+
+[*Indice*](#Índice-de-Módulos)
 
 ### Descripción
 
@@ -607,9 +623,9 @@ Reordena los datos del diccionario que llega del main en otro de forma descendie
 
 Devuelve una lista con esos datos ordenados
 
-[Indice](#Índice-de-Módulos)
-
 # Extra
+
+[*Indice*](#Índice-de-Módulos)
 
 ## [Grafo](./m_grafo.py)
 
