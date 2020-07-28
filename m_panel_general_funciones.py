@@ -1,15 +1,15 @@
 import m_obtener as obtener
 
-def mostrar_panel_general(lista_de_listas, longitud):
+def mostrar_panel_general(lista_de_columnas, longitud):
     '''[Autor: Santiago Vaccarelli]
-    [Ayuda: imprime la lista de listas con los espacion necesarios para que quede parejo]'''
+    [Ayuda: imprime la lista de columnas con los espacios necesarios para que quede parejo]'''
 
-    for lista in range(len(lista_de_listas)):
-        for elemento in range(len(lista_de_listas[lista])):
+    for columna in range(len(lista_de_columnas)):
+        for elemento in range(len(lista_de_columnas[columna])):
             #para cada elemento de la lista se fija cuantos espacios hace falta sumarle
-            lista_de_listas[lista][elemento] += (" " * (longitud[elemento] - len(lista_de_listas[lista][elemento])))
+            lista_de_columnas[columna][elemento] += (" " * (longitud[elemento] - len(lista_de_columnas[columna][elemento])))
         #imprime los elementos de la lista juntos y con los espacios correspondientes a cada elemento
-        print("\t".join(lista_de_listas[lista]))
+        print("\t".join(lista_de_columnas[columna]))
 
 def grabar_panel_control_csv(archivo, lineas):
     '''[Autor: Santiago Vaccarelli]
@@ -18,22 +18,22 @@ def grabar_panel_control_csv(archivo, lineas):
     for linea in lineas:
         archivo.write(f'{",".join(linea)}\n')
 
-def crear_panel_general_csv(lista_de_listas):
+def crear_panel_general_csv(lista_de_columnas):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: Crea el archivo csv de panel general y le graba los datos]'''
     with open("panel_general.csv", "w") as archivo_panel_general:
-        grabar_panel_control_csv(archivo_panel_general, lista_de_listas)
+        grabar_panel_control_csv(archivo_panel_general, lista_de_columnas)
 
 def generar_tabla_panel_general(diccionario):
     '''[Autor: Santiago Vaccarelli]
-    [Ayuda: toma como parametro el diccionario con los datos de todas las funciones y crea variables (columnas_datos, lista_de_listas)para usar otras funciones (longitudes_maximas,imprimir_tabla)]'''
+    [Ayuda: toma como parametro el diccionario con los datos de todas las funciones y crea variables (columnas_datos, lista_de_columnas)para usar otras funciones (longitudes_maximas,imprimir_tabla)]'''
 
     #crea la lista longitud y le aplico valores iniciales con la primer linea (los titulos)
     longitud = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     columnas_titulo = ["Funcion", "Parametros", "Lineas", "Invocaciones", "Returns", "If/Elif", "For", "While", "Break", "Exit", "Coment", "Ayuda", "Autor"]
     longitud = obtener.longitud_maxima(columnas_titulo,longitud)
     #crea una lista de listas en donde el primer elemento es la lista de titulos
-    lista_de_listas = [columnas_titulo]
+    lista_de_columnas = [columnas_titulo]
     
     for funcion, datos_funcion in diccionario.items(): 
         #crea una lista de strings con los elementos del diccionario como los pide para la tabla y el csv   
@@ -45,15 +45,15 @@ def generar_tabla_panel_general(diccionario):
                         f'{datos_funcion["cantidad_comentarios"]}', f'{"Si" if datos_funcion["comentarios"]["ayuda"] else "No"}', 
                         f'"{datos_funcion["comentarios"]["autor"].split(": ")[1] if datos_funcion["comentarios"]["autor"] else "Sin Autor"}"']
         #suma a la lista de listas cada una de las listas columna de datos que dependen de la key      
-        lista_de_listas.append(columnas_datos) 
+        lista_de_columnas.append(columnas_datos) 
         #calcula las longitudes maximas de cada columna comparando elementos de mismo indice de diferentes listas
         longitud = obtener.longitud_maxima(columnas_datos,longitud)
     
-    return lista_de_listas, longitud
+    return lista_de_columnas, longitud
 
-def obtener_panel_general(datos_archivos_csv):
+def obtener_panel_general(dict_principal):
     '''[Autor: Santiago Vaccarelli]'''
     
-    lista_de_listas, longitud = generar_tabla_panel_general(datos_archivos_csv)
-    crear_panel_general_csv(lista_de_listas)
-    mostrar_panel_general(lista_de_listas, longitud)
+    lista_de_columnas, longitud = generar_tabla_panel_general(dict_principal)
+    crear_panel_general_csv(lista_de_columnas)
+    mostrar_panel_general(lista_de_columnas, longitud)
