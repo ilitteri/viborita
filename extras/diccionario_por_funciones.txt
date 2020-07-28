@@ -1,0 +1,24 @@
+diccionario = {"funcion_1": {"parametros": ---> (str),
+                             "modulo": (str),
+                             "lineas": (lista),
+                             "invocaciones": (lista),
+                             "cantidad_lineas": (int),
+                             "cantidad_invocaciones": (int),
+                             "comentarios": {"ayuda": (str),
+                                             "autor": (str),
+                                             "otros": (str)
+					     }
+                             "cantidad_decalraciones": {"returns": (int)
+                                                        "if/elif": (int)
+                                                        "for": (int)
+                                                        "while": (int)
+                                                        "break": (int)
+                                                        "exit": (int)
+                                                        "coment": (int),
+							},
+                                                       
+             "funcion_2": {...},
+             "funcion_n": {...}
+	      }
+
+

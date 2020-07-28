@@ -1,0 +1,10 @@
+diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
+                                         "funcion_2": (int),
+                                         "funcion_n": (int),
+                                        },
+                            "lineas_totales": (int)
+                                                
+             "autor_2": {...},
+             "autor_n": {...}
+	      }
+
