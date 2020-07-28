@@ -2,7 +2,15 @@
 
 # Grupo Viborita
 
-## [main.py](./main.py)
+## Índice de módulos
+|  |  |  |
+| --- | --- | --- |
+| [main.py](#main)  | [m_panel_general_funciones.py](#Panel-General-Funciones)  | [m_consulta_funciones.py](#Consulta-de-Funciones)  |
+| [m_analizador_reutilizacion_codigo.py](#Analizador-de-Reutilización-de-Código)  | [m_arbol_invocaciones.py](#Árbol-de-Invocaciones)  | [m_informacion_desarrollador.py](#Información-por-Desarrollador)  |
+| [m_organizar_datos.py](#Organizar-Datos)  | [m_obtener.py](#Obtener)  | [m_grafo.py](#Grafo)  |
+| [m_csv_finales.py](#Crear-CSV-Finales)  | [m_csv_individuales.py](#Crear-CSV-Individuales)  | [m_analizar_linea.py](#Analizar-Línea)  |
+
+## [main](./main.py)
 
 ### Descripción
 Se trata del módulo principal, en el se ejecuta el menu de interaccion que será utilizado por el usuario para acceder a la informacion que desee de la aplicación que se esta 
