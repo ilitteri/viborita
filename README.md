@@ -668,7 +668,7 @@ Devuelve una lista con esos datos ordenados
 Hicimos un modulo extra llamado *m_grafo.py* que básicamente crea dos archivos llamados grafo.svg y grafo.png que corresponden a el árbol de invocaciones.
 
 ### Grafo de llamada de funciones
-<img src="./grafo.svg">
+<img src="./extras/grafo.svg">
 
 ### crear_grafo_invocaciones(*datos_csv*)
 
