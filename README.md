@@ -638,11 +638,95 @@ Devuelve una lista con esos datos ordenados
 
 ### Descripción
 
-(----)
+Este módulo es independiente de cada punto del trabajo practico, la razón de su existencia es la relación entre sus funciones, ya que cada una de ellas responden a algo en común que es "obtener" de ahi su nombre. Cada una de las funciones que contiene obtienen reciben uno o varios parametros, y obtienen información especifica y la devuelven. 
+
+Importa la libreria ```os``` y ```platform```. La primera es usada para obtener rutas de archivos y la segunda para detectar el sistema operativo en el que se está ejecutando la aplicación.
 
 ### Funciones
 
-(----)
+#### informacion_ubicaciones(*nombre_archivo*)
+
+*Autor: Ivan Litteri*
+
+```nombre_archivo``` es el nombre del archivo que contiene las rutas a los códigos a evaluar.
+
+Esta función recibe el nombre del archivo que contiene las rutas a los módulos de la aplicación guarda en la variable ```os``` el sistema operativo que devuelve ```platform.system()```, luego abre el archivo mencionado anterioremente en calidad de lectura, lo lee secuencialmente y dependiendo del sistema operativo detectado, agrega a la lista ```ubicaciones``` una tupla con la ubicacion como primer elemento y a el nombre del módulo como el segundo elemento (para este caso analizamos el sistema operativo ya que dependiendo de éste separamos con el método split de las listas, por "/" o por "\"). Esta función es invocada por el módulo [*m_csv_individuales.py*](#Crear-CSV-Individuales).
+
+Devuelve una lista de tuplas.
+
+#### ubicaciones_archivos_csv_individuales(*nombres_csv_individuales*)
+
+*Autor: Ivan Litteri*
+
+```nombres_csv_individuales``` es una lista que tiene los nombres de los archivos csv individuales creados.
+
+Esta función es usada por el módulo [*m_csv_finales.py*](#Crear-CSV-Finales) para derivar su devolución a una función que borra todos los archivos individuales.
+
+Devuelve una lista de ubicaciones de todos los archivos .csv individuales.
+
+#### cantidad_invocaciones(*datos_csv*)
+
+*Autor: Ivan Litteri*
+
+```datos_csv``` es el diccionario organizado por funciones con los datos de los archivos csv finales.
+
+Consta de 3 iteraciones, la primera que itera entre todas las funciones, por cada funcion iterada, itera entre sus lineas de codigo, y por cada linea de codigo reitera todas las funciones para evaluar si la misma se invoca allí con las interrogaciones correctas, en caso positivo agrega esa función a la lista de invocaciones de la función del primer iterador y a esa función que se hayó invocada, le incrementa en 1 su cantidad de iteraciones.
+
+Devuelve el diccionario actualizado.
+
+#### cantidad_declaraciones(*datos_csv, lineas_funcion, nombre_funcion*)
+
+*Autor: Santiago Vaccarelli*
+
+```datos_csv``` es el diccionario organizado por funciones con los datos de los archivos csv finales.
+
+```lineas_funcion``` es una lista de las líneas que forman parte de la función leida actualmente.
+
+```nombre_funcion``` es la función leida actualmente.
+
+Itera todas las líneas de la lista que recibe y evalúa las sentencias if/elif, for, return, while, break, exit con las interrogaciones correctas, e incrementa los contadores correspondiente para cada caso verdadero.
+
+Devuelve el diccionario actualizado.
+
+#### porcentaje_lineas_codigo(*autor, datos_csv, lineas_codigo_totales*)
+
+*Autor: Ivan Litteri*
+
+```autor``` es el autor al que se quiere evaluar el porcentaje de lineas de codigo que escribio respecto de el total
+
+```datos_csv```es el diccioanrio organizado por autores
+
+```lineas_codigo_totales``` es la cantidad de lineas de codigo totales de todo el codigo
+
+Devuelve el porcentaje de líneas de código que escribió el autor que le llega por parámetro relativo al total de lineas de código de toda la aplicación.
+
+#### tabla_funciones(*lista_funciones*)
+
+*Autor: Joel Glauber*
+
+```lista_funciones``` es la lista con los nombres de todas las funciones de la aplicación.
+
+Crea una cadena vacia, para llenar luego con los nombres de las funciones. Recorre los indices de la lista, si llega a la columna 5 da un enter para pasara a la siguiente fila, si además se trataba de la primera fila guardo una cantidad de guiones como el largo de la primera fila, luego baja la bandera de primera fila entonces ya queda fijo esa cantidad de guiones a imprimir y luego de esa interrogación se calcula una separación con una cuenta sencilla y se concatena a la cadena con el formato adecuado. De esta forma se mantienen 5 columnas y X filas.
+
+Devuelve la tabla formateada como una cadena y la cantidad de guiones (que se usan en la muestra en pantalla de la tabla en el módulo [m_consulta_funciones.py](#Consulta-de-Funciones)).
+
+#### longitud_maxima(*columnas_datos, longitud*)
+
+*Autor: Santiago Vaccarelli*
+
+```columnas_datos``` es una lista que contiene columnas.
+
+```longitud``` es una lista de longitudes seteadas en 0.
+
+(...)
+
+#### maxima_longitud(*lista_funciones*)
+
+*Autor: Ivan Litteri*
+
+```lista_funciones``` es la lista con los nombres de todas las funciones de la aplicación.
+
+Devuelve la longitud máxima del mayor elemento que haya en la lista que le llega, como solo se usa para las funciones, devuelve la longitud de la función mas larga, para luego usarla en la función *tabla_funciones(lista_funciones)* 
 
 ## [Crear CSV Individuales](./m_csv_individuales.py)
 
@@ -650,11 +734,211 @@ Devuelve una lista con esos datos ordenados
 
 ### Descripción
 
-(----)
+Este módulo es el encargado de crear los archivos fuente, y comentarios csv por cada uno de los módulos que componen a la aplicación.
 
 ### Funciones
 
-(----)
+#### crear_csv_individuales(*info_ubicaciones*)
+
+*Autor: Ivan Litteri*
+
+```info_ubicaciones``` es una lista de tuplas que contiene la informacion de las ubicaciones.
+
+Recorre las ubicaciones y el nombre del modulo del desempaquetamiento de cada tupla, y por cada iteración, abre los archivos fuente y comentarios csv correspondiente a cada 
+módulo en caldiad de escritura y también abre el módulo desde su ruta en calidad de lectura, esos datos los deriva a la función *leer_modulo(archivo_modulo, nombre_modulo, 
+info_ubicaciones, lineas_fuera_funcion)* que devuelve dos de sus parámetros pero actualizados, uno que se deriva a la función *grabar_csv_individual(archivo, lineas)* que es 
+invocada dos veces, una para el fuente y otra para el comentarios. Luego guardo en dos listas los nombres de los archivos individuales (fuente y comentarios) que voy creando 
+para luego borrarlos.
+
+Devuelve ```archivos_fuente````, ```archivos_comentarios``` y ```lineas_fuera_funcion```.
+
+#### leer_modulo(*archivo_modulo, nombre_modulo, info_ubicaciones, lineas_fuera_funcion*)
+
+*Autor: Ivan Litteri*
+
+```archivo_modulo``` es el contenido del módulo abierto anteriormente.
+
+```nombre_modulo``` es el nombre del módulo abierto.
+
+```info_ubicaciones``` es la lista de tuplas con la información de las ubicaciones.
+
+```lineas_fuera_funcion``` es la lista de lineas que estan fuera de funciones.
+
+Lee secuencialmente al módulo reemplazando las comillas dobles por comillas simples para evitar problemas con los campos en los csv. Se declaran variables en 0 como 
+```lineas_a_grabar``` que es una lista de dos listas (vacias inicialmente), la primera corresponde a las lineas a grabar en el archivo de fuente, y la otra corresponde a las 
+lineas a grabar en el archivo comentarios; una lista ```banderas``` que contiene tres elementos booleanos, declarados en False inicialmente; una lista ````cadenas``` de dos 
+cadenas, la primera que corresponde a la línea fuente que luego se tiene que agregar a la lista de lineas fuente de la lista ```lineas_a_grabar[0]``` y la segunda a la línea 
+comentarios que luego se tiene que agregar a la lista de lineas de comentarios de la lista ```lineas_a_grabar[1]``` y una ultima lista de cadenas ```info_lineas``` que contiene 
+4 cadenas inicialmente vacias, ```info_lineas[0]``` corresponde al nombre de la función, ```info_lineas[1]``` corresponde al autor de la función, ```info_lineas[2]``` 
+corresponde a la ayuda de la función y ```info_lineas[3]``` que corresponde a otros comentarios. ACLARACION: todas las cadenas de ```info_lineas``` estan ya formateadas y 
+listas para agregar a la lista de ```lineas_a_grabar```.
+
+Anteriormente mencione que leía secuencialmente al módulo, las líneas leidas, junto con las variables mencionadas anteriormente son enviadas como parámetros a la función 
+*analizar_linea_modulo(linea_codigo, nombre_modulo, info_ubicaciones, lineas_a_grabar, banderas, cadenas, info_lineas, lineas_fuera_funcion)* que va formateando y actualizando 
+las variables. Con su devolución, se verifica que no hayan quedado lineas sin guardar y en ese caso las guarda, luego se devuelven ```lineas_a_grabar``` y 
+```lineas_fuera_funcion```.
+
+#### analizar_linea_modulo(*linea_codigo, nombre_modulo, info_ubicaciones, lineas_a_grabar, banderas, cadenas, info_lineas, lineas_fuera_funcion*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` linea de código actualmente leida.
+
+```nombre_modulo``` nombre del módulo actualmente abierto.
+
+```info_ubicaciones``` lista de tuplas con la información de las ubicaciones.
+
+```lineas_a_grabar``` lista de listas de lineas a grabar, puede estar vacia o con datos, y se va actualizando.
+
+```banderas``` lista de banderas, si es la primera iteración estan todas en False.
+
+```cadenas``` lista de cadenas que son las lineas a guardar en lineas_a_grabar a llenar.
+
+```info_lineas``` lista de cadenas con la informacion de funcion, autor, ayuda y otros comentarios, a llenar.
+
+```lineas_fuera_funcion``` lista de lineas que estan fuera de funciones.
+
+Analiza si la línea de código que le llega por parámetro es una línea de declaración de funcion, o si es una linea que está dentro de una función o si es una línea fuera de 
+función. Para el primer caso, envia la línea y a las variables a la función * formatear_declaracion_funcion(linea_codigo, nombre_modulo, cadenas, banderas, info_lineas, 
+info_ubicaciones)*; para el segundo caso envia la línea y las variables a la función *analizar_linea_funcion(linea_codigo, nombre_modulo, info_ubicaciones, lineas_a_grabar, 
+banderas, cadenas, info_lineas, lineas_fuera_funcion)* y para el tercer caso, guarda la línea en la lista ```lineas_fuera_funcion```.
+
+Devuelve sus parámetros actualizados.
+
+#### formatear_declaracion_funcion(*linea_codigo, nombre_modulo, cadenas, banderas, info_lineas, info_ubicaciones*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` linea de código actualmente leida.
+
+```nombre_modulo``` nombre del módulo actualmente abierto.
+
+```info_ubicaciones``` lista de tuplas con la información de las ubicaciones.
+
+```lineas_a_grabar``` lista de listas de lineas a grabar, puede estar vacia o con datos, y se va actualizando.
+
+```banderas``` lista de banderas, si es la primera iteración estan todas en False.
+
+```cadenas``` lista de cadenas que son las lineas a guardar en lineas_a_grabar a llenar.
+
+```info_lineas``` lista de cadenas con la informacion de funcion, autor, ayuda y otros comentarios, a llenar.
+
+```lineas_fuera_funcion``` lista de lineas que estan fuera de funciones.
+
+Le llegan las líneas de código que declaran funciones, levanta la bandera de función (que avisa que las siguientes lineas a leer hasta un return o hasta otra declaración de 
+función pertenecen a esta función) y baja las banderas de comentarios y ayuda. Deriva la línea a la función *declaracion_funcion* del módulo [m_analizar_linea.py](#Analizar-
+Línea) que devuelve el nombre de la función que se está declarando y sus parámetros, los mismos son añadidos, con formato, a la cadena correspondiente, si se trata del módulo 
+principal, guarda al mismo con un asterisco (\*) para identificarlo más adelante.
+
+Devuelve ```cadenas```, ```banderas```, ```info_lineas``` e ```info_ubicaciones```.
+
+#### analizar_linea_funcion(*linea_codigo, nombre_modulo, info_ubicaciones, lineas_a_grabar, banderas, cadenas, info_lineas, lineas_fuera_funcion*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` linea de código actualmente leida.
+
+```nombre_modulo``` nombre del módulo actualmente abierto.
+
+```info_ubicaciones``` lista de tuplas con la información de las ubicaciones.
+
+```lineas_a_grabar``` lista de listas de lineas a grabar, puede estar vacia o con datos, y se va actualizando.
+
+```banderas``` lista de banderas, si es la primera iteración estan todas en False.
+
+```cadenas``` lista de cadenas que son las lineas a guardar en lineas_a_grabar a llenar.
+
+```info_lineas``` lista de cadenas con la informacion de funcion, autor, ayuda y otros comentarios, a llenar.
+
+```lineas_fuera_funcion``` lista de lineas que estan fuera de funciones.
+
+Le llegan las líneas de código que están dentro de una función, y evalua si se trata de una línea de código normal, si se trata de un comentario de una línea, si se trata de un 
+comentario multilínea, si se trata de una linea de return o si se trata del inicio de otra función (lo que indica que la anterior no posee return, es decir, no devuelve nada). 
+Para el primer caso la guarda formateada en ```cadenas[0]```, para el segundo caso se envia la línea a la función *guardar_comentario_numeral(linea_codigo, banderas, 
+info_lineas)*, para el tercer caso se envía la línea a la función *guardar_comentario_multilinea(linea_codigo, banderas, info_lineas)*, para el cuarto caso, se envía la línea a 
+la función *resetear_por_fin(linea_codigo, lineas_a_grabar, cadenas, banderas, info_lineas)*, para el quinto caso envía la línea a la función *resetear_por_inicio(linea_codigo, 
+nombre_modulo, lineas_a_grabar, cadenas, banderas, info_lineas, info_ubicaciones)*. Todo esto siempre y cuando ```banderas[1]``` (bandera de comentario) esta baja, ya que si 
+esta levantada, no analiza ninguno de los casos anteriores y directamente se fija si "Ayuda" esta en la línea, en ese caso envía la línea a la función 
+*ayuda_funcion(linea_codigo, bandera_ayuda)* del módulo [m_analizar_linea.py](#Analizar-Línea) que devuelve ```info_lineas[2]``` que corresponde a la ayuda de la función y 
+```bandera[2]``` que es el estado de la bandera de ayuda, si se detecto que terminó el comentario de ayuda, se baja sino sigue levantada.
+
+Devuelve ```lineas_a_grabar```, ```cadenas```, ```banderas```, ```info_lineas``` e ```info_ubicaciones```.
+
+#### resetear_por_fin(*linea_codigo, lineas_a_grabar, cadenas, banderas, info_lineas*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` linea de código actualmente leida.
+
+```lineas_a_grabar``` lista de listas de lineas a grabar, puede estar vacia o con datos, y se va actualizando.
+
+```banderas``` lista de banderas, si es la primera iteración estan todas en False.
+
+```cadenas``` lista de cadenas que son las lineas a guardar en lineas_a_grabar a llenar.
+
+```info_lineas``` lista de cadenas con la informacion de funcion, autor, ayuda y otros comentarios, a llenar.
+
+Baja todas las banderas, concatena la línea formateada a ```cadenas[0]``` (la linea fuente a grabar), agrega ```cadenas``` a ```lineas_a_grabar``` y resetea las variables de 
+información.
+
+Devuelve  ```lineas_a_grabar```, ```cadenas```, ```banderas``` y ```info_lineas```.
+
+#### resetear_por_inicio(*linea_codigo, nombre_modulo, lineas_a_grabar, cadenas, banderas, info_lineas, info_ubicaciones*)
+
+*Autor: Ivan Litteri*
+
+Resetea las banderas que corresponden a comentario y ayuda, agrega ```cadenas``` a ```lineas_a_grabar``` y resetea las variables de información. Si se trata del módulo 
+principal, guarda al mismo con un asterisco (\*) para identificarlo más adelante.
+
+Devuelve  ```lineas_a_grabar```, ```cadenas```, ```banderas``` y ```info_lineas```.
+
+#### guardar_comentario_numeral(*linea_codigo, cadenas, banderas, info_lineas*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` linea de código actualmente leida.
+
+```lineas_a_grabar``` lista de listas de lineas a grabar, puede estar vacia o con datos, y se va actualizando.
+
+```banderas``` lista de banderas, si es la primera iteración estan todas en False.
+
+```cadenas``` lista de cadenas que son las lineas a guardar en lineas_a_grabar a llenar.
+
+```info_lineas``` lista de cadenas con la informacion de funcion, autor, ayuda y otros comentarios, a llenar.
+
+Le llega una línea de comentario o una línea de código con un comentario y la envía a la función *comentario_numeral(linea_codigo)* del módulo [m_analizar_linea.py](#Analizar-
+Línea) que devuelve el comentario y posible línea de código. Luego se guarda el comentario en ```info_lineas[3]``` y en caso de que haya linea de codigo mezclada la guarda en 
+```cadenas[0]``` y baja la bandera de comentario al finalizar.
+
+Devuelve ```cadenas```, ```banderas```y ```info_lineas```.
+
+#### guardar_comentario_multilinea(*linea_codigo, banderas, info_lineas*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` linea de código actualmente leida.
+
+```banderas``` lista de banderas, si es la primera iteración estan todas en False.
+
+```info_lineas``` lista de cadenas con la informacion de funcion, autor, ayuda y otros comentarios, a llenar.
+
+Le llega una línea que esta dentro de un comentario multilínea, evalúa si el comentario multilínea no se cierra en la misma línea, en ese caso si se brinda autor, se envía la 
+línea a la función *autor_funcion(linea_codigo)* del módulo [m_analizar_linea.py](#Analizar-Línea) que devuelve el autor y lo guarda en ```info_lineas[1]```, si se brinda ayuda 
+se envía la línea a la función *ayuda_funcion(linea_codigo, bandera_ayuda)* del módulo [m_analizar_linea.py](#Analizar-Línea) que devuelve ```info_lineas[2]``` que corresponde 
+a la ayuda de la función y ```bandera[2]``` que es el estado de la bandera de ayuda, si se detecto que terminó el comentario de ayuda, se baja sino sigue levantada. Sino se 
+guarda como otro comentario en ```info_lineas[3]```.
+
+Pero si el comentario no empieza y termina en la misma línea entonces se levanta la bandera de comentario y se extrae el autor en caso de tenerlo.
+
+Devuelve ```banderas``` y ```info_lineas```
+
+#### grabar_csv_individual(*archivo, lineas*)
+
+```archivo``` es el archivo a grabar.
+
+```lineas``` es la lista de lineas a grabar en el archivo.
+
+Recorre la lista de líneas y las va grabando.
 
 ## [Analizar Línea](./m_analizar_linea.py)
 
@@ -662,11 +946,85 @@ Devuelve una lista con esos datos ordenados
 
 ### Descripción
 
-(----)
+Este módulo es independiente de cada punto del trabajo práctico, la razón de su existencia es la relación entre sus funciones, ya que cada una de ellas responden a algo en 
+común que es "analizar líneas" de ahi su nombre. Cada una de las funciones que contiene analiza lineas, en especifico, este módulo contiene todas las funciones que analizan las 
+lineas de código, funciones que son llamadas sólamente en el módulo [*m_csv_individuales.py*](#Crear-CSV-Individuales) para analizar las lineas de comentarios, de declaracion 
+de funcion, de autor, de ayuda, de la función.
 
 ### Funciones
 
-(----)
+#### declaracion_funcion(*linea_codigo, bandera_nombre = True, bandera_parametro = False*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` es la linea de código que se está leyendo en ese momento.
+
+```bandera_nombre``` es la bandera que levantada indica que se debe guardar los caracteres en la cadena de nombre de función.
+
+```bandera_parametro``` es la bandera que levantada indica que se debe guardar los caracteres en la cadena de parametros de función.
+
+Esta función analiza la linea que le entra por parametro, previamente filtrada como línea de declaración de función, de esta forma se recorre caracter a caracter la línea para 
+ver cuando guardar los caracteres en la cadena de nombre, y cuando guardar los caracteres en la cadena de parámetros. El cuando depende de las banderas, las cuales con las 
+interrogaciones adecuadas, se levantan o se bajan.
+
+Se recorre caracter a caracter la línea de código desde después del "def" hasta el ":" y mientras no se abra el paréntesis de los parámetros cada caracter, que no es un 
+espacio, es guardado en la cadena de nombre de función, cuando llega al paréntesis, se baja la bandera que habilitada el guardado de caracteres en la cadena del nombre de la 
+funcion y levanta la bandera que habilita el guardado de caracteres en la cadena de parámetros incluyendo al primer parámetro, asi hasta que se cierra el paréntesis que se baja 
+la bandera y ya no guarda mas caracteres.
+
+Devuelve las cadenas ```nombres_funcion``` y ```parametros_funcion```
+
+#### autor_funcion(*linea_codigo, bandera_autor = False*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` es la linea de código que se está leyendo en ese momento.
+
+```bandera_autor``` es la bandera que levantada indica que se debe guardar los caracteres en la candena de autor de función.
+
+Se recorre caracter a caracter la línea de código que fue previamente filtrada como contenedora del autor de la función, arranca con la bandera baja, cuando se abre un 
+corchete, se levanta la bandera que habilita a que los siguientes caracteres hasta que se cierre el corchete se guarden en la cadena final, cuando llega al cierre del corchete 
+se baja la bandera.
+
+Devuelve la cadena ```autor_funcion```
+
+#### ayuda_funcion(*linea_codigo, bandera_ayuda*)
+
+*Autor: Ivan Litteri*
+
+Esta función analiza la linea de código que le llega por parametro (sabiendo que se trata de una linea de ayuda de funcion; se recorre la linea caracter por caracter hasta 
+hallar la apertura de un corchete que al mismo tiempo en esa linea este la palabra ayuda, si ese fuera el caso, se habilita la bandera para que cada caracter se sume a la 
+cadena inicializada al principio como vacia. Esta funcion en particular, tambien devuelve el ultimo estado de la bandera de ayuda, porque al tratarse de comentarios multilinea, 
+cuando se vuelva a llamar a esta funcion, puede ser que este comentario multilinea no haya sido cerrado, en esta caso, deben seguir siendo almacenadas las proximas lineas que 
+vengan a ella por parametro hasta que se cierre el comentario. Su lógica es similar a la de la funión *autor_funcion(linea_codigo, bandera_autor = False)*
+
+#### comentario_numeral(*linea_codigo, bandera_otro_comentario = False, bandera_linea = True*)
+
+*Autor: Ivan Litteri*
+
+```linea_codigo``` es la linea de código que se está leyendo en ese momento.
+
+```bandera_otro_comentario``` es la bandera que levantada indica que se debe guardar los caracteres en la cadena de otro comentario.
+
+```bandera_linea``` es la bandera que levantada indica que se debe guardar los caracteres en la cadena de linea.
+
+Analiza la línea de código que, o es toda comentario, o hay un comentario en esa linea, para el primer caso, se detecta y devuelve toda la linea como comentario; para el 
+segundo caso se analiza con banderas, caracer a caracter, empezando levantada la bandera de linea que no es comentario y va guardando los caracteres en una cadena hasta que se 
+aparece el inicio del comentario, ahi se baja la bandera de linea y se levanta la bandera de comentario, guardando hasta el final de la linea los caracteres en la cadena de 
+comentarios.
+
+Devuelve las cadenas ```otro_comentario``` y ```posible_linea```
+
+#### largo_linea(*linea*)
+
+*Autor: joel Glauber*
+
+```linea``` es una cadena que posee mas de 80 caraceteres.
+
+Analiza una linea que tiene una longitud de al menos 80 caracteres, la recorre caracter a caracter, guardando caracter por caracter en una nueva cadena, pero cuando llega a un 
+caracter que es multiplo de 79 agrega un "-" en caso de que se trate de cortar una palabra y un enter. De esta forma se obtiene la misma linea pero limitada a 80 caracteres. 
+
+Devuelve ```linea_formateada``` que es la misma linea que le llegó por parámetro pero con un enter cada 80 caracteres.
 
 # Extra
 
@@ -685,4 +1043,5 @@ Hicimos un modulo extra llamado *m_grafo.py* que básicamente crea dos archivos 
 
 ```datos_csv``` es el diccionario organizado por funciones con los datos de los archivos csv finales.
 
-Se utiliza la librería *pygraphviz*, se declara un objeto del tipo AGraph con los parámetros necesarios, se repasa función por función el diccionario, se agrega a cada función como un nodo del grafo (atributo del objeto), luego por cada función se repasan sus invocaciones y se indica hacia donde apunta cada nodo.
+Se utiliza la librería *pygraphviz*, se declara un objeto del tipo AGraph con los parámetros necesarios, se repasa función por función el diccionario, se agrega a cada función 
+como un nodo del grafo (atributo del objeto), luego por cada función se repasan sus invocaciones y se indica hacia donde apunta cada nodo.
