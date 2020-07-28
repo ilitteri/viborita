@@ -269,11 +269,9 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 ## [Panel General de Funciones](./m_panel_general_funciones.py)
 
-[*Indice*](#Índice-de-Módulos)
-
 ### Descripción 
 
-...
+Obtiene una lista de columnas y una lista de longitudes de la funcion ```generar_tabla_panel_general(diccionario)```. La lista de columnas se deriva a la funcion ```crear_panel_general_csv(lista_de_columnas)``` y tambien deriva junto a la lista de longitudes a la funcion ``` mostrar_panel_general(lista_de_columnas, longitud)```, las cuales crean el archivo csv solicitado y muestran la tabla formateada con esos datos.
 
 ### Funciones
 
@@ -281,9 +279,11 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 *Autor: Santiago Vaccarelli*
 
-```lista_de_listas```  es una lista de listas creada a partir del diccionario con los datos de las funciones con un formato conveniente para realizar el punto.
+```lista_de_columnas```  es una lista de columnas creada a partir del diccionario con los datos de las funciones con un formato conveniente para realizar el punto.
 
 ```longitud``` es una lista con los valores de las longitudes maximas de cada columna de la tabla.
+
+Itera sobre los elementos de cada columna de la lista de columnas y va mostranda en pantalla cada fila de la tabla formateada como se indica.
 
 #### grabar_panel_control_csv(archivo, lineas)
 
@@ -293,11 +293,15 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 ```lineas``` es una lista de lineas a ser grabadas en el archivo csv.
 
+Graba las lineas que le llegan por parametro al archivo.
+
 #### crear_panel_general_csv(lista_de_listas)
 
 *Autor: Santiago Vaccarelli*
 
-```lista_de_listas```  es una lista de listas creada a partir del diccionario con los datos de las funciones con un formato conveniente para realizar el punto.
+```lista_de_columnas```  es una lista de listas creada a partir del diccionario con los datos de las funciones con un formato conveniente para realizar el punto.
+
+Crea el archivo csv del panel general e invoca a la funcion que lo graba ```grabar_panel_control_csv(archivo, lineas)```
 
 #### generar_tabla_panel_general(diccionario)
 
@@ -305,12 +309,17 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 ```diccionario``` es un diccionario con los datos necesarios de las funciones.
 
+A partir de un diccionario con datos de las funciones crea una lista donde cada lista es toda la informacion necesaria de una funcion y una lista de longitudes maximas para cada indice de las lista
 
-#### obtener_panel_general(datos_archivos_csv)
+#### obtener_panel_general(dict_pricipal)
 
 *Autor: Santiago Vaccarelli*
 
-```datos_archivos_csv``` 
+```dict_principal``` Es un diccionario con los datos de las funciones.
+
+Invoca a las funciones, ```generar_tabla_panel_general(dict_principal)```, ```crear_panel_general_csv(lista_de_columnas)``` y ``` mostrar_panel_general(lista_de_columnas, longitud)```
+Esta funcion es la que sera llamada en el [main.py](#main).
+
 
 ## [Consulta de Funciones](./m_consulta_funciones.py)
 
