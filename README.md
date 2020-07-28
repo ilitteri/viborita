@@ -750,7 +750,7 @@ info_ubicaciones, lineas_fuera_funcion)* que devuelve dos de sus parámetros per
 invocada dos veces, una para el fuente y otra para el comentarios. Luego guardo en dos listas los nombres de los archivos individuales (fuente y comentarios) que voy creando 
 para luego borrarlos.
 
-Devuelve ```archivos_fuente````, ```archivos_comentarios``` y ```lineas_fuera_funcion```.
+Devuelve ```archivos_fuente```, ```archivos_comentarios``` y ```lineas_fuera_funcion```.
 
 #### leer_modulo(*archivo_modulo, nombre_modulo, info_ubicaciones, lineas_fuera_funcion*)
 
@@ -766,7 +766,7 @@ Devuelve ```archivos_fuente````, ```archivos_comentarios``` y ```lineas_fuera_fu
 
 Lee secuencialmente al módulo reemplazando las comillas dobles por comillas simples para evitar problemas con los campos en los csv. Se declaran variables en 0 como 
 ```lineas_a_grabar``` que es una lista de dos listas (vacias inicialmente), la primera corresponde a las lineas a grabar en el archivo de fuente, y la otra corresponde a las 
-lineas a grabar en el archivo comentarios; una lista ```banderas``` que contiene tres elementos booleanos, declarados en False inicialmente; una lista ````cadenas``` de dos 
+lineas a grabar en el archivo comentarios; una lista ```banderas``` que contiene tres elementos booleanos, declarados en False inicialmente; una lista ```cadenas``` de dos 
 cadenas, la primera que corresponde a la línea fuente que luego se tiene que agregar a la lista de lineas fuente de la lista ```lineas_a_grabar[0]``` y la segunda a la línea 
 comentarios que luego se tiene que agregar a la lista de lineas de comentarios de la lista ```lineas_a_grabar[1]``` y una ultima lista de cadenas ```info_lineas``` que contiene 
 4 cadenas inicialmente vacias, ```info_lineas[0]``` corresponde al nombre de la función, ```info_lineas[1]``` corresponde al autor de la función, ```info_lineas[2]``` 
