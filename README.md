@@ -269,13 +269,17 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 ## [Panel General de Funciones](./m_panel_general_funciones.py)
 
+[*Indice*](#Índice-de-Módulos)
+
 ### Descripción 
 
-Obtiene una lista de columnas y una lista de longitudes de la funcion ```generar_tabla_panel_general(diccionario)```. La lista de columnas se deriva a la funcion ```crear_panel_general_csv(lista_de_columnas)``` y tambien deriva junto a la lista de longitudes a la funcion ``` mostrar_panel_general(lista_de_columnas, longitud)```, las cuales crean el archivo csv solicitado y muestran la tabla formateada con esos datos.
+Obtiene una lista de columnas y una lista de longitudes de la funcion ```generar_tabla_panel_general(diccionario)```. La lista de columnas se deriva a la funcion 
+```crear_panel_general_csv(lista_de_columnas)``` y tambien deriva junto a la lista de longitudes a la funcion ``` mostrar_panel_general(lista_de_columnas, longitud)```, las 
+cuales crean el archivo csv solicitado y muestran la tabla formateada con esos datos.
 
 ### Funciones
 
-#### mostrar_panel_general(lista_de_listas, longitud)
+#### mostrar_panel_general(lista_de_columnas, longitud)
 
 *Autor: Santiago Vaccarelli*
 
