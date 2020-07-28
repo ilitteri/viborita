@@ -1,4 +1,3 @@
-
 def buscar_invocaciones(datos_por_funciones):
     '''[Autor: Luciano Federico Aguilera]
     [Ayuda: Busca las funciones presentes en el diccionario creado anteriormente y las agrega en un diccionario con un numero de indice ]'''
