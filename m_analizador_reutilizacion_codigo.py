@@ -8,6 +8,8 @@ def buscar_invocaciones(datos_por_funciones):
     #Guardo las keys del diccionario como una tupla
     tupla_funciones = tuple(datos_por_funciones.keys())
 
+    
+    
     #Recorro la tupla de funciones
     for nombre_funcion in tupla_funciones:
         cuenta_lineas += 1
