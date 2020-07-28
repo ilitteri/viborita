@@ -48,7 +48,7 @@ entre ellas se encuentran:
 2. [Consultar Funciones](#Consultar-Funciones)
 3. [Analizar Reutilizacion de Código](#Analizador-de-Reutilización-de-Código)
 4. [Árbol de Invocaciones](#Árbol-de-Invocaciones)
-5. [Información de Desarrollador](#Información-de-Desarrollador)
+5. [Información por Desarrollador](#Información-de-Desarrollador)
 6. Ayuda
 
 Las primeras 5 se tratan de la obtención de la información correspondiente a cada punto del trabajo práctico, y la sexta opción es la que muestra en pantalla las instrucciones
@@ -274,7 +274,7 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 ```datos_archivos_csv``` 
 
-## [Consulta de Funciones](./m_consulta_funciones.py)
+## [Consultar de Funciones](./m_consulta_funciones.py)
 
 ### Descripción
 
