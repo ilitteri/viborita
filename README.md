@@ -46,7 +46,7 @@ entre ellas se encuentran:
 
 1. [Panel General de Funciones](#Panel-General-de-Funciones)
 2. [Consultar Funciones](#Consultar-Funciones)
-3. [Analizar Reutilizacion de Código](#Analizar-Reutilización-de-Código)
+3. [Analizar Reutilizacion de Código](#Analizador-de-Reutilización-de-Código)
 4. [Árbol de Invocaciones](#Árbol-de-Invocaciones)
 5. [Información de Desarrollador](#Información-de-Desarrollador)
 6. Ayuda
@@ -231,7 +231,48 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 	      }
 ```
 
-# PUNTO 1
+## [Panel General de Funciones](./m_panel_general_funciones.py)
+
+### Descripción 
+
+...
+
+### Funciones
+
+#### mostrar_panel_general(lista_de_listas, longitud)
+
+*Autor: Santiago Vaccarelli*
+
+```lista_de_listas```  es una lista de listas creada a partir del diccionario con los datos de las funciones con un formato conveniente para realizar el punto.
+
+```longitud``` es una lista con los valores de las longitudes maximas de cada columna de la tabla.
+
+#### grabar_panel_control_csv(archivo, lineas)
+
+*Autor: Santiago Vaccarelli*
+
+```archivo``` es el archivo csv que se va a grabar.
+
+```lineas``` es una lista de lineas a ser grabadas en el archivo csv.
+
+#### crear_panel_general_csv(lista_de_listas)
+
+*Autor: Santiago Vaccarelli*
+
+```lista_de_listas```  es una lista de listas creada a partir del diccionario con los datos de las funciones con un formato conveniente para realizar el punto.
+
+#### generar_tabla_panel_general(diccionario)
+
+*Autor: Santiago Vaccarelli*
+
+```diccionario``` es un diccionario con los datos necesarios de las funciones.
+
+
+#### obtener_panel_general(datos_archivos_csv)
+
+*Autor: Santiago Vaccarelli*
+
+```datos_archivos_csv``` 
 
 ## [Consulta de Funciones](./m_consulta_funciones.py)
 
@@ -359,9 +400,62 @@ Devuelve una cadena formateada con la información que se pide de la funcion que
 
 Devuelve una cadena formateada con la información que se pide de la funcion que se solicita.
 
-# PUNTO 3
+## [Analizador de Reutilización de Código](./m_analizador_reutilizacion_codigo.py)
 
-## [Arbol de Invocaciones](./m_arbol_invocacion.py)
+### Descripción
+
+Este modulo grafica la reutilizacion de  los modulos de una aplicacion y crea un archivo de tipo .txt ```analizador.txt```,
+en el puede observarse la cantidad de invocaciones que tienen las distintas funciones y si son invocadas se ve una "X" que representa esto
+al final del archivo se observa los totales de invocaciones para todas las funciones.
+
+Recive un diccionario ```datos_por_funciones``` creado en el modulo [m_organizar_datos.py](#Organizar-datos)
+
+Devuelve un archivo llamado ```analizador.txt``` que contiene a la tabla de reutilizacion e imprime por ```consola``` la misma tabla
+                                                 
+### Funciones
+
+#### buscar_invocaciones(*datos_por_funciones*)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion crea una tupla a partir de las ```funcion_n (str) ```y las ```invocaciones (list)``` del diccionario ```datos_por_funcion(dict)``` de [m_organizar_datos.py](#Organizar-datos)  , crea un diccionario donde organizar los datos para la tabla de reutilizacion y le agrega como ```keys``` del mismo en un contador que funcionara posteriormente como indices de la tabla y le asigna a cada funcion en ```tupla_funciones``` un indice , en el diccionario tambien se agregan tres ```keys``` mas ```"total"```(que contiene un diccionario con los indices como keys y sus totales) ,```"indices"```(que contiene un diccionario que tiene como keys las funciones contenidas en la tupla y contienen a su respectivo indice) y ```"nombres"```(que contiene los indices como keys que contienen a sus respectivas funciones  ) estas ultimas dos keys tienen la finalidad de ahorrar lineas y hacer mas entendible el codigo, tambien guarda la funcion que tenga mayor cantidad de caracteres para utilizarlo en ```creacion_formato_tabla```
+retorna ( *diccionario_invocaciones , tupla_funciones , largo_maximo* )
+
+#### contar_interacciones(*diccionario_invocaciones , tupla_funciones , datos_por_funciones*)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion cuenta las veces que fue utilizada una funcion dentro de cada funcion listada en la tupla y agrega los totales de cada indice a la key totales del diccionario para esto utiliza ```datos_por_funciones``` y ```tupla_funciones```  creados en ```buscar_invocaciones``` .
+retorna ( *diccionario_invocaciones , tupla_funciones , largo_maximo* )
+
+#### creacion_formato_tabla(*diccionerio_invocaciones, largo_maximo*)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion crea una lista que contendra las cadenas de texto correspondientes a cada linea del *analizador.txt* o bien que seran impresas por pantalla y agrega los indices junto con sus correspondientes funciones a cada linea la funcion toma en cuenta la funcion con mayor cantidad de caracteres para evitar errores de superposicion en la tabla.
+retorna (```diccionario_invocaciones```)
+
+#### asignacion_valores_tabla(*filas_txt, diccionario_invocaciones*)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion concatena a su correspondiente linea segun corresponda un numero(si la funcion en la columna es invocada por la funcion de la fila) ,una "X"(si la funcion de la fila es invocada por la funcion en la columna) o un espacio vacio (si la funcione en la fila y la columna no interactuan) 
+retorna ( filas_txt )
+
+#### creacion_archivo_txt(*filas_txt*)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funcion crea el ```analizador.txt``` y graba en el linea por linea los elementos de ```filas_txt``` generada en ```buscar_invocaciones```
+a la vez que imprime por ```consola``` las mismas lineas.
+
+#### analizar_reutilizacion(*datos_por_funcion*)
+
+*Autor : Luciano Federico Aguilera*
+
+Esta funciones es la principal y llama a todas las sub_funciones anteriores , esta funcion es la que sera llamada en *main.py* 
+
+## [Árbol de Invocaciones](./m_arbol_invocacion.py)
 
 ### Descripción
 
