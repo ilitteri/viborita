@@ -5,7 +5,7 @@ def actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parame
     [Ayuda: recibe los datos extraidos de una linea leida de los archivos csv y los guarda en el diccionario final.]'''
 
     #Si la funcion no esta como key del diccionario, entonces la agrego y le doy su forma
-    if nombre_funcion not in datos_por_funciones:
+    if (nombre_funcion not in datos_por_funciones):
         datos_por_funciones[nombre_funcion] = {"parametros": None,
                                                         "modulo": None,
                                                         "lineas": None,
@@ -15,8 +15,9 @@ def actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parame
                                                         "cantidad_parametros": 0,
                                                         "cantidad_comentarios": len(otros_c),
                                                         }
-    elif nombre_funcion in datos_por_funciones:
-        if f'{nombre_funcion}_{indice_copia-1}' in datos_por_funciones:
+    #Si la funcion si esta como key del diccionario significa que hay una funcion repetida, entonces la agrega al diccionario pero con un subindice
+    elif (nombre_funcion in datos_por_funciones):
+        if (f'{nombre_funcion}_{indice_copia-1}' in datos_por_funciones):
             nombre_funcion += f'_{indice_copia}'
         else:
             indice_copia = 0
@@ -38,7 +39,7 @@ def actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parame
     datos_por_funciones[nombre_funcion]["cantidad_lineas"] = len(lineas_funcion)
     datos_por_funciones[nombre_funcion]["cantidad_parametros"] = len(parametros_funcion.split(",")) if parametros_funcion else 0
     #Si la key comentarios aun no existe en la funcion lo agrego y le doy forma
-    if "comentarios" not in datos_por_funciones[nombre_funcion]:
+    if ("comentarios" not in datos_por_funciones[nombre_funcion]):
         datos_por_funciones[nombre_funcion]["comentarios"] = {"autor": None,
                                                                         "ayuda": None,
                                                                         "otros": None}
@@ -46,7 +47,7 @@ def actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parame
     datos_por_funciones[nombre_funcion]["comentarios"]["autor"] = autor_funcion
     datos_por_funciones[nombre_funcion]["comentarios"]["ayuda"] = ayuda_funcion.replace('",\n', '') if ("Ayuda" in ayuda_funcion) else None
     datos_por_funciones[nombre_funcion]["comentarios"]["otros"] = otros_c if len(otros_c) > 0 else None
-    if "cantidad_decalraciones" not in datos_por_funciones[nombre_funcion]:
+    if ("cantidad_decalraciones" not in datos_por_funciones[nombre_funcion]):
         datos_por_funciones[nombre_funcion]["cantidad_declaraciones"] = {"returns": 0,
                                                                                     "if/elif": 0,
                                                                                     "for": 0,
@@ -63,11 +64,11 @@ def actualizar_diccionario_autores(datos_por_autores, nombre_funcion, lineas_fun
     [Ayuda: recibe los datos extraidos de una linea leida de los archivos csv y los guarda en el diccionario final.]'''
 
     #Agrega los datos a el diccionario
-    if autor_funcion not in datos_por_autores:
+    if (autor_funcion not in datos_por_autores):
         datos_por_autores[autor_funcion] = {"lineas_totales": 0, "funciones": {}}
-    if nombre_funcion not in datos_por_autores[autor_funcion]["funciones"]:
+    if (nombre_funcion not in datos_por_autores[autor_funcion]["funciones"]):
         datos_por_autores[autor_funcion]["funciones"][nombre_funcion] = -1
-    if nombre_funcion in datos_por_autores[autor_funcion]["funciones"]:
+    if (nombre_funcion in datos_por_autores[autor_funcion]["funciones"]):
         datos_por_autores[autor_funcion]["funciones"][nombre_funcion] = len(lineas_funcion)
         datos_por_autores[autor_funcion]["lineas_totales"] += len(lineas_funcion)
             
@@ -90,7 +91,7 @@ def leer_archivos_csv(archivo_fuente, archivo_comentarios):
     #Cargo la primera linea del archivo de comentarios
     linea_comentarios = archivo_comentarios.readline()
     #Mientras el archivo tenga lineas para leer
-    while linea_fuente and linea_comentarios:
+    while (linea_fuente and linea_comentarios):
         #Desempaqueto los datos de cada linea
         nombre_funcion_f, parametros_funcion, modulo_funcion, *lineas_funcion = linea_fuente.split('","')
         #Desempaqueto los datos de cada linea

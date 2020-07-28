@@ -1,5 +1,4 @@
 import m_analizar_linea as analizar_linea
-import m_obtener as obtener
 
 def grabar_csv_individual(archivo, lineas):
     '''[Autor: Ivan Litteri]'''

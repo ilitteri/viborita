@@ -13,14 +13,14 @@ def formatear_datos_numeral(datos_csv, funcion):
     cadena_numeral += ("-" * len(f'Funcion: {funcion}') + "\n")
     cadena_numeral += "\nInformacion:\n"
     cadena_numeral += ("-" * len("Informacion:") + "\n")
-    if "*" in funcion:
+    if ("*" in funcion):
         cadena_numeral += "Es la funcion principal\n"
     cadena_numeral += f'Modulo: {datos_csv[funcion]["modulo"] if "*" not in datos_csv[funcion]["modulo"] else datos_csv[funcion]["modulo"][1:]}\n'
     cadena_numeral += f'{datos_csv[funcion]["comentarios"]["autor"] if "Autor" in datos_csv[funcion]["comentarios"]["autor"] else "El autor es anonimo"}\n'
     cadena_numeral += f'Ayuda: {"Si" if datos_csv[funcion]["comentarios"]["ayuda"] else "No brinda ayuda"}\n'
     cadena_numeral += f'Parametros: {datos_csv[funcion]["cantidad_parametros"]}\n'
     cadena_numeral += f'Lineas de codigo: {datos_csv[funcion]["cantidad_lineas"]}\n'
-    if datos_csv[funcion]["cantidad_comentarios"] > 0:
+    if (datos_csv[funcion]["cantidad_comentarios"] > 0):
         cadena_numeral += f'Comentarios: {datos_csv[funcion]["cantidad_comentarios"]}\n'
     else:
         cadena_numeral += "No aporta comentarios\n"
@@ -28,7 +28,7 @@ def formatear_datos_numeral(datos_csv, funcion):
         cadena_numeral += f'Invoca a {"(), ".join(datos_csv[funcion]["invocaciones"])}()\n'
     else:
         cadena_numeral += "No invoca a ninguna funcion\n"
-    if datos_csv[funcion]["cantidad_invocaciones"] > 0:
+    if( datos_csv[funcion]["cantidad_invocaciones"] > 0):
         cadena_numeral += f'Es invocada {datos_csv[funcion]["cantidad_invocaciones"]} {"veces" if datos_csv[funcion]["cantidad_invocaciones"] > 1 else "vez"}\n'
     else:
         cadena_numeral += "No es invocada por ninguna funcion\n"
@@ -72,11 +72,11 @@ def grabar_ayuda_txt(archivo_ayuda, datos_csv, funcion, opcion):
     y la funcion solicitada por el autor para analizar dicha opcion y grabar en el archivo la informacion requerida]'''
 
     #Si hay un signo de pregunta en la opcion entonces obtiene los datos solicitados y los graba en el archivo
-    if "?" in opcion:
+    if ("?" in opcion):
         informacion = formatear_datos_pregunta(datos_csv, funcion)
         archivo_ayuda.write(informacion)
     #Si hay un numeral en la opcion entonces obtiene los datos solicitados y los graba en el archivo
-    elif "#" in opcion:
+    elif ("#" in opcion):
         informacion = formatear_datos_numeral(datos_csv, funcion)
         archivo_ayuda.write(informacion)
 
@@ -93,11 +93,11 @@ def mostrar_datos_funcion(datos_csv, funcion, opcion):
     [Ayuda: analiza la opcion ingresada y dependiendo de esta, imprime la informacion solicitada.]'''
 
     #Si hay un numeral en la opcion entonces obtiene los datos solicitados y los imprime en pantalla
-    if "#" in opcion:
+    if ("#" in opcion):
         informacion = formatear_datos_numeral(datos_csv, funcion)
         print(informacion)
     #Si hay un signo de pregunta en la opcion entonces obtiene los datos solicitados y los imprime en pantalla
-    elif "?" in opcion:
+    elif ("?" in opcion):
         informacion = formatear_datos_pregunta(datos_csv, funcion)
         print(informacion)
 
@@ -106,11 +106,11 @@ def opcion_pregunta(datos_csv, opcion):
     [Ayuda: analiza si se quiere saber todo o solo de una funcion en especifico.]'''
 
     #Si se quiere saber todo, imprime los datos para cada funcion
-    if opcion == "?todo":
+    if (opcion == "?todo"):
         for funcion in datos_csv:
             mostrar_datos_funcion(datos_csv, funcion, opcion)
     #Si se quiere saber de una funcion especifica entonces imprime sobre esa funcion
-    elif opcion[1:] in datos_csv.keys():
+    elif (opcion[1:] in datos_csv.keys()):
         mostrar_datos_funcion(datos_csv, opcion[1:], opcion)
     else:
         print("Esa funcion no existe")
@@ -120,11 +120,11 @@ def opcion_numeral(datos_csv, opcion):
     [Ayuda: analiza si se quiere saber todo o solo de una funcion en especifico.]'''
 
     #Si se quiere saber todo, imprime los datos para cada funcion
-    if opcion == "#todo":
+    if (opcion == "#todo"):
         for funcion in datos_csv:
             mostrar_datos_funcion(datos_csv, funcion, opcion)
     #Si se quiere saber de una funcion especifica entonces imprime sobre esa funcion
-    elif opcion[1:] in datos_csv.keys():
+    elif (opcion[1:] in datos_csv.keys()):
         mostrar_datos_funcion(datos_csv, opcion[1:], opcion)
     else:
         print("Esa funcion no existe")
@@ -135,18 +135,18 @@ def analizar_opcion(datos_csv, opcion):
     realiza distintas cosas]'''
 
     #Si la opcion es del tipo numeral, la analiza por seraprado
-    if opcion[0] == "#" and len(opcion) > 1:
+    if (opcion[0] == "#") and (len(opcion) > 1):
         opcion_numeral(datos_csv, opcion)
     #Si la opcion es del tipo signo de pregunta, la analiza por seraprado
-    elif opcion[0] == "?" and len(opcion) > 1:
+    elif (opcion[0] == "?") and (len(opcion) > 1):
         opcion_pregunta(datos_csv, opcion)
     #Si se ingresa la opcion "imprimir ?todo" se crea el archivo de ayuda
-    elif opcion == "imprimir ?todo":
+    elif (opcion == "imprimir ?todo"):
         print("\nCreando archivo de ayuda...")
         crear_ayuda_txt(datos_csv, opcion)
         print("Archivo creado con exito!")
     #Si se ingresa la opcion "imprimir #todo" se crea el archivo de ayuda
-    elif opcion == "imprimir #todo":
+    elif (opcion == "imprimir #todo"):
         print("\nCreando archivo de ayuda...")
         crear_ayuda_txt(datos_csv, opcion)
         print("Archivo creado con exito!")

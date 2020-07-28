@@ -4,6 +4,7 @@ import os
 
 def cerrar_csv_individuales(datos):
     '''[Autor: Ivan Litteri]'''
+
     for nombre_modulo in datos:
         datos[nombre_modulo]["contenido"].close()
 
@@ -42,9 +43,9 @@ def grabar_csv_final_ordenado(archivo_final, archivos_individuales, lineas_fuera
         linea_menor = obtener_primera_linea(lineas)
         for linea in lineas:
             #Graba la linea y luego la borra de la lista una vez encontrada
-            if linea == linea_menor:
+            if (linea == linea_menor):
                 funcion, _, modulo, *otros_datos = linea.split('","')
-                if "*" in modulo and (f'{funcion[1:]}()' in lineas_fuera_funcion or f'{funcion[1:]}()\n' in lineas_fuera_funcion):
+                if ("*" in modulo) and ((f'{funcion[1:]}()' in lineas_fuera_funcion) or( f'{funcion[1:]}()\n' in lineas_fuera_funcion)):
                     archivo_final.write('"*' + linea[1:])
                 else:
                     archivo_final.write(linea)
@@ -52,13 +53,11 @@ def grabar_csv_final_ordenado(archivo_final, archivos_individuales, lineas_fuera
 
 def abrir_csv_individuales(archivos):
     '''[Autor: Ivan Litteri]
-    [Ayuda: se guardan los datos a leer de los archivos individuales en un diccionario ya que la unica forma que encontramos
-    de guardar variables dinamicas fue de esta forma, entonces se pueden tener abiertos "n" archivos. Y devuelve
-    un diccionario con el contenido de cada modulo como value de la key (que seria el modulo)]'''
+    [Ayuda: se guardan los datos a leer de los archivos individuales en un diccionario.]'''
 
     diccionario_archivos_abiertos = {}
     for archivo, nombre_modulo in archivos:
-        if nombre_modulo not in diccionario_archivos_abiertos:
+        if (nombre_modulo not in diccionario_archivos_abiertos):
             diccionario_archivos_abiertos[nombre_modulo] = {"contenido": None, "lineas": []}
         diccionario_archivos_abiertos[nombre_modulo]["contenido"] = open(archivo, "r")
 

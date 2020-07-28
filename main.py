@@ -59,27 +59,27 @@ def menu_interaccion(datos_por_funciones, datos_por_autores):
     #Mientras la opccion ingresada no sea un espacio o enter...
     while opcion:
         #Si la opcion ingresada es 1 o "panel general de funciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
-        if opcion == "1" or opcion.lower() == "panel general de funciones":
+        if (opcion == "1") or (opcion.lower() == "panel general de funciones"):
             panel_general_funciones.obtener_panel_general(datos_por_funciones)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 2 o "consultar funciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
-        elif opcion == "2" or opcion.lower() == "consultar funciones":
+        elif (opcion == "2") or (opcion.lower() == "consultar funciones"):
             consulta_funciones.consultar_funciones(datos_por_funciones)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 3 o "analizar reutilizacion de codigo" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
-        elif opcion == "3" or opcion.lower() == "analizar reutilizacion de codigo":
+        elif (opcion == "3") or (opcion.lower() == "analizar reutilizacion de codigo"):
             analizador_reutilizacion_codigo.analizar_reutilizacion(datos_por_funciones)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 4 o "arbol de invocaciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
-        elif opcion == "4" or opcion.lower() == "arbol de invocaciones":
+        elif (opcion == "4") or (opcion.lower() == "arbol de invocaciones"):
             arbol_invocacion.grafica_arbol_invocaciones(datos_por_funciones)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 5 o "informacion de desarrollador" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
-        elif opcion == "5" or opcion.lower() == "informacion de desarrollador":
+        elif (opcion == "5") or (opcion.lower() == "informacion de desarrollador"):
             informacion_desarrollador.obtener_informacion_desarrollador(datos_por_autores)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 6 o "ayuda" muestra en consola la ayuda para el uso del menu
-        elif opcion == "6" or opcion.lower() == "ayuda":
+        elif (opcion == "6") or (opcion.lower() == "ayuda"):
             mostrar_ayuda_menu()
             mostrar_menu_interaccion()
         #Si no se ingresa ninguna de las opciones anteriores vuelve a preguntar

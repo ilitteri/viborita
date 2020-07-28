@@ -12,9 +12,9 @@ def informacion_ubicaciones(nombre_archivo):
     with open(nombre_archivo, "r") as archivo_programas:
         ubicacion = archivo_programas.readline().strip()
         while ubicacion:
-            if os == "Linux" or os == "Darwin":
+            if (os == "Linux") or (os == "Darwin"):
                 ubicaciones.append((ubicacion, ubicacion.split("/")[-1]))
-            elif os == "Windows":
+            elif (os == "Windows"):
                 ubicaciones.append((ubicacion, ubicacion.split("\\")[-1]))
             ubicacion = archivo_programas.readline().strip()
 
@@ -28,16 +28,14 @@ def ubicaciones_archivos_csv_individuales(nombres_csv_individuales):
 
 def cantidad_invocaciones(datos_csv):
     '''[Autor: Ivan Litteri]
-    [Ayuda: le llega por parametro una linea, y una lista con los nombres de las funciones, analiza por cada
-    nombre de funcion si este esta en la linea, en caso verdadero incrementa en uno el contador de invocaciones
-    de esa funcion]'''
+    [Ayuda: agrega invocaciones a la lista de invocaciones si una funcion invoca alguna funcion, e incrementa la cantidad de veces que es invocada esa funcion.]'''
 
     for funcion in datos_csv:
         for linea_funcion in datos_csv[funcion]["lineas"]:
             for nombre_funcion in datos_csv:
-                if "cantidad_invocaciones" not in datos_csv[nombre_funcion]:
+                if ("cantidad_invocaciones" not in datos_csv[nombre_funcion]):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] = 0
-                if (f'{nombre_funcion}(' in linea_funcion or f'{nombre_funcion[:-2]}(' in linea_funcion) and (not f'_{nombre_funcion}' in linea_funcion):
+                if ((f'{nombre_funcion}(' in linea_funcion) or (f'{nombre_funcion[:-2]}(' in linea_funcion)) and (not f'_{nombre_funcion}' in linea_funcion):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos_csv[funcion]["invocaciones"].append(nombre_funcion)
                 elif (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion}(' in linea_funcion) or (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion[:-2]}(' in linea_funcion):
@@ -48,24 +46,22 @@ def cantidad_invocaciones(datos_csv):
 
 def cantidad_declaraciones(datos_csv, lineas_funcion, nombre_funcion):
     '''[Autor: Santiago Vaccarelli]
-    [Ayuda: esta funcion recibe un diccionario, una lista de lineas, un nombre de funcion; en donde
-    sera analizada la lista de lineas para contar la cantidad de declaraciones, y estas cantidades una vez
-    obtenidas, ser actualizadas en el diccionario con nombre de funcion como key]'''
+    [Ayuda: incrementa la cantidad de declaraciones en caso de encontrarlas mientras recorre cada linea.]'''
 
     for linea_funcion in lineas_funcion:
-        if "for" in linea_funcion:
+        if ("for" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["for"] += linea_funcion.count("for")
-        if "return" in linea_funcion:
+        if ("return" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["returns"] += 1
-        if "if" in linea_funcion:
+        if ("if" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        elif "elif" in linea_funcion:
+        elif ("elif" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        elif "while" in linea_funcion:
+        elif ("while" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["while"] += 1
-        elif "break" in linea_funcion:
+        elif ("break" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["break"] += 1
-        elif "exit" in linea_funcion:
+        elif ("exit" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["exit"] += 1
 
     return datos_csv
@@ -111,11 +107,12 @@ def longitud_maxima(columnas_datos, longitud):
     #itera los elementos de una lista
     for elemento in range(len(columnas_datos)):
         #compara para cada indice de la lista si la longitud es mayor
-        if len(columnas_datos[elemento]) > longitud[elemento]:
+        if (len(columnas_datos[elemento]) > longitud[elemento]):
             longitud[elemento] = len(columnas_datos[elemento])
     
     return longitud
 
 def maxima_longitud(lista_funciones):
     '''[Autor: Ivan Litteri]'''
+    #Devuelve la longitud del elemento mas largo de la lista que le llega por parametro
     return len(max(lista_funciones, key=len))

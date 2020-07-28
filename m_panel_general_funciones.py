@@ -21,6 +21,7 @@ def grabar_panel_control_csv(archivo, lineas):
 def crear_panel_general_csv(lista_de_columnas):
     '''[Autor: Santiago Vaccarelli]
     [Ayuda: Crea el archivo csv de panel general y le graba los datos]'''
+    
     with open("panel_general.csv", "w") as archivo_panel_general:
         grabar_panel_control_csv(archivo_panel_general, lista_de_columnas)
 

@@ -12,15 +12,15 @@ def declaracion_funcion(linea_codigo, bandera_nombre = True, bandera_parametro =
         if bandera_parametro:
             parametros_funcion += caracter
         #Se guardan los caracteres en la cadena de nombre cuando esta habilitada la bandera y siempre y cuando no se trate de espacios
-        if not caracter.isspace() and caracter != "(" and bandera_nombre:
+        if (not caracter.isspace()) and (caracter != "(") and bandera_nombre:
             nombre_funcion += caracter
         #Cuando aparece el caracter evaluado, se habilita la bandera para empezar a guardar los caracteres en la cadena de parametros y se deshabilita la bandera que permitia el almacenamiento de caracteres en la cadena de nombre
-        elif caracter == "(":
+        elif (caracter == "("):
             parametros_funcion += caracter
             bandera_nombre = False
             bandera_parametro = True
         #Se deshabilita la bandera que permitia el almacenamiento de caracteres en la cadena de parametros cuando se detecta que ya no se trata mas de uno
-        elif caracter == ")":
+        elif (caracter == ")"):
             bandera_parametro = False
 
     return nombre_funcion, parametros_funcion
@@ -36,12 +36,12 @@ def autor_funcion(linea_codigo, bandera_autor = False):
     #Recorre caracter a caracter la linea que le entra por parametro
     for caracter in linea_codigo.strip():
         #Cuando se termine el comentario de autor, se deshabilita la bandera para que no se continuen guardando caracteres en la cadena.
-        if caracter == "]" and bandera_autor:
+        if (caracter == "]") and bandera_autor:
             bandera_autor = False
         if bandera_autor:
             autor_funcion += caracter
         #Cuando el caracter se trate de una apertura de corchete y al mismo tiempo esa linea tenga la palabra autor, se habilita la bandera para que se almacenen caracteres en la cadena de autor.
-        if caracter == "[" and ("Autor" in linea_codigo or "Autores" in linea_codigo):
+        if (caracter == "[") and (("Autor" in linea_codigo) or ("Autores" in linea_codigo)):
             bandera_autor = True
 
     return autor_funcion
@@ -57,12 +57,12 @@ def ayuda_funcion(linea_codigo, bandera_ayuda):
     #Recorre caracter a caracter la linea que entra por parametro
     for caracter in linea_codigo.strip():
         #Cuando se termine el comentario de ayuda, se deshabilita la bandera para que no se continuen guardando caracteres en la cadena.
-        if caracter == "]" and bandera_ayuda:
+        if (caracter == "]" and bandera_ayuda):
             bandera_ayuda = False
         if bandera_ayuda:
             ayuda_funcion += caracter
         #Cuando el caracter se trate de una apertura de corchete y al mismo tiempo esa linea tenga la palabra ayuda, se habilita la bandera para que se almacenen caracteres en la cadena de ayuda.
-        if caracter == "[" and "Ayuda" in linea_codigo:
+        if (caracter == "[") and ("Ayuda" in linea_codigo):
             bandera_ayuda = True
 
     return ayuda_funcion, bandera_ayuda
@@ -82,7 +82,7 @@ def comentario_numeral(linea_codigo, bandera_otro_comentario = False, bandera_li
         #Recorre caracter a caracter la linea que entra por parametro
         while i < len(linea):
             #Cuando el caracter se trate del numeral, se habilita la bandera para que se empiece a guardar caracteres en la cadena inicializada anteriormente
-            if linea[i] == "#":
+            if (linea[i] == "#"):
                 bandera_linea = False
                 bandera_otro_comentario = True
             if bandera_linea:

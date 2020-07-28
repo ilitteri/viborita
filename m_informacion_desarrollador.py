@@ -43,7 +43,7 @@ def formatear_participacion(datos_ordenados):
         for funcion, cantidad_lineas in datos_autor["funciones"].items():
             #Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion
             separacion = " " * (50-len(funcion))
-            if "*" in funcion:
+            if ("*" in funcion):
                 datos_a_imprimir += f'{separacion_2}{funcion[1:]}{separacion}{cantidad_lineas}\n'
             else:    
                 #Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion"
@@ -65,23 +65,23 @@ def formatear_participacion(datos_ordenados):
 
     return datos_a_imprimir
 
-def mostrar_participacion(datos):
+def mostrar_participacion(datos_formateados):
     '''[Autor: Ivan Litteri]'''
-    print(datos)
+    print(datos_formateados)
 
-def crear_participacion_txt(nombre_archivo, datos):
+def crear_participacion_txt(nombre_archivo, datos_formateados):
     '''[Autor: Ivan Litteri]
     [Ayuda: Crea y graba el archivo de participacion txt con los datos formateados]'''
 
     #Abre el archivo para escribir y lo cierra al finalizar la grabacion
     with open(nombre_archivo, "w") as archivo_txt:
         #Escribe en el archivo
-        archivo_txt.write(datos)
+        archivo_txt.write(datos_formateados)
 
-def obtener_informacion_desarrollador(datos_archivos_csv):
+def obtener_informacion_desarrollador(datos_csv):
     '''[Autor: Ivan Litteri]'''
 
-    datos_ordenados = ordenar_diccionario_autores(datos_archivos_csv)
+    datos_ordenados = ordenar_diccionario_autores(datos_csv)
     datos_formateados = formatear_participacion(datos_ordenados)
     mostrar_participacion(datos_formateados)
     crear_participacion_txt("participacion.txt", datos_formateados)
