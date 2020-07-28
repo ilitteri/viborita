@@ -77,22 +77,6 @@ def resetear_por_inicio(linea_codigo, nombre_modulo, lineas_a_grabar, cadenas, b
 
     return lineas_a_grabar, cadenas, banderas, info_lineas
 
-def resetear_por_fin(linea_codigo, lineas_a_grabar, cadenas, banderas, info_lineas):
-    '''[Autor: Ivan Litteri]
-    [Ayuda: guarda la linea que le llega por parametro y resetea las variables y banderas]'''
-
-    #Se bajan las banderas de funcion, comentario, ayuda
-    banderas[0] = banderas[1] = banderas[2] =  False
-    #Se guarda la linea en la que se encuentra en el return como ultima linea de la funcion leida hasta el momento
-    cadenas[0] += f',"{linea_codigo.strip()}"'
-    #Se añaden las lineas a las listas de lineas a grabar
-    lineas_a_grabar[0].append(cadenas[0]+"\n")
-    lineas_a_grabar[1].append(f'"{info_lineas[0]}","{info_lineas[1]}","{info_lineas[2]}","{info_lineas[3]}"\n')  
-    #Se reinician las variables que acumulan la informacion de las lineas de la funcion para que comiencen de cero
-    cadenas[0] = cadenas[1] = info_lineas[0] = info_lineas[1] = info_lineas[2] = info_lineas[3] = ""
-
-    return lineas_a_grabar, cadenas, banderas, info_lineas
-
 def analizar_linea_funcion(linea_codigo, nombre_modulo, info_ubicaciones, lineas_a_grabar, banderas, cadenas, info_lineas, lineas_fuera_funcion):
     '''[Autor: Ivan Litteri]
     [Ayuda: Analiza las lineas que previamente se catalogaron como dentro de una funcion, y les da formato para el csv]'''
@@ -112,8 +96,8 @@ def analizar_linea_funcion(linea_codigo, nombre_modulo, info_ubicaciones, lineas
         lineas_a_grabar, cadenas, banderas, info_lineas = resetear_por_inicio(linea_codigo, nombre_modulo, lineas_a_grabar, cadenas, banderas, info_lineas, info_ubicaciones)
     #Esta declaracion detecta que una funcion termina en el return
     elif linea_codigo.strip().startswith("return"):
-        lineas_a_grabar, cadenas, banderas, info_lineas = resetear_por_fin(linea_codigo, lineas_a_grabar, cadenas, banderas, info_lineas)
-    #Esta declaracion detecta si hay un numeral en la linea, pero lo analiza como comentario si y solo si el formato es correcto
+        #Se guarda la linea en la que se encuentra en el return como ultima linea de la funcion leida hasta el momento
+        cadenas[0] += f',"{linea_codigo.strip()}"'#Esta declaracion detecta si hay un numeral en la linea, pero lo analiza como comentario si y solo si el formato es correcto
     elif "#" in linea_codigo and not("'#" in linea_codigo or "('#" in linea_codigo) and "#todo" not in linea_codigo:
         cadenas, banderas, info_lineas = guardar_comentario_numeral(linea_codigo, cadenas, banderas, info_lineas)
     #Si se comienza un comentario de triple comilla

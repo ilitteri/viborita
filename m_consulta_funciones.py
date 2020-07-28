@@ -52,14 +52,21 @@ def formatear_datos_pregunta(datos_csv, funcion):
 
     candena_pregunta += f'{"*" * 79}\n'
     candena_pregunta += f'Funcion: {funcion if "*" not in funcion else funcion[1:]}\n'
+
     if datos_csv[funcion]["comentarios"]["ayuda"] and (len(datos_csv[funcion]["comentarios"]["ayuda"]) > 80):
         candena_pregunta += f'{analizar_linea.largo_linea(datos_csv[funcion]["comentarios"]["ayuda"])}\n'
+    elif datos_csv[funcion]["comentarios"]["ayuda"]:
+        candena_pregunta += f'{datos_csv[funcion]["comentarios"]["ayuda"]}\n'
     else:
         candena_pregunta += "No brinda ayuda\n"
+
     if datos_csv[funcion]["parametros"] and (len("Parametros formales: ")+len(datos_csv[funcion]["parametros"]) > 80):
         candena_pregunta += f'{analizar_linea.largo_linea("Parametros formales: " + datos_csv[funcion]["parametros"])}\n'
+    elif datos_csv[funcion]["parametros"]:
+        candena_pregunta += f'{"Parametros formales: " + datos_csv[funcion]["parametros"][1:-1]}\n'
     else:
         candena_pregunta += "No tiene parametros formales\n"
+        
     candena_pregunta += f'Modulo: {modulo}\n'
     candena_pregunta += f'{autor if "Autor" in autor else "El autor es anonimo"}\n'
     candena_pregunta += f'{"*" * 79}\n'
