@@ -75,9 +75,7 @@ def porcentaje_lineas_codigo(autor, datos_csv, lineas_codigo_totales):
 
 def tabla_funciones(lista_funciones):
     '''[Autor: Joel Glauber]
-    [Ayuda: A esta funcion le llega por parametro una lista con los nombres de todas las funciones
-    y concatena a estos nombres a una cadena que llamo tabla, con un formato como el que se pide en 
-    la consigna (5 columnas, x filas)]'''
+    [Ayuda: repasa la lista que le llega y devuelve una tabla formateada por 5 columnas y "x" filas.]'''
     
     primera_fila = True
     cantidad_guiones = 0
