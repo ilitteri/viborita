@@ -14,7 +14,7 @@ analizando.
 
 *Autor: Andrés Kübler*
 
-Es la funcion principal del modulo, llama a la funcion crear_csv_finales(nombre_archivo) del módulo [*m_crear_csv_finales.py*](#Crear-CSV-Finales) que crea los archivos fuente_unico.csv y comentarios.csv, luego llama a la funcion 
+Es la funcion principal del modulo, llama a la funcion *crear_csv_finales(nombre_archivo)*  del módulo [*m_crear_csv_finales.py*](#Crear-CSV-Finales) que crea los archivos fuente_unico.csv y comentarios.csv, luego llama a la funcion 
 *obtener_datos_csv(fuente, comentarios)*. Una vez que ya se tienen los datos, se llama a la funcion *menu_interaccion()* que valga la redundancia, ejecuta el menu de interacción.
 
 #### obtener_datos_csv(*fuente, comentarios*)
@@ -44,11 +44,11 @@ Muestra en pantalla una breve descripcion de lo que se trata cada opción del me
 Muestra en pantalla el menu llamando a la funcion *mostrar_menu_interaccion()*, luego se queda en espera al ingreso del usuario, en donde éste tiene entre 6 opciones para elegir
 entre ellas se encuentran:
 
-1. Panel General de Funciones
-2. Consultar Funciones
-3. Analizar Reutilizacion de Codigo
-4. Arbol de Invocaciones
-5. Informacion de Desarrollador
+1. [Panel General de Funciones](#Panel-General-de-Funciones)
+2. [Consultar Funciones](#Consultar-Funciones)
+3. [Analizar Reutilizacion de Código](#Analizar-Reutilización-de-Código)
+4. [Árbol de Invocaciones](#Árbol-de-Invocaciones)
+5. [Información de Desarrollador](#Información-de-Desarrollador)
 6. Ayuda
 
 Las primeras 5 se tratan de la obtención de la información correspondiente a cada punto del trabajo práctico, y la sexta opción es la que muestra en pantalla las instrucciones
@@ -73,13 +73,9 @@ Obtiene informacion del archivo "programas.txt" que usa para crear un archivo cs
 
 *Autor: Ivan Litteri*
 
-Ejecuta en orden funciones para crear los archivos csv finales. Primero consigue la información de las ubicaciones de los códigos que se encuentran en el archivo de programas.txt
-llamando a la funcion *informacion_ubicaciones(nombre_archivos)* del módulo *m_obtener.py* a la que le pasa el parámetro ```nombre_archivo``` que en este caso se trata de
-el archivo "programas.txt".
+Ejecuta en orden funciones para crear los archivos csv finales. Primero consigue la información de las ubicaciones de los códigos que se encuentran en el archivo de programas.txt llamando a la funcion *informacion_ubicaciones(nombre_archivos)* del módulo [*m_obtener.py*](#Obtener) a la que le pasa el parámetro ```nombre_archivo``` que en este caso se trata de el archivo "programas.txt".
 
-La información de las ubicaciones se la pasa a otra función que llama, *crear_csv_individuales(info_ubicaciones)* del módulo *m_csv_individuales.py* que ademas de crear los
-archivos fuente y comentarios csv para cada una de las ubicaciones halladas devuelve una lista con los nombres de esos archivos csv creados que los usa luego cuando llama a la
-función *merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion)*.
+La información de las ubicaciones se la pasa a otra función que llama, *crear_csv_individuales(info_ubicaciones)* del módulo [*m_csv_individuales.py*](#Crear-CSV-Individuales) que ademas de crear los archivos fuente y comentarios csv para cada una de las ubicaciones halladas devuelve una lista con los nombres de esos archivos csv creados que los usa luego cuando llama a la función *merge(nombre_archivo_final, archivos_individuales, lineas_fuera_funcion)*.
 
 Luego de hacer el merge para cada uno de los archivos csv finales borra los archivos csv individuales provisorios antes creados con la funcion 
 *borrar_csv_individuales(nombres_archivos_csv_individuales)*.
@@ -89,8 +85,7 @@ Luego de hacer el merge para cada uno de los archivos csv finales borra los arch
 *Autor: Ivan Litteri*
 
 Borra los archivos fuente y comentarios csv individuales (que se encuentran en el repositorio actual) cuyas ubicaciones se obtienen de una lista que devuelve la funcion 
-*ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales)* a la que le llega por parametro ```nombres_archivos_csv_individuales``` que corresponde a una lista
-con los nombres de los archivos csv individuales (tanto fuente como comentarios).
+*ubicaciones_archivos_csv_individuales(nombres_archivos_csv_individuales)* del módulo [*m_obtener.py*](#Obtener) a la que le llega por parametro ```nombres_archivos_csv_individuales``` que corresponde a una lista con los nombres de los archivos csv individuales (tanto fuente como comentarios).
 
 #### merge(*nombre_archivo_final, archivos_individuales, lineas_fuera_funcion*)
 
@@ -145,7 +140,7 @@ Devuelve ```lineas``` que es la lista de todas las lineas de todos los archivos 
 
 Cierra cada uno de los archivos individuales.
 
-## [m_organizar_datos.py](./m_organizar_datos.py)
+## [Organizar Datos](./m_organizar_datos.py)
 
 ### Descripción
 
@@ -155,17 +150,13 @@ Lee los archivos fuente_unico.csv y comentarios.csv secuencialmente, los procesa
 
 #### leer_archivos_csv(*archivo_fuente, archivo_comentarios*)
 
-
 *Autor: Ivan Litteri*
 
-
-/```archivo_fuente``` es el contenido del archivo fuente_unico.csv a leer
+```archivo_fuente``` es el contenido del archivo fuente_unico.csv a leer
 
 ```archivo_comentarios``` es el contenido del archivo comentarios.csv a leer
 
-Recibe los contenidos de los archivos csv finales, y devuelve dos diccionarios, uno ordenado por funciones y otro ordenado por autores.
-Primero carga la primera linea de ambos archivos, y mientras haya lineas para leer de los archivos, formatea la linea, y envia los datos extraidos a dos funciones distintas, una
-*actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia)* y *actualizar_diccionario_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia)* que va actualizando los diccionarios linea a linea. Luego una vez que termina el recorrido, llama a la funcion *cantidad_invocaciones(datos_por_funciones, archivo_fuente)* del módulo *m_obtener.py* que le agrega las invocaciones. La información de la linea podia ser extraida en cada una de las funciones que actualiza el diciconario pero, para no hacer el doble de recorridos sacrificamos tener pocos parametros para hacer la mitad de recorridos.
+Recibe los contenidos de los archivos csv finales, y devuelve dos diccionarios, uno ordenado por funciones y otro ordenado por autores. Primero carga la primera linea de ambos archivos, y mientras haya lineas para leer de los archivos, formatea la linea, y envia los datos extraidos a dos funciones distintas, una *actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia)* y *actualizar_diccionario_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia)* que va actualizando los diccionarios linea a linea. Luego una vez que termina el recorrido, llama a la funcion *cantidad_invocaciones(datos_por_funciones, archivo_fuente)* del módulo [*m_obtener.py*](#Obtener) que le agrega las invocaciones. La información de la linea podia ser extraida en cada una de las funciones que actualiza el diciconario pero, para no hacer el doble de recorridos sacrificamos tener pocos parametros para hacer la mitad de recorridos.
 
 #### actualizar_diccionario_funciones(*datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia*)
 
@@ -185,7 +176,7 @@ Primero carga la primera linea de ambos archivos, y mientras haya lineas para le
 
 ```indice_copia``` es un indice que se incrementa si existen funciones con nomrbes repetidos, entonces se agrega "_indice_" a esa función repetida.
 
-Actualiza y da formato al diccionario ordenado por funciones, cada key del diccionario es una funcion, el value de cada key es otro diccionario con todos los datos relativos a esa funcion, entre ellos, "_parametros_" cuyo value es un string; "_modulo_" al que pertenece, cuyo value es un string; "_lineas_" de esa funcion, cuya value es una lista de lineas; "_invocaciones_", cuyo value es una lista con las invocaciones que realiza esa funcion; "_cantidad de lineas_" cuyo value es un entero, "_cantidad de invocaciones_", cuyo value es un entero y corresponde a la cantidad de veces que es invocada esa función; "_comentarios_" que su value es otro diccionario que contiene 3 keys: "_ayuda_" que contiene la ayuda de la función en caso de tenerla, sino contiene None; "_autor_" que contiene al autor de la función en caso de haberlo, sino contiene None; y "_otros_" que contiene una lista de comentarios extra en caso de haberlos; y "_cantidad declaraciones_" es la ultima key del diccionario que contiene cada función cuyo value corresponde a otro diccionario que contiene las cantidades de declaraciones de esa funcion (que corresponden al punto 1), las cuales son obtenidas por la función *cantidad_declaraciones*.
+Actualiza y da formato al diccionario ordenado por funciones, cada key del diccionario es una funcion, el value de cada key es otro diccionario con todos los datos relativos a esa funcion, entre ellos, "_parametros_" cuyo value es un string; "_modulo_" al que pertenece, cuyo value es un string; "_lineas_" de esa funcion, cuya value es una lista de lineas; "_invocaciones_", cuyo value es una lista con las invocaciones que realiza esa funcion; "_cantidad de lineas_" cuyo value es un entero, "_cantidad de invocaciones_", cuyo value es un entero y corresponde a la cantidad de veces que es invocada esa función; "_comentarios_" que su value es otro diccionario que contiene 3 keys: "_ayuda_" que contiene la ayuda de la función en caso de tenerla, sino contiene None; "_autor_" que contiene al autor de la función en caso de haberlo, sino contiene None; y "_otros_" que contiene una lista de comentarios extra en caso de haberlos; y "_cantidad declaraciones_" es la ultima key del diccionario que contiene cada función cuyo value corresponde a otro diccionario que contiene las cantidades de declaraciones de esa funcion (que corresponden al punto 1), las cuales son obtenidas por la función *cantidad_declaraciones(datos_por_funciones, lineas_funcion, nombre_funcion)* del módulo [*m_obtener.py*](#Obtener).
 
 ```
 diccionario = {"funcion_1": {"parametros": (str),
@@ -242,7 +233,7 @@ diccionario = {"autor_1": {"funciones": {"funcion_1": (int),
 
 # PUNTO 1
 
-## [m_consulta_funciones.py](./m_consulta_funciones.py)
+## [Consulta de Funciones](./m_consulta_funciones.py)
 
 ### Descripción
 
@@ -256,7 +247,7 @@ Lee el diccionario de datos por funcion, ordena las funciones por orden alfabét
 
 ```datos_csv``` es el diccionario organizado por funciones con los datos de los archivos csv finales.
 
-Guarda en la variable "_lista de funciones_" la lista ordenada alfabéticamente de los nombres de las funciones de la aplicación, para enviarla por parámetro a la funcion *tabla_funciones* del módulo *m_obtener.py* que devuelve dos cadenas, una que corresponde a la tabla a mostrar y otra que corresponde a la cantidad de guiones, cadenas que se envían como parámetro a la función *mostrar_tabla_funciones(tabla, cantidad_guiones)*, luego llama a la función *mostrar_instrucciones_uso()* y la función *analizar_ingreso_usuario(datos_csv)*
+Guarda en la variable "_lista de funciones_" la lista ordenada alfabéticamente de los nombres de las funciones de la aplicación, para enviarla por parámetro a la funcion *tabla_funciones* del módulo [*m_obtener.py*](#Obtener) que devuelve dos cadenas, una que corresponde a la tabla a mostrar y otra que corresponde a la cantidad de guiones, cadenas que se envían como parámetro a la función *mostrar_tabla_funciones(tabla, cantidad_guiones)*, luego llama a la función *mostrar_instrucciones_uso()* y la función *analizar_ingreso_usuario(datos_csv)*
 
 #### mostrar_instrucciones_uso()
 
@@ -270,7 +261,7 @@ Imprime las instrucciones de uso del módulo
 
 ```tabla``` es un string que contiene la tabla formateada
 
-```cantidad_guiones``` es un string que contiene guiones
+```cantidad_guiones``` es un string que contiene guiones.
 
 Muestra en pantalla la tabla de funciones que conforman a la aplicación.
 
@@ -280,7 +271,7 @@ Muestra en pantalla la tabla de funciones que conforman a la aplicación.
 
 ```datos_csv``` es el diccionario organizado por funciones con los datos de los archivos csv finales.
 
-Solicita el ingreso de una cadena, que tiene que ver con las opciones que se le mostraron previamente en pantalla, opción que luego es analizada por al función *analizar_opcion*
+Solicita el ingreso de una cadena, que tiene que ver con las opciones que se le mostraron previamente en pantalla, opción que luego es analizada por al función *analizar_opcion(datos_csv, opcion)*.
 
 #### analizar_opcion(*datos_csv, opcion*)
 
@@ -370,7 +361,7 @@ Devuelve una cadena formateada con la información que se pide de la funcion que
 
 # PUNTO 3
 
-## [m_arbol_invocacion.py](./m_arbol_invocacion.py)
+## [Arbol de Invocaciones](./m_arbol_invocacion.py)
 
 ### Descripción
 
@@ -397,8 +388,61 @@ Esta función arma el árbol de invocaciones de forma recursiva, lo cual signifi
 Esta función busca la funcion principal del programa en el diccionario pasado por parámetro. Su busqueda
 es a traves de un ciclo con condición de corte. Finalmente devuelve la función principal como string
 
-# PUNTO 5
+## [Información por Desarrollador](./m_informacion_desarrollador.py)
 
+### Descripción
 
-## Grafo de llamada de funciones
+Lee los datos extraidos de los csv finales, que se encuentran en un diccionario organizado por autores, los formatea, y muestra en pantalla la información de cada autor respecto al código en tablas, esa misma información la graba en un archivo de texto llamado participacion.txt.
+
+### Funciones
+
+#### obtener_informacion_desarrollador(*datos_csv*)
+
+```datos_csv``` es el diccionario organizado por autores con los datos de los archivos csv finales.
+
+Ordena los datos del diccionario con la función *ordenar_diccionario_autores(datos_archivos_csv)*, datos que deriva a la función *formatear_participacion(datos_formateados)* que formatea los datos para mostrarlos con la función *mostrar_participacion(datos_formateados)*. Por último, crea el archivo de participacion.txt con la función *crear_participacion_txt(nombre_archivo, datos_formateados)*
+
+#### crear_participacion_txt(*nombre_archivo, datos_formateados*)
+
+```nombre_archivo``` es el nombre del archivo de texto a crear.
+
+```datos_formateados``` es el string con los datos ya formateados a grabar
+
+Crea y graba el archivo de participacion.txt con los datos formateados.
+
+#### mostrar_participacion(*datos_formateados*)
+
+```datos_formateados``` es el string con los datos ya formateados a mostrar
+
+Muestra en pantalla los datos formateados.
+
+#### formatear_participacion(*datos_ordenados*)
+
+```datos_ordenados``` es la lista con los datos de los autores ordenados por cantidad de lineas de código totales.
+
+Formatea los datos que le llegan por parametro para mostrarlos más adelante. Obtiene las lineas de código totales de la aplicación. Declara el contador de funciones en 0. Inicializa la devolución en vacío para ir concatenando. Concatena la primera línea. Recorre los datos ordenados que me llegan por parámetro. Guarda los datos por columnas, separación, y otras nomenclaturas utilizadas para que su lectura sea más comprensible. Concatena la linea correspondiende al autor y la fila que corresponde al título de la tabla del autor. Concatena la linea de iguales. Recorre los datos de las funciones del auto. Establece la separacion que quiero tener entre el nombre de la funcion y la cantidad de lineas de esa funcion. Concatena la linea: "Funcion" ---------- "Cantidad Lineas de Funcion". Guarda el porcentaje de lineas de codigo que escribio el autor respecto del total del codigo. Incrementa el contador de funciones. Establece la columna y la separación. Concatena la linea que contiene la cantidad de funciones que escribio el autor y el porcentaje respecto a todo el codigo. Asi en cada iteración.
+
+Devuelve la cadena formateada lista para imprimir.
+
+#### ordenar_diccionario_autores(*datos_csv*)
+
+```datos_csv``` es el diccionario organizado por autores con los datos de los archivos csv finales.
+
+Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de lineas de codigo que escribio cada autor.
+
+Devuelve una lista con esos datos ordenados
+
+# Extra
+
+## [Grafo](./m_grafo.py)
+
+Hicimos un modulo extra llamado *m_grafo.py* que básicamente crea dos archivos llamados grafo.svg y grafo.png que corresponden a el árbol de invocaciones.
+
+### Grafo de llamada de funciones
 <img src="./grafo.svg">
+
+### crear_grafo_invocaciones(*datos_csv*)
+
+```datos_csv``` es el diccionario organizado por funciones con los datos de los archivos csv finales.
+
+Se utiliza la librería *pygraphviz*, se declara un objeto del tipo AGraph con los parámetros necesarios, se repasa función por función el diccionario, se agrega a cada función como un nodo del grafo (atributo del objeto), luego por cada función se repasan sus invocaciones y se indica hacia donde apunta cada nodo.
