@@ -1,5 +1,4 @@
 import m_obtener as obtener
-import m_organizar_datos as organizar_datos
 import m_analizar_linea as analizar_linea
 
 def formatear_datos_numeral(datos_csv, funcion):
@@ -155,7 +154,7 @@ def analizar_opcion(datos_csv, opcion):
     else:
         print("\nOpcion incorrecta, ingrese nuevamente\n")
 
-def analizar_ingreso_usuario(datos_csv):
+def solicitar_ingreso_usuario(datos_csv):
     '''[Autor: Joel Glauber]
     [Ayuda: solicita al autor que ingrese una de las opciones]'''
 
@@ -195,4 +194,4 @@ def consultar_funciones(datos_archivos_csv):
     tabla, cantidad_guiones = obtener.tabla_funciones(lista_funciones)
     mostrar_tabla_funciones(tabla, cantidad_guiones)
     mostrar_instrucciones_uso()
-    analizar_ingreso_usuario(datos_archivos_csv)
+    solicitar_ingreso_usuario(datos_archivos_csv)

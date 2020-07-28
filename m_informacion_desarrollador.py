@@ -1,13 +1,12 @@
-import m_organizar_datos as organizar
 import m_obtener as obtener
 
-def ordenar_diccionario_autores(datos_por_autor):
+def ordenar_diccionario_autores(datos_csv):
     '''[Autor: Ivan Litteri]
     [Ayuda: Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de 
     lineas de codigo que escribio cada autor]'''
 
     #Devuelve una lista ordenada por el total de lineas que escribio cada autor
-    return sorted(datos_por_autor.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
+    return sorted(datos_csv.items(), key=lambda x: x[1]["lineas_totales"], reverse=True)
 
 def formatear_participacion(datos_ordenados):
     '''[Autor: Ivan Litteri]

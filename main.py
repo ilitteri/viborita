@@ -32,7 +32,7 @@ def mostrar_menu_interaccion():
     print("5. Informacion de Desarrollador")
     print("6. Ayuda")
 
-def mostrar_ayuda_menu(opcion):
+def mostrar_ayuda_menu():
     '''[Autor: Ivan Litteri]
     [Ayuda: Muestra en pantalla una breve descripcion de lo que trata cada opcion del menu]'''
 
@@ -80,7 +80,7 @@ def menu_interaccion(datos_por_funciones, datos_por_autores):
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 6 o "ayuda" muestra en consola la ayuda para el uso del menu
         elif opcion == "6" or opcion.lower() == "ayuda":
-            mostrar_ayuda_menu(opcion)
+            mostrar_ayuda_menu()
             mostrar_menu_interaccion()
         #Si no se ingresa ninguna de las opciones anteriores vuelve a preguntar
         else:
@@ -96,12 +96,6 @@ def main():
     #Crea los archivos csv fuente_unico y comentarios
     csv_finales.crear_csv_finales("programas.txt")
     datos_por_funciones, datos_por_autores = obtener_datos_csv("fuente_unico.csv", "comentarios.csv")
-    
-    #for funcion in datos_por_funciones:
-    #    print(funcion)
-    #    print(f'{funcion}.{datos_por_funciones[funcion]["modulo"]} - {datos_por_funciones[funcion]["invocaciones"]}')
-    #print(datos_por_funciones["analizar_reutilizacion"]["invocaciones"])
-    
     #Abre el menu de interaccion
     menu_interaccion(datos_por_funciones, datos_por_autores)
 

@@ -1,6 +1,6 @@
 from pygraphviz import AGraph
 
-def crear_grafo_invocaciones(datos):
+def crear_grafo_invocaciones(datos_csv):
     '''[Autor: Ivan Litteri]
     [Ayuda: crea grafo.svg y grafo.png]'''
 
