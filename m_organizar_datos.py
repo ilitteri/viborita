@@ -104,6 +104,6 @@ def leer_archivos_csv(archivo_fuente, archivo_comentarios):
         #Avanzo de linea en el archivo
         linea_comentarios = archivo_comentarios.readline()
 
-    obtener.cantidad_invocaciones(datos_por_funciones, archivo_fuente)
+    obtener.cantidad_invocaciones(datos_por_funciones)
 
     return datos_por_funciones, datos_por_autores

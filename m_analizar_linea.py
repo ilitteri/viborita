@@ -1,15 +1,13 @@
-def declaracion_funcion(line, bandera_nombre = True, bandera_parametro = False):
+def declaracion_funcion(linea_codigo, bandera_nombre = True, bandera_parametro = False):
     '''[Autor: Ivan Litteri]
-    [Ayuda: esta funcion analiza la linea que le entra por parametro, previamente filtrada como linea de declaracion de funcion, de esta forma
-    se recorre caracter a caracter la linea para ver cuando guardar los caracteres en la cadena de nombre, y cuando guardar los caracteres en 
-    la cadena de parametros]'''
+    [Ayuda: le llega una linea de codigo filtrada como declaracion de funcion y devuelve el nombre de la funcion declarada y sus parametros por separado]'''
 
     #Declara inicialmente cadenas vacias para luego llenarla desde 0
     nombre_funcion = ""
     parametros_funcion = ""
 
     #Recorre caracter a caracter desde "def" en adelante la linea que le llega por parametro
-    for caracter in line[3:]:
+    for caracter in linea_codigo[3:]:
         #Se guardan los caracteres en la cadena de parametros cuando esta habilitada la bandera
         if bandera_parametro:
             parametros_funcion += caracter
@@ -29,9 +27,8 @@ def declaracion_funcion(line, bandera_nombre = True, bandera_parametro = False):
 
 def autor_funcion(linea_codigo, bandera_autor = False):
     '''[Autor: Ivan Litteri]
-    [Ayuda: Esta funcion analiza la linea de codigo que anteriormente fue filtrada como posible contenedora de datos del autor de la funcion.
-    Se analiza caracter a caracter la linea, y se habilita la bandera que permite que se empiecen a almacenar los caracteres que son parte de
-    la informacion requerida.]'''
+    [Ayuda: Esta funcion analiza la linea de codigo que anteriormente fue filtrada como posible contenedora de datos del autor de la funcion. Se analiza 
+    caracter a caracter la linea, y se habilita la bandera que permite que se empiecen a almacenar los caracteres que son parte de la informacion requerida.]'''
 
     #Declara inicialmente como una cadena vacia para luego llenarla desde 0
     autor_funcion = ""
@@ -51,12 +48,8 @@ def autor_funcion(linea_codigo, bandera_autor = False):
 
 def ayuda_funcion(linea_codigo, bandera_ayuda):
     '''[Autor: Ivan Litteri]
-    [Ayuda: Esta funcion analiza la linea de codigo que le llega por parametro (sabiendo que se trata de una linea de ayuda de funcion;
-    se recorre la linea caracter por caracter hasta hayar la apertura de un corchete que al mismo tiempo en esa linea este la palabra ayuda,
-    si ese fuera el caso, se habilita la bandera para que cada caracter se sume a la cadena inicializada al principio como vacia. Esta funcion
-    en particular, tambien devuelve el ultimo estado de la bandera de ayuda, porque al tratarse de comentarios multilinea, cuando se vuelva
-    a llamar a esta funcion, puede ser que este comentario multilinea no haya sido cerrado, en esta caso, deben seguir siendo almacenadas
-    las proximas lineas que vengan a ella por parametro hasta que se cierre el comentario.]'''
+    [Ayuda: le llega una linea de codigo, en caso de que la bandera este levantada directamente la concatena al string de ayuda y lo devuelve, si se encontrase baja
+    se analiza, en caso verdadero se levanta. Tambien analiza si esta bandera se tiene que bajar.]'''
 
     #Declara inicialmente como una cadena vacia para luego llenarla desde 0
     ayuda_funcion = ""
@@ -102,25 +95,25 @@ def comentario_numeral(linea_codigo, bandera_otro_comentario = False, bandera_li
 
     return otro_comentario, posible_linea
 
-def largo_linea(ayuda):
+def largo_linea(linea):
     '''[Autor: Joel Glauber]
-    [Ayuda: analiza un comentario de ayuda con mas de 80 caracteres, y devuelve el mismo, pero cada 80 caracteres, agrega
+    [Ayuda: analiza una linea con mas de 80 caracteres, y devuelve el mismo, pero cada 80 caracteres, agrega
     un enter (para la grabacion del archivo de ayuda de funcion del punto 2)]'''
 
     #Declara una cadena vacia para llenar con los caracteres de el comentario de ayuda
-    linea_recortada = ""
+    linea_formateada = ""
     #Declaro una variable global como 0 para usarla de indice
     i = 0
-    while (i < len(ayuda)):
+    while (i < len(linea)):
         #Si se llega a una posicion que es multiplo de 79 (cada vez que se llega a 80 caracteres de longitud) y agrega un enter
         if( i % 78 == 0) and (i != 0):
-            if ayuda[i].isalpha():
+            if linea[i].isalpha():
                 linea_recortada += "-\n"
             else:
                 linea_recortada += "\n"
         #Agregar el caracter a la cadena final
-        linea_recortada += ayuda[i]
+        linea_recortada += linea[i]
         #Incrementa el indice
         i += 1
 
-    return linea_recortada
+    return linea_formateada
