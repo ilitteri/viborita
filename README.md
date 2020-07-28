@@ -2,10 +2,10 @@
 
 # Grupo Viborita
 
-## Índice de módulos
+## Índice de Módulos
 |  |  |  |
 | --- | --- | --- |
-| [main.py](#main)  | [m_panel_general_funciones.py](#Panel-General-Funciones)  | [m_consulta_funciones.py](#Consulta-de-Funciones)  |
+| [main.py](#main)  | [m_panel_general_funciones.py](#Panel-General-de-Funciones)  | [m_consulta_funciones.py](#Consulta-de-Funciones)  |
 | [m_analizador_reutilizacion_codigo.py](#Analizador-de-Reutilización-de-Código)  | [m_arbol_invocaciones.py](#Árbol-de-Invocaciones)  | [m_informacion_desarrollador.py](#Información-por-Desarrollador)  |
 | [m_organizar_datos.py](#Organizar-Datos)  | [m_obtener.py](#Obtener)  | [m_grafo.py](#Grafo)  |
 | [m_csv_finales.py](#Crear-CSV-Finales)  | [m_csv_individuales.py](#Crear-CSV-Individuales)  | [m_analizar_linea.py](#Analizar-Línea)  |
@@ -606,6 +606,8 @@ Devuelve la cadena formateada lista para imprimir.
 Reordena los datos del diccionario que llega del main en otro de forma descendiente respecto de la cantidad de lineas de codigo que escribio cada autor.
 
 Devuelve una lista con esos datos ordenados
+
+[Indice](#Índice-de-Módulos)
 
 # Extra
 
