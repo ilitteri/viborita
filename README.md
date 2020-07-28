@@ -623,11 +623,47 @@ Reordena los datos del diccionario que llega del main en otro de forma descendie
 
 Devuelve una lista con esos datos ordenados
 
-# Extra
+## [Obtener](./m_obtener.py)
 
 [*Indice*](#Índice-de-Módulos)
 
+### Descripción
+
+(----)
+
+### Funciones
+
+(----)
+
+## [Crear CSV Individuales ](./m_csv_individuales.py)
+
+[*Indice*](#Índice-de-Módulos)
+
+### Descripción
+
+(----)
+
+### Funciones
+
+(----)
+
+## [Analizar Línea](./m_analizar_linea.py)
+
+[*Indice*](#Índice-de-Módulos)
+
+### Descripción
+
+(----)
+
+### Funciones
+
+(----)
+
+# Extra
+
 ## [Grafo](./m_grafo.py)
+
+[*Indice*](#Índice-de-Módulos)
 
 Hicimos un modulo extra llamado *m_grafo.py* que básicamente crea dos archivos llamados grafo.svg y grafo.png que corresponden a el árbol de invocaciones.
 
