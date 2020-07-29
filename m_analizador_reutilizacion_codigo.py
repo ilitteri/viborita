@@ -124,9 +124,7 @@ def asignacion_valores_tabla(filas_txt, diccionario_invocaciones):
                     else:
                         filas_txt[numero] += ("      |")
                 #Corrijo el espaciado en caso de que el numero de funciones sea muy elevado
-                
-                
-                
+            
     return filas_txt
     
 

@@ -2,7 +2,8 @@ import m_analizar_linea as analizar_linea
 
 def grabar_csv_individual(archivo, lineas):
     '''[Autor: Ivan Litteri]'''
-    for linea in lineas:
+    lineas_ordenadas = sorted(lineas)
+    for linea in lineas_ordenadas:
         archivo.write(linea)
 
 def guardar_comentario_multilinea(linea_codigo, banderas, info_lineas):
@@ -87,6 +88,9 @@ def analizar_linea_funcion(linea_codigo, nombre_modulo, info_ubicaciones, lineas
         if "Ayuda" in linea_codigo and not banderas[2]:
             #Analiza la linea de ayuda desde que empieza ("[") hasta que termina ("]") y obtendo la linea de ayuda (que se va concatenando) y la bandera de ayuda que indica si debe seguir concatenando o si ya se termino el comentarios de ayuda
             info_lineas[2], banderas[2] = analizar_linea.ayuda_funcion(linea_codigo, banderas[2])
+        elif banderas[2]:
+            nueva_linea_ayuda, banderas[2] = analizar_linea.ayuda_funcion(linea_codigo, banderas[2])
+            info_lineas[2] += nueva_linea_ayuda
         #Las banderas de comentario y ayuda se "bajan" en caso de que se detecte que se termina el comentario de triple comilla
         if "'''\n" in linea_codigo or '"""\n' in linea_codigo:
             banderas[1] = False
@@ -94,10 +98,7 @@ def analizar_linea_funcion(linea_codigo, nombre_modulo, info_ubicaciones, lineas
     #Esa declaracion cubre aquellos casos en los que una funcion no dispone de return para indicar que se termino
     elif linea_codigo[0:3] == "def":
         lineas_a_grabar, cadenas, banderas, info_lineas = resetear_por_inicio(linea_codigo, nombre_modulo, lineas_a_grabar, cadenas, banderas, info_lineas, info_ubicaciones)
-    #Esta declaracion detecta que una funcion termina en el return
-    elif linea_codigo.strip().startswith("return"):
-        #Se guarda la linea en la que se encuentra en el return como ultima linea de la funcion leida hasta el momento
-        cadenas[0] += f',"{linea_codigo.strip()}"'#Esta declaracion detecta si hay un numeral en la linea, pero lo analiza como comentario si y solo si el formato es correcto
+    #Esta declaracion detecta si hay un numeral en la linea, pero lo analiza como comentario si y solo si el formato es correcto
     elif "#" in linea_codigo and not("'#" in linea_codigo or "('#" in linea_codigo) and "#todo" not in linea_codigo:
         cadenas, banderas, info_lineas = guardar_comentario_numeral(linea_codigo, cadenas, banderas, info_lineas)
     #Si se comienza un comentario de triple comilla
@@ -201,7 +202,7 @@ def crear_csv_individuales(info_ubicaciones):
             grabar_csv_individual(archivo_fuente, lineas_a_grabar[0])
             grabar_csv_individual(archivo_comentarios, lineas_a_grabar[1])
             #Guarda el nombre de los archivos en listas
-            archivos_fuente.append((f'fuente_{nombre_modulo}.csv', nombre_modulo))
-            archivos_comentarios.append((f'comentarios_{nombre_modulo}.csv', nombre_modulo))
+            archivos_fuente.append(f'fuente_{nombre_modulo}.csv')
+            archivos_comentarios.append(f'comentarios_{nombre_modulo}.csv')
 
     return archivos_fuente, archivos_comentarios, lineas_fuera_funcion

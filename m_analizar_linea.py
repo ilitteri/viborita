@@ -108,11 +108,11 @@ def largo_linea(linea):
         #Si se llega a una posicion que es multiplo de 79 (cada vez que se llega a 80 caracteres de longitud) y agrega un enter
         if( i % 78 == 0) and (i != 0):
             if linea[i].isalpha():
-                linea_recortada += "-\n"
+                linea_formateada += "-\n"
             else:
-                linea_recortada += "\n"
+                linea_formateada += "\n"
         #Agregar el caracter a la cadena final
-        linea_recortada += linea[i]
+        linea_formateada += linea[i]
         #Incrementa el indice
         i += 1
 
