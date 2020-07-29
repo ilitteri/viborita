@@ -122,7 +122,7 @@ def asignacion_valores_tabla(filas_txt, diccionario_invocaciones):
                     if (diccionario_invocaciones[indice][funcion][funcion_en_linea] > 0):
                         filas_txt[numero] += ("   x  |")
                     else:
-                        filas_txt[numero] += ("   0  |")
+                        filas_txt[numero] += ("      |")
                 #Corrijo el espaciado en caso de que el numero de funciones sea muy elevado
                 
                 
