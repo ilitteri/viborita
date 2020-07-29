@@ -65,16 +65,16 @@ def creacion_formato_tabla(diccionario_invocaciones, largo_maximo):
     filas_txt = []
     indice_de_lineas = 1
     # Creo la primer y ultima linea del archivo de texto  
-    filas_txt.append(f'\t FUNCIONES    {" " * (largo_maximo - 9)}!')
-    cadena_totales = (f'\n\t Total Invocaciones   {" " * (largo_maximo-17)}!')
+    filas_txt.append(f'\t FUNCIONES    {" " * (largo_maximo - 9)}|')
+    cadena_totales = (f'\n\t Total Invocaciones   {" " * (largo_maximo-17)}|')
 
     # Agrego los nombres de las funciones junto con sus indices a todas las lineas restantes
     for funcion in diccionario_invocaciones:
         if str(funcion).isdigit():
             if funcion < 10 :
-                filas_txt [0] += (f'   {funcion}  !') 
+                filas_txt [0] += (f'   {funcion}  |') 
             else :
-                filas_txt [0] += (f'  {funcion}  !') 
+                filas_txt [0] += (f'  {funcion}  |') 
             funcion_en_linea = diccionario_invocaciones["nombres"][funcion]
             #Filtro el caracter "*" que fue usado para identificar a la funcion principal en otros modulos
             if ("*" in funcion_en_linea):
@@ -86,15 +86,15 @@ def creacion_formato_tabla(diccionario_invocaciones, largo_maximo):
                 cadena_de_texto =  (f'\t   {indice_de_lineas} {funcion_en_linea}')
             else :
                 cadena_de_texto =  (f'\t  {indice_de_lineas} {funcion_en_linea}')
-            cadena_de_texto += " " * diferencia + "!"
+            cadena_de_texto += " " * diferencia + "|"
             filas_txt.append(cadena_de_texto)
             indice_de_lineas += 1  
 
             # Concateno a los totales que estaban el el diccionario a la tabla
             if diccionario_invocaciones["total"][funcion] < 10 :
-                cadena_totales += (f'   {diccionario_invocaciones["total"][funcion]}  !')
+                cadena_totales += (f'   {diccionario_invocaciones["total"][funcion]}  |')
             else :
-                cadena_totales += (f'  {diccionario_invocaciones["total"][funcion]}  !')
+                cadena_totales += (f'  {diccionario_invocaciones["total"][funcion]}  |')
             
             
             #Corrijo el espaciado en caso de que el numero de funciones sea muy elevado
@@ -116,13 +116,13 @@ def asignacion_valores_tabla(filas_txt, diccionario_invocaciones):
                 # Aqui agrego el caracteres correspondientes a cada funcion ("X", "numero" o "vacio")
                 
                 if (diccionario_invocaciones[numero][funcion_en_linea][funcion] > 0):
-                    filas_txt[numero] +=(f'   {diccionario_invocaciones[numero][funcion_en_linea][funcion]}  !')
+                    filas_txt[numero] +=(f'   {diccionario_invocaciones[numero][funcion_en_linea][funcion]}  |')
                 else:
                     indice = diccionario_invocaciones["indices"][funcion]
                     if (diccionario_invocaciones[indice][funcion][funcion_en_linea] > 0):
-                        filas_txt[numero] += ("   x  !")
+                        filas_txt[numero] += ("   x  |")
                     else:
-                        filas_txt[numero] += ("   0  !")
+                        filas_txt[numero] += ("   0  |")
                 #Corrijo el espaciado en caso de que el numero de funciones sea muy elevado
                 
                 
