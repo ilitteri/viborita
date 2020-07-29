@@ -62,19 +62,19 @@ def cantidad_declaraciones(datos_csv, lineas_funcion, nombre_funcion):
 
     #Recorre todas las lineas de la funcion e incrementa la declaracion que sea valida en caso de encontrarla
     for linea_funcion in lineas_funcion:
-        if ("for" in linea_funcion):
+        if ("for " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["for"] += linea_funcion.count("for")
-        if ("return" in linea_funcion):
+        if ("return " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["returns"] += 1
-        if ("if" in linea_funcion):
+        if ("if " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        elif ("elif" in linea_funcion):
+        if ("elif " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        elif ("while" in linea_funcion):
+        if ("while " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["while"] += 1
-        elif ("break" in linea_funcion):
+        if ("break" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["break"] += 1
-        elif ("exit" in linea_funcion):
+        if ("exit" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["exit"] += 1
 
     #Devuelve el diccionario actualizado 
