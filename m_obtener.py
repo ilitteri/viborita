@@ -38,10 +38,10 @@ def cantidad_invocaciones(datos_csv):
             for nombre_funcion in datos_csv:
                 if ("cantidad_invocaciones" not in datos_csv[nombre_funcion]):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] = 0
-                if ((f'{nombre_funcion}(' in linea_funcion) or (f'{nombre_funcion[:-2]}(' in linea_funcion)) and (not f'_{nombre_funcion}' in linea_funcion):
+                if (f'{nombre_funcion}(' in linea_funcion) and (not f'_{nombre_funcion}' in linea_funcion):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos_csv[funcion]["invocaciones"].append(nombre_funcion)
-                elif (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion}(' in linea_funcion) or (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion[:-2]}(' in linea_funcion):
+                elif (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion}(' in linea_funcion):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos_csv[funcion]["invocaciones"].append(nombre_funcion)
 
