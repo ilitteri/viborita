@@ -93,7 +93,7 @@ def main():
     '''[Autor: Andrés Kübler]'''
 
     #Crea los archivos csv fuente_unico y comentarios
-    csv_finales.crear_csv_finales("programas.txt")
+    csv_finales.crear_csv_finales("programas_ejemplo.txt")
     #Obtiene dos diccionarios que van a ser usados por el menu de interaccion
     datos_por_funciones, datos_por_autores = obtener_datos_csv("fuente_unico.csv", "comentarios.csv")
     #Abre el menu de interaccion

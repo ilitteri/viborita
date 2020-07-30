@@ -30,14 +30,14 @@ def actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parame
                                                 "invocaciones": [],
                                                 "cantidad_invocaciones": 0,
                                                 "cantidad_parametros": 0,
-                                                "cantidad_comentarios": len(otros_c),
+                                                "cantidad_comentarios": len(otros_c) if otros_c[0] != '"\n' else 0,
                                                 }
     #Agrego los datos a sus respectivos lugares
     datos_por_funciones[nombre_funcion]["parametros"] = parametros_funcion if len(parametros_funcion) > 2 else None
     datos_por_funciones[nombre_funcion]["modulo"] = modulo_funcion
     datos_por_funciones[nombre_funcion]["lineas"] = lineas_funcion
     datos_por_funciones[nombre_funcion]["cantidad_lineas"] = len(lineas_funcion)
-    datos_por_funciones[nombre_funcion]["cantidad_parametros"] = len(parametros_funcion.split(",")) if parametros_funcion else 0
+    datos_por_funciones[nombre_funcion]["cantidad_parametros"] = obtener.cantidad_parametros(parametros_funcion)
     #Si la key comentarios aun no existe en la funcion lo agrego y le doy forma
     if ("comentarios" not in datos_por_funciones[nombre_funcion]):
         datos_por_funciones[nombre_funcion]["comentarios"] = {"autor": None,
@@ -87,9 +87,9 @@ def leer_archivos_csv(archivo_fuente, archivo_comentarios):
     indice_copia = 0
 
     #Cargo la primera linea del archivo fuente
-    linea_fuente = archivo_fuente.readline()
+    linea_fuente = archivo_fuente.readline().rstrip('"\n')
     #Cargo la primera linea del archivo de comentarios
-    linea_comentarios = archivo_comentarios.readline()
+    linea_comentarios = archivo_comentarios.readline().rstrip('"\n')
     #Mientras el archivo tenga lineas para leer
     while (linea_fuente and linea_comentarios):
         #Desempaqueto los datos de cada linea
@@ -101,9 +101,9 @@ def leer_archivos_csv(archivo_fuente, archivo_comentarios):
         datos_por_funciones, indice_copia = actualizar_diccionario_funciones(datos_por_funciones, nombre_funcion, parametros_funcion, modulo_funcion, lineas_funcion, autor_funcion, ayuda_funcion, otros_c, indice_copia)
         datos_por_autores, indice_copia = actualizar_diccionario_autores(datos_por_autores, nombre_funcion, lineas_funcion, autor_funcion, indice_copia)
         #Avanzo de linea en el archivo
-        linea_fuente = archivo_fuente.readline()
+        linea_fuente = archivo_fuente.readline().rstrip('"\n')
         #Avanzo de linea en el archivo
-        linea_comentarios = archivo_comentarios.readline()
+        linea_comentarios = archivo_comentarios.readline().rstrip('"\n')
 
     obtener.cantidad_invocaciones(datos_por_funciones)
 

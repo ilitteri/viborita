@@ -58,9 +58,7 @@ def cantidad_declaraciones(datos_csv, lineas_funcion, nombre_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["for"] += linea_funcion.count("for")
         if ("return " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["returns"] += 1
-        if ("if " in linea_funcion):
-            datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        if ("elif " in linea_funcion):
+        if ("if " in linea_funcion): #Contamos solo "if " porque en todo "elif " hay un "if "
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
         if ("while " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["while"] += 1
@@ -120,3 +118,26 @@ def maxima_longitud(lista_funciones):
     '''[Autor: Ivan Litteri]'''
     #Devuelve la longitud del elemento mas largo de la lista que le llega por parametro
     return len(max(lista_funciones, key=len))
+
+def cantidad_parametros(parametros):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: le llegan parametros entre parentesis y cuenta la cantidad de los mismos]'''
+
+    cant_param = 0
+    i = 0
+    
+    #Si llegan parentesis vacios devuelve 0
+    if parametros == "()":
+        cant_param = 0
+    #Si hay una coma incrementa, y se fija cuantas comas hay
+    elif "," in parametros:
+        cant_param += 1
+        while i < len(parametros):
+            if parametros[i] == "," and parametros[i+1] != ")":
+                cant_param += 1
+            i += 1
+    #Si no hay comas ni el parentesis es vacio, hay un solo parametro
+    else:
+        cant_param = 1
+    
+    return cant_param
