@@ -25,10 +25,14 @@ def formatear_datos_numeral(datos_csv, funcion):
     else:
         cadena_numeral += "No aporta comentarios\n"
     if datos_csv[funcion]["invocaciones"]:
-        cadena_numeral += f'Invoca a {"(), ".join(datos_csv[funcion]["invocaciones"])}()\n'
+        texto_invocaciones = f'Invoca a {"(), ".join(datos_csv[funcion]["invocaciones"])}()\n'
+        if len(texto_invocaciones) > 80:
+            cadena_numeral += analizar_linea.largo_linea(texto_invocaciones)
+        else:
+            cadena_numeral += texto_invocaciones
     else:
         cadena_numeral += "No invoca a ninguna funcion\n"
-    if( datos_csv[funcion]["cantidad_invocaciones"] > 0):
+    if (datos_csv[funcion]["cantidad_invocaciones"] > 0):
         cadena_numeral += f'Es invocada {datos_csv[funcion]["cantidad_invocaciones"]} {"veces" if datos_csv[funcion]["cantidad_invocaciones"] > 1 else "vez"}\n'
     else:
         cadena_numeral += "No es invocada por ninguna funcion\n"
@@ -52,14 +56,21 @@ def formatear_datos_pregunta(datos_csv, funcion):
 
     candena_pregunta += f'{"*" * 79}\n'
     candena_pregunta += f'Funcion: {funcion if "*" not in funcion else funcion[1:]}\n'
+
     if datos_csv[funcion]["comentarios"]["ayuda"] and (len(datos_csv[funcion]["comentarios"]["ayuda"]) > 80):
         candena_pregunta += f'{analizar_linea.largo_linea(datos_csv[funcion]["comentarios"]["ayuda"])}\n'
+    elif datos_csv[funcion]["comentarios"]["ayuda"]:
+        candena_pregunta += f'{datos_csv[funcion]["comentarios"]["ayuda"]}\n'
     else:
         candena_pregunta += "No brinda ayuda\n"
+
     if datos_csv[funcion]["parametros"] and (len("Parametros formales: ")+len(datos_csv[funcion]["parametros"]) > 80):
         candena_pregunta += f'{analizar_linea.largo_linea("Parametros formales: " + datos_csv[funcion]["parametros"])}\n'
+    elif datos_csv[funcion]["parametros"]:
+        candena_pregunta += f'{"Parametros formales: " + datos_csv[funcion]["parametros"][1:-1]}\n'
     else:
         candena_pregunta += "No tiene parametros formales\n"
+        
     candena_pregunta += f'Modulo: {modulo}\n'
     candena_pregunta += f'{autor if "Autor" in autor else "El autor es anonimo"}\n'
     candena_pregunta += f'{"*" * 79}\n'
@@ -154,7 +165,7 @@ def analizar_opcion(datos_csv, opcion):
     else:
         print("\nOpcion incorrecta, ingrese nuevamente\n")
 
-def solicitar_ingreso_usuario(datos_csv):
+def solicitar_ingreso_usuario(datos_csv, tabla, cantidad_guiones):
     '''[Autor: Joel Glauber]
     [Ayuda: solicita al autor que ingrese una de las opciones]'''
 
@@ -164,6 +175,9 @@ def solicitar_ingreso_usuario(datos_csv):
     while opcion:
         #Analiza la opcion ingresada
         analizar_opcion(datos_csv, opcion)
+        #Se muestra la tabla y las instrucicones de uso denuevo
+        mostrar_tabla_funciones(tabla, cantidad_guiones)
+        mostrar_instrucciones_uso()
         #Se solicita ingreso al usuario
         print("\nPresion ENTER para salir")
         opcion = input("\nFuncion: ")
@@ -194,4 +208,4 @@ def consultar_funciones(datos_archivos_csv):
     tabla, cantidad_guiones = obtener.tabla_funciones(lista_funciones)
     mostrar_tabla_funciones(tabla, cantidad_guiones)
     mostrar_instrucciones_uso()
-    solicitar_ingreso_usuario(datos_archivos_csv)
+    solicitar_ingreso_usuario(datos_archivos_csv, tabla, cantidad_guiones)

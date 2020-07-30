@@ -1,5 +1,4 @@
 import os
-import platform
 
 def informacion_ubicaciones(nombre_archivo):
     '''[Autor: Ivan Litteri]
@@ -9,21 +8,14 @@ def informacion_ubicaciones(nombre_archivo):
 
     ubicaciones = []
     #Obtiene el sistema operativo en el que se esta ejecutando la aplicacion
-    os = platform.system()
+    sep = os.path.sep
     #Abre el archivo de programas para obtener las ubicaciones
     with open(nombre_archivo, "r") as archivo_programas:
         #Carga la primera linea del archivo, que corresponde a la primera ubicacion
         ubicacion = archivo_programas.readline().strip()
         #Mientras haya linea para leer en el archivo
         while ubicacion:
-            #Si el OS es Linux o MacOS obtiene el nombre del archivo separando con "/"
-            if (os == "Linux") or (os == "Darwin"):
-                #Agrego a la lista de ubicaciones una tupla con la ubicacion y el nombre del archivo
-                ubicaciones.append((ubicacion, ubicacion.split("/")[-1]))
-            #Si el OS es Windows obtiene el nombre del archivo separando con "\"
-            elif (os == "Windows"):
-                #Agrego a la lista de ubicaciones una tupla con la ubicacion y el nombre del archivo
-                ubicaciones.append((ubicacion, ubicacion.split("\\")[-1]))
+            ubicaciones.append((ubicacion, ubicacion.split(sep)[-1]))
             ubicacion = archivo_programas.readline().strip()
 
     return ubicaciones
@@ -46,10 +38,10 @@ def cantidad_invocaciones(datos_csv):
             for nombre_funcion in datos_csv:
                 if ("cantidad_invocaciones" not in datos_csv[nombre_funcion]):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] = 0
-                if ((f'{nombre_funcion}(' in linea_funcion) or (f'{nombre_funcion[:-2]}(' in linea_funcion)) and (not f'_{nombre_funcion}' in linea_funcion):
+                if (f'{nombre_funcion}(' in linea_funcion) and (not f'_{nombre_funcion}' in linea_funcion):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos_csv[funcion]["invocaciones"].append(nombre_funcion)
-                elif (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion}(' in linea_funcion) or (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion[:-2]}(' in linea_funcion):
+                elif (f'{datos_csv[nombre_funcion]["modulo"]}.{nombre_funcion}(' in linea_funcion):
                     datos_csv[nombre_funcion]["cantidad_invocaciones"] += 1
                     datos_csv[funcion]["invocaciones"].append(nombre_funcion)
 
@@ -62,19 +54,17 @@ def cantidad_declaraciones(datos_csv, lineas_funcion, nombre_funcion):
 
     #Recorre todas las lineas de la funcion e incrementa la declaracion que sea valida en caso de encontrarla
     for linea_funcion in lineas_funcion:
-        if ("for" in linea_funcion):
+        if ("for " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["for"] += linea_funcion.count("for")
-        if ("return" in linea_funcion):
+        if ("return " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["returns"] += 1
-        if ("if" in linea_funcion):
+        if ("if " in linea_funcion): #Contamos solo "if " porque en todo "elif " hay un "if "
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        elif ("elif" in linea_funcion):
-            datos_csv[nombre_funcion]["cantidad_declaraciones"]["if/elif"] += 1
-        elif ("while" in linea_funcion):
+        if ("while " in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["while"] += 1
-        elif ("break" in linea_funcion):
+        if ("break" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["break"] += 1
-        elif ("exit" in linea_funcion):
+        if ("exit" in linea_funcion):
             datos_csv[nombre_funcion]["cantidad_declaraciones"]["exit"] += 1
 
     #Devuelve el diccionario actualizado 
@@ -128,3 +118,26 @@ def maxima_longitud(lista_funciones):
     '''[Autor: Ivan Litteri]'''
     #Devuelve la longitud del elemento mas largo de la lista que le llega por parametro
     return len(max(lista_funciones, key=len))
+
+def cantidad_parametros(parametros):
+    '''[Autor: Ivan Litteri]
+    [Ayuda: le llegan parametros entre parentesis y cuenta la cantidad de los mismos]'''
+
+    cant_param = 0
+    i = 0
+    
+    #Si llegan parentesis vacios devuelve 0
+    if parametros == "()":
+        cant_param = 0
+    #Si hay una coma incrementa, y se fija cuantas comas hay
+    elif "," in parametros:
+        cant_param += 1
+        while i < len(parametros):
+            if parametros[i] == "," and parametros[i+1] != ")":
+                cant_param += 1
+            i += 1
+    #Si no hay comas ni el parentesis es vacio, hay un solo parametro
+    else:
+        cant_param = 1
+    
+    return cant_param
