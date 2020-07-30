@@ -6,7 +6,6 @@ import m_analizador_reutilizacion_codigo as analizador_reutilizacion_codigo
 import m_arbol_invocacion as arbol_invocacion
 import m_informacion_desarrollador as informacion_desarrollador
 
-
 def obtener_datos_csv(fuente, comentarios):
     '''[Autor: Ivan Litteri]
     [Ayuda: le llegan por parametro los archivos csv y devuelve un diccionario ordenado con los datos leidos de los
@@ -72,7 +71,7 @@ def menu_interaccion(datos_por_funciones, datos_por_autores):
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 4 o "arbol de invocaciones" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif (opcion == "4") or (opcion.lower() == "arbol de invocaciones"):
-            arbol_invocacion.grafica_arbol_invocaciones(datos_por_funciones)
+            arbol_invocacion.graficar_arbol_invocaciones(datos_por_funciones)
             mostrar_menu_interaccion()
         #Si la opcion ingresada es 5 o "informacion de desarrollador" ejecuta el main del modulo y una vez que termina eso muestra denuevo el menu
         elif (opcion == "5") or (opcion.lower() == "informacion de desarrollador"):
@@ -99,6 +98,5 @@ def main():
     datos_por_funciones, datos_por_autores = obtener_datos_csv("fuente_unico.csv", "comentarios.csv")
     #Abre el menu de interaccion
     menu_interaccion(datos_por_funciones, datos_por_autores)
-
-    
+ 
 main()
