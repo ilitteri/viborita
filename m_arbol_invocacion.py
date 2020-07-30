@@ -20,6 +20,10 @@ def encontrar_main_archivo(diccionario_informacion, funcion_main_dicc = None):
         #Suma una posición al contador
         contador += 1
 
+    #Si no se encontró la funcion princiapl, genera un NameError
+    if funcion_main_dicc == None:
+        raise NameError("¡ERROR: NO SE ENCONTRÓ LA FUNCION PRINCIPAL!")
+
     return funcion_main_dicc
 
 def grafica_arbol_invocaciones(diccionario_informacion, funcion = None, string = ""):
