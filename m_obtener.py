@@ -1,5 +1,4 @@
 import os
-import platform
 
 def informacion_ubicaciones(nombre_archivo):
     '''[Autor: Ivan Litteri]
@@ -9,22 +8,16 @@ def informacion_ubicaciones(nombre_archivo):
 
     ubicaciones = []
     #Obtiene el sistema operativo en el que se esta ejecutando la aplicacion
-    os = platform.system()
+    sep = os.path.sep
     #Abre el archivo de programas para obtener las ubicaciones
     with open(nombre_archivo, "r") as archivo_programas:
         #Carga la primera linea del archivo, que corresponde a la primera ubicacion
         ubicacion = archivo_programas.readline().strip()
         #Mientras haya linea para leer en el archivo
         while ubicacion:
-            #Si el OS es Linux o MacOS obtiene el nombre del archivo separando con "/"
-            if (os == "Linux") or (os == "Darwin"):
-                #Agrego a la lista de ubicaciones una tupla con la ubicacion y el nombre del archivo
-                ubicaciones.append((ubicacion, ubicacion.split("/")[-1]))
-            #Si el OS es Windows obtiene el nombre del archivo separando con "\"
-            elif (os == "Windows"):
-                #Agrego a la lista de ubicaciones una tupla con la ubicacion y el nombre del archivo
-                ubicaciones.append((ubicacion, ubicacion.split("\\")[-1]))
+            ubicaciones.append((ubicacion, ubicacion.split(sep)[-1]))
             ubicacion = archivo_programas.readline().strip()
+    print(ubicaciones)
 
     return ubicaciones
 
