@@ -138,8 +138,11 @@ def creacion_archivo_txt(filas_txt):
         for linea in filas_txt:
             analizador.write(f'{linea}\n')
             analizador.write(f'    {separador}\n')
+
             print(f'{linea}')
             print("\t",separador)
+        analizador.write("\nInfo : \n\t X Se refiere a que la funcion de la linea fue invocada por la de la columna\n \tSi las funciones de la fila y la columna no interactuan habra un espacio en blanco\n \tSi la funcion de la fila invoca a la de la columna aparecera el numero de veces que lo hace")
+        print ("\nInfo : \n\t X Se refiere a que la funcion de la linea fue invocada por la de la columna","\n", "\tSi las funciones de la fila y la columna no interactuan habra un espacio en blanco","\n" , "\tSi la funcion de la fila invoca a la de la columna aparecera el numero de veces que lo hace")
 
 def analizar_reutilizacion(datos_por_funciones):
     '''[Autor: Luciano Federico Aguilera]
