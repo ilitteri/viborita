@@ -17,7 +17,6 @@ def informacion_ubicaciones(nombre_archivo):
         while ubicacion:
             ubicaciones.append((ubicacion, ubicacion.split(sep)[-1]))
             ubicacion = archivo_programas.readline().strip()
-    print(ubicaciones)
 
     return ubicaciones
 
