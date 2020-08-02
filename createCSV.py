@@ -34,6 +34,23 @@ def readFirstLines(openedFiles):
 
 def analyzeComment(comentsCSV, file, line, multiLineFlag=False):
     if multiLineFlag:
+        if line.count("'''") == 2:
+            if 'Autor' in line:
+                comentsCSV.write(f',"{line[line.index("[") + 1:line.index("]")]}"')
+            elif 'Ayuda' in line:
+                comentsCSV.write(f',"{line[line.index("[") + 1:line.index("]")]}"')
+            else:
+                comentsCSV.write(f',"{line}"')
+        elif line.count("'''") == 1:
+            while not line.rstrip().endswith("'''"):
+                if 'Autor' in line:
+                    comentsCSV.write(f',"{line[line.index("[") + 1:line.index("]")]}"')
+                elif 'Ayuda' in line:
+                    comentsCSV.write(f',"{line[line.index("[") + 1:]}')
+                else:
+                    comentsCSV.write(f'{line.lstrip()}')
+                line = readLine(file)
+            comentsCSV.write('"')
         line = readLine(file)
     else:
         comentsCSV.write(f',"{line[line.index("#"):]}"')
@@ -55,8 +72,9 @@ def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
             line = analyzeComment(comentsCSV, file, line, multiLineFlag=True)
         elif line.lstrip().startswith('#'):
             comentsCSV.write(f',"{line.rstrip()}"')
+            line = readLine(file)
         elif '#' in line and not ('"#"' in line and '#todo' in line):
-            line = analizeComment(comentsCSV, file, line, multiLineFlag=False)
+            line = analyzeComment(comentsCSV, file, line, multiLineFlag=False)
         else:   
             sourceCSV.write(f',"{line.rstrip()}"')
             line = readLine(file)
