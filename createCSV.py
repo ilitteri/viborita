@@ -8,7 +8,7 @@ import sortFunctions
     return files'''
 
 def openSortedCodes(fileNames):
-    
+
     openedFiles = []
     for fileName in fileNames:
         openedFiles.append(open(fileName, 'r'))
@@ -52,10 +52,12 @@ def analyzeComment(comentsCSV, file, line, multiLineFlag=False):
                 if 'Autor' in line:
                     comentsCSV.write(f',"{line[line.index("[") + 1:line.index("]")]}"')
                 elif 'Ayuda' in line:
-                    comentsCSV.write(f',"{line[line.index("[") + 1:]}')
+                    comentsCSV.write(f',"{line[line.index("[") + 1:] if not "]" in line else line[:line.index("]")].lstrip()}')
                 else:
-                    comentsCSV.write(f'{line.lstrip()}')
+                    comentsCSV.write(f'{line.lstrip() if not "]" in line else line[:line.index("]")].lstrip()}')
                 line = readLine(file)
+            if line.lstrip() != "'''":
+                comentsCSV.write(f'{line[:line.index("]")]}')
             comentsCSV.write('"')
     else:
         comentsCSV.write(f',"{line[line.index("#"):]}"')
