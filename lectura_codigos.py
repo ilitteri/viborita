@@ -92,9 +92,28 @@ def readFirstLines(openedFiles):
         
     return lines
 
-outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
-openedFiles = openSortedCodes(sortedCodesFileNames)
-closeSortedCodes(openedFiles)
+def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
+    getMinLine = lambda x: min(x)
+    firstLines = readFirstLines(openedFiles)
+    minLine = getMinLine(firstLines)
+    while minLine != chr(255):
+        minLineIndex = firstLines.index(minLine)
+        firstLines[minLineIndex] = writeCSV(sourceCSV, comentsCSV, openedFiles[minLineIndex], minLine, outOfFunctionLines)
+        minLine = getMinLine(firstLines)
+
+def createCSV():
+    outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
+
+    openedFiles = openSortedCodes(sortedCodesFileNames)
+    sourceCSV = open('fuente_unico.csv', 'w')
+    comentsCSV = open('fuente_unico.csv', 'w')
+
+    merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines)
+
+    closeSortedCodes(openedFiles)
+
+    sourceCSV.close()
+    comentsCSV.close()
 
 
 
