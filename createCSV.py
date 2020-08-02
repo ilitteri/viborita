@@ -36,7 +36,7 @@ def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
     function = line[4:line.index('(')]
     parameters = line[line.index('('):line.index(')') + 1]
     if line[4:line.index(')') + 1] in outOfFunctionLines:
-        sourceCSV.write(f'"*{function}","{parameters}')
+        sourceCSV.write(f'"*{function}","{parameters}"')
     else:
         sourceCSV.write(f'"{function}","{parameters}')
     comentsCSV.write(f'"{function}"\n')
@@ -58,7 +58,7 @@ def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
 
 def createCSV():
     outOfFunctionLines, sortedCodesFileNames = sortFunctions.sortCodes('programas_ejemplo.txt')
-    
+    print(outOfFunctionLines)
     openedFiles = openSortedCodes(sortedCodesFileNames)
     sourceCSV = open('fuente_unico.csv', 'w')
     comentsCSV = open('comentarios.csv', 'w')
