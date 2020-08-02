@@ -1,3 +1,4 @@
+##########################ORDENAMIENTO DE FUNCIONES#############################
 import os
 
 def getPaths(file_name):
@@ -61,7 +62,7 @@ def sortCodes(pathsContainer):
     
     return outOfFunctionLines, sortedCodesFileNames
 
-#######################################################
+##########################CREACION DE CSV FINALES#############################
 '''def getSortedCodesPaths():    
     files = os.listdir('functions/')
     if 'desktop.ini' in files:
@@ -76,9 +77,11 @@ def openSortedCodes(fileNames):
 
     return openedFiles
 
-def closeSortedCodes(openedFiles):
+def closeSortedCodes(openedFiles, sourceCSV, comentsCSV):
     for file in openedFiles:
         file.close()
+    sourceCSV.close()
+    comentsCSV.close()
 
 def readLine(file):
     line = file.readline()
@@ -109,13 +112,9 @@ def createCSV():
     comentsCSV = open('fuente_unico.csv', 'w')
 
     merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines)
+    closeFiles(openedFiles, sourceCSV, comentsCSV)
 
-    closeSortedCodes(openedFiles)
-
-    sourceCSV.close()
-    comentsCSV.close()
-
-
+##########################LECTURA DE CSV FINALES#############################
 
 
 
