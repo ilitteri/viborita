@@ -11,9 +11,9 @@ class Function:
         self.lines = lines[1:]
 
     def __repr__(self):
-        parametersString = ', '.join(self.parameters)
+        parametersString = ','.join(self.parameters)
         definition = f'def {self.name}({parametersString}):'
-        return '\n'.join([definition] + self.lines) + '\n'
+        return '\n'.join([definition] + self.lines) + '\n' * 2
 
     def __lt__(self, other):
         return self.name.lower() < other.name.lower()
@@ -56,7 +56,7 @@ def sortCodes(pathsContainer):
                 functions, outOfFunctionLines = readCode(code, mainFunctionFlag=True)
                 writeSortedCodes(sortedCode, functions)
             else:
-                functions, outOfFunctionLines = readCode(code, mainFunctionFlag=False)
+                functions, _ = readCode(code, mainFunctionFlag=False)
                 writeSortedCodes(sortedCode, functions)
     
     return outOfFunctionLines, sortedCodesFileNames
