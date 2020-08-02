@@ -46,23 +46,29 @@ def writeSortedCodes(sortedCode, functions):
         sortedCode.write(repr(function))
 
 def sortCodes(pathsContainer):
+    sortedCodesFileNames = []
     pathsData = getPaths(pathsContainer)
     for path, fileName in pathsData:
-        sortedCodeFileName = f'sorted_{fileName}.txt'
+        sortedCodeFileName = f'sorted_{fileName}'
+        sortedCodesFileNames.append(sortedCodeFileName)
         with open(path, 'r') as code, open(f'functions/{sortedCodeFileName}', 'w') as sortedCode:
-            if path == pathsData[0][0]: 
-                writeSortedCodes(sortedCode, readCode(code, mainFunctionFlag=True)[0])
+            if path == pathsData[0][0]:
+                functions, outOfFunctionLines = readCode(code, mainFunctionFlag=True)
+                writeSortedCodes(sortedCode, functions)
             else:
-                writeSortedCodes(sortedCode, readCode(code)[0])
+                functions, outOfFunctionLines = readCode(code, mainFunctionFlag=False)
+                writeSortedCodes(sortedCode, functions)
+    
+    return outOfFunctionLines, sortedCodesFileNames
 
-#sortCodes('programas_ejemplo.txt')
+outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
 #######################################################
-def getSortedCodesPaths():    
+'''def getSortedCodesPaths():    
     files = os.listdir('functions/')
     if 'desktop.ini' in files:
         files.remove('desktop.ini')
 
-    return files
+    return files'''
 
 def openSortedCodes(fileNames):
     openedFiles = []
@@ -75,7 +81,6 @@ def closeSortedCodes(openedFiles):
     for file in openedFiles:
         file.close()
 
-#openSortedCodes(getSortedCodesPaths())
 
 
 
