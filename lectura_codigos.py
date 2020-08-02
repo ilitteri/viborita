@@ -13,7 +13,7 @@ class Function:
     def __repr__(self):
         parametersString = ', '.join(self.parameters)
         definition = f'def {self.name}({parametersString}):'
-        return '\n'.join([definition] + self.lines)
+        return '\n'.join([definition] + self.lines) + '\n'
 
     def __lt__(self, other):
         return self.name.lower() < other.name.lower()
@@ -29,6 +29,7 @@ def readCode(code, mainFunctionFlag = False):
             if flag:
                 functions.append(Function(function))
             function = []
+            function.append(strippedLine)
             flag = True
         if flag and line.startswith('    '):
             function.append(strippedLine)
@@ -47,7 +48,8 @@ def writeSortedCodes(sortedCode, functions):
 def sortCodes(pathsContainer):
     pathsData = getPaths(pathsContainer)
     for path, fileName in pathsData:
-        with open(path, 'r') as code, open(f'functions/sorted_{fileName}.txt', 'w') as sortedCode:
+        sortedCodeFileName = f'sorted_{fileName}.txt'
+        with open(path, 'r') as code, open(f'functions/{sortedCodeFileName}', 'w') as sortedCode:
             if path == pathsData[0][0]: 
                 writeSortedCodes(sortedCode, readCode(code, mainFunctionFlag=True)[0])
             else:
@@ -69,7 +71,11 @@ def openSortedCodes(fileNames):
 
     return openedFiles
 
-openSortedCodes(getSortedCodesPaths())
+def closeSortedCodes(openedFiles):
+    for file in openedFiles:
+        file.close()
+
+#openSortedCodes(getSortedCodesPaths())
 
 
 
