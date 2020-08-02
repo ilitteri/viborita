@@ -80,10 +80,21 @@ def closeSortedCodes(openedFiles):
     for file in openedFiles:
         file.close()
 
-sortCodes('programas_ejemplo.txt')
-#outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
-#openedFiles = openSortedCodes(sortedCodesFileNames)
-#closeSortedCodes(openedFiles)
+def readLine(file):
+    line = file.readline()
+    return linea.rstrip() if linea else chr(255)
+
+def readFirstLines(openedFiles):
+    lines = []
+    for file in openedFiles:
+        line = readLine(file)
+        lines.append(line)
+        
+    return lines
+
+outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
+openedFiles = openSortedCodes(sortedCodesFileNames)
+closeSortedCodes(openedFiles)
 
 
 
