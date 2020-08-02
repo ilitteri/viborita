@@ -1,3 +1,5 @@
+import sortFunctions
+
 '''def getSortedCodesPaths():    
     files = os.listdir('functions/')
     if 'desktop.ini' in files:
@@ -12,7 +14,7 @@ def openSortedCodes(fileNames):
 
     return openedFiles
 
-def closeSortedCodes(openedFiles, sourceCSV, comentsCSV):
+def closeFiles(openedFiles, sourceCSV, comentsCSV):
     for file in openedFiles:
         file.close()
     sourceCSV.close()
@@ -30,6 +32,21 @@ def readFirstLines(openedFiles):
         
     return lines
 
+def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
+    function = line[4:line.index('(')]
+    parameters = line[line.index('('):line.index(')') + 1]
+    if line[4:line.index(')') + 1] in outOfFunctionLines:
+        sourceCSV.write(f'"*{function}","{parameters}')
+    else:
+        sourceCSV.write(f'"{function}", "{parameters}')
+    comentsCSV.write(f'"{function}"')
+    line = readLine(file)
+    while line != chr(255) and not line.startswith('def '):
+        sourceCSV.write(f',"{line.rstrip()}"')
+        line = readLine(file)
+    sourceCSV.write('\n')
+    return line
+
 def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
     getMinLine = lambda x: min(x)
     firstLines = readFirstLines(openedFiles)
@@ -40,7 +57,7 @@ def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
         minLine = getMinLine(firstLines)
 
 def createCSV():
-    outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
+    outOfFunctionLines, sortedCodesFileNames = sortFunctions.sortCodes('programas_ejemplo.txt')
 
     openedFiles = openSortedCodes(sortedCodesFileNames)
     sourceCSV = open('fuente_unico.csv', 'w')
@@ -48,3 +65,5 @@ def createCSV():
 
     merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines)
     closeFiles(openedFiles, sourceCSV, comentsCSV)
+
+createCSV()
