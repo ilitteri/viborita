@@ -69,7 +69,7 @@ def analyzeComment(comentsCSV, file, line, multiLineFlag=False):
 def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
 
     function = line[4:line.index('(')]
-    parameters = line[line.index('('):line.index(')') + 1]
+    parameters = line[line.index('(') + 1:line.index(')')]
     if line[4:line.index(')') + 1] in outOfFunctionLines:
         sourceCSV.write(f'"*{function}","{parameters}"')
     else:
