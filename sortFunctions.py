@@ -31,7 +31,7 @@ def readCode(code, mainFunctionFlag = False):
             function = []
             function.append(strippedLine.replace('"', "'"))
             flag = True
-        if flag and line.startswith('    '):
+        elif flag and line.startswith('    '):
             function.append(strippedLine.replace('"', "'"))
         else:
             if strippedLine and mainFunctionFlag:
