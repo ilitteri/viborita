@@ -29,10 +29,10 @@ def readCode(code, mainFunctionFlag = False):
             if flag:
                 functions.append(Function(function))
             function = []
-            function.append(strippedLine)
+            function.append(strippedLine.replace('"', "'"))
             flag = True
         if flag and line.startswith('    '):
-            function.append(strippedLine)
+            function.append(strippedLine.replace('"', "'"))
         else:
             if strippedLine and mainFunctionFlag:
                 outOfFunctionLines.append(strippedLine)
@@ -82,7 +82,7 @@ def closeSortedCodes(openedFiles):
 
 def readLine(file):
     line = file.readline()
-    return linea.rstrip() if linea else chr(255)
+    return line.rstrip() if line else chr(255)
 
 def readFirstLines(openedFiles):
     lines = []
