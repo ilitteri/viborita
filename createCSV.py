@@ -32,6 +32,15 @@ def readFirstLines(openedFiles):
         
     return lines
 
+def analyzeComment(comentsCSV, file, line, multiLineFlag=False):
+    if multiLineFlag:
+        line = readLine(file)
+    else:
+        comentsCSV.write(f',"{line[line.index("#"):]}"')
+        line = readLine(file)
+
+    return line
+
 def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
     function = line[4:line.index('(')]
     parameters = line[line.index('('):line.index(')') + 1]
@@ -39,12 +48,21 @@ def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
         sourceCSV.write(f'"*{function}","{parameters}"')
     else:
         sourceCSV.write(f'"{function}","{parameters}')
-    comentsCSV.write(f'"{function}"\n')
+    comentsCSV.write(f'"{function}"')
     line = readLine(file)
     while line != chr(255) and not line.startswith('def '):
-        sourceCSV.write(f',"{line.rstrip()}"')
-        line = readLine(file)
+        if line.lstrip().startswith("'''"):
+            line = analyzeComment(comentsCSV, file, line, multiLineFlag=True)
+        elif line.lstrip().startswith('#'):
+            comentsCSV.write(f',"{line.rstrip()}"')
+        elif '#' in line and not ('"#"' in line and '#todo' in line):
+            line = analizeComment(comentsCSV, file, line, multiLineFlag=False)
+        else:   
+            sourceCSV.write(f',"{line.rstrip()}"')
+            line = readLine(file)
     sourceCSV.write('\n')
+    comentsCSV.write('\n')
+    
     return line
 
 def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
