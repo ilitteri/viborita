@@ -51,7 +51,7 @@ def sortCodes(pathsContainer):
     for path, fileName in pathsData:
         sortedCodeFileName = f'sorted_{fileName}'
         sortedCodesFileNames.append(sortedCodeFileName)
-        with open(path, 'r') as code, open(f'functions/{sortedCodeFileName}', 'w') as sortedCode:
+        with open(path, 'r') as code, open(f'{sortedCodeFileName}', 'w') as sortedCode:
             if path == pathsData[0][0]:
                 functions, outOfFunctionLines = readCode(code, mainFunctionFlag=True)
                 writeSortedCodes(sortedCode, functions)
@@ -61,7 +61,6 @@ def sortCodes(pathsContainer):
     
     return outOfFunctionLines, sortedCodesFileNames
 
-outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
 #######################################################
 '''def getSortedCodesPaths():    
     files = os.listdir('functions/')
@@ -81,6 +80,10 @@ def closeSortedCodes(openedFiles):
     for file in openedFiles:
         file.close()
 
+sortCodes('programas_ejemplo.txt')
+#outOfFunctionLines, sortedCodesFileNames = sortCodes('programas_ejemplo.txt')
+#openedFiles = openSortedCodes(sortedCodesFileNames)
+#closeSortedCodes(openedFiles)
 
 
 
