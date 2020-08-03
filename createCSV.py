@@ -15,12 +15,12 @@ def openSortedCodes(fileNames):
 
     return openedFiles
 
-def closeFiles(openedFiles, sourceCSV, comentsCSV):
+def closeFiles(openedFiles, sourceCSV, commentsCSV):
 
     for file in openedFiles:
         file.close()
     sourceCSV.close()
-    comentsCSV.close()
+    commentsCSV.close()
 
 def readLine(file):
 
@@ -49,7 +49,7 @@ def getTripleLineComment(file, line):
 
     return comment
 
-def analyzeMultiLineComment(comentsCSV, file, line, multiLineFlag=True):
+def analyzeMultiLineComment(commentsCSV, file, line, multiLineFlag=True):
 
     comment = getTripleLineComment(file, line)
     authorIndex = comment.find('Autor:')
@@ -70,9 +70,24 @@ def analyzeMultiLineComment(comentsCSV, file, line, multiLineFlag=True):
     
     return author, help, otherComment
 
-def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines, fileName):
+def clasifyLine(sourceCSV, commentsCSV, file, line, multiLineFlag=False):
+    
+    if line.lstrip().startswith("'''"):
+        multiLineFlag = True
+        author, help, otherComment = analyzeMultiLineComment(commentsCSV, file, line)
+        commentsCSV.write(f',"{author}","{help}","{otherComment}"')
+    elif not multiLineFlag:
+        multiLineFlag = True
+        commentsCSV.write(',"","",""')
+    elif line.lstrip().startswith('#'):
+        commentsCSV.write(f',"{line.rstrip()}"')
+    elif '#' in line and not ('"#"' in line and '#todo' in line):
+        sourceCSV.write(f',"{line[:line.index("#")]}"')
+        commentsCSV.write(f',"{line[line.index("#"):]}"')
+    else:   
+        sourceCSV.write(f',"{line.rstrip()}"')
 
-    multiLineFlag = False
+def writeCSV(sourceCSV, commentsCSV, file, line, outOfFunctionLines, fileName):
 
     function = line[4:line.index('(')]
     parameters = line[line.index('(') + 1:line.index(')')]
@@ -80,32 +95,19 @@ def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines, fileName):
         sourceCSV.write(f'"*{function}","{parameters}","{fileName}"')
     else:
         sourceCSV.write(f'"{function}","{parameters}","{fileName}"')
-    comentsCSV.write(f'"{function}"')
+    commentsCSV.write(f'"{function}"')
 
     line = readLine(file)
     while line != chr(255) and not line.startswith('def '):
-        if line.lstrip().startswith("'''"):
-            multiLineFlag = True
-            author, help, otherComment = analyzeMultiLineComment(comentsCSV, file, line)
-            comentsCSV.write(f',"{author}","{help}","{otherComment}"')
-        elif not multiLineFlag:
-            multiLineFlag = True
-            comentsCSV.write(',"","",""')
-        elif line.lstrip().startswith('#'):
-            comentsCSV.write(f',"{line.rstrip()}"')
-        elif '#' in line and not ('"#"' in line and '#todo' in line):
-            sourceCSV.write(f',"{line[:line.index("#")]}"')
-            comentsCSV.write(f',"{line[line.index("#"):]}"')
-        else:   
-            sourceCSV.write(f',"{line.rstrip()}"')
+        clasifyLine(sourceCSV, commentsCSV, file, line)
         line = readLine(file)
 
     sourceCSV.write('\n')
-    comentsCSV.write('\n')
+    commentsCSV.write('\n')
     
     return line
 
-def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines, modules):
+def merge(sourceCSV, commentsCSV, openedFiles, outOfFunctionLines, modules):
 
     getMinLine = lambda x: min(x)
 
@@ -113,7 +115,7 @@ def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines, modules):
     minLine = getMinLine(firstLines)
     while minLine != chr(255):
         minLineIndex = firstLines.index(minLine)
-        firstLines[minLineIndex] = writeCSV(sourceCSV, comentsCSV, openedFiles[minLineIndex], minLine, outOfFunctionLines, modules[minLineIndex])
+        firstLines[minLineIndex] = writeCSV(sourceCSV, commentsCSV, openedFiles[minLineIndex], minLine, outOfFunctionLines, modules[minLineIndex])
         minLine = getMinLine(firstLines)
 
 def createCSV():
@@ -121,10 +123,10 @@ def createCSV():
     outOfFunctionLines, sortedCodesFileNames, modules = sortFunctions.sortCodes('programas_ejemplo.txt')
     openedFiles = openSortedCodes(sortedCodesFileNames)
     sourceCSV = open('fuente_unico.csv', 'w')
-    comentsCSV = open('comentarios.csv', 'w')
+    commentsCSV = open('comentarios.csv', 'w')
 
-    merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines, modules)
+    merge(sourceCSV, commentsCSV, openedFiles, outOfFunctionLines, modules)
 
-    closeFiles(openedFiles, sourceCSV, comentsCSV)
+    closeFiles(openedFiles, sourceCSV, commentsCSV)
 
 createCSV()
