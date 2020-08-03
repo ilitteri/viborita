@@ -58,7 +58,7 @@ def analyzeMultiLineComment(commentsCSV, file, line, multiLineFlag=True):
     if authorIndex != -1:
         author = comment[authorIndex:comment.index(']')]
     else:
-        author = 'Sin Autor'
+        author = ''
     if helpIndex != -1:
         help = comment[helpIndex:comment.index(']', helpIndex)]
     else:
@@ -70,7 +70,7 @@ def analyzeMultiLineComment(commentsCSV, file, line, multiLineFlag=True):
     
     return author, help, otherComment
 
-def clasifyLine(sourceCSV, commentsCSV, file, line, multiLineFlag=False):
+def clasifyLine(sourceCSV, commentsCSV, file, line, multiLineFlag):
     
     if line.lstrip().startswith("'''"):
         multiLineFlag = True
@@ -78,7 +78,7 @@ def clasifyLine(sourceCSV, commentsCSV, file, line, multiLineFlag=False):
         commentsCSV.write(f',"{author}","{help}","{otherComment}"')
     elif not multiLineFlag:
         multiLineFlag = True
-        commentsCSV.write(',"","",""')
+        commentsCSV.write(',"",""')
     elif line.lstrip().startswith('#'):
         commentsCSV.write(f',"{line.rstrip()}"')
     elif '#' in line and not ('"#"' in line and '#todo' in line):
@@ -87,7 +87,11 @@ def clasifyLine(sourceCSV, commentsCSV, file, line, multiLineFlag=False):
     else:   
         sourceCSV.write(f',"{line.rstrip()}"')
 
+    return multiLineFlag
+
 def writeCSV(sourceCSV, commentsCSV, file, line, outOfFunctionLines, fileName):
+
+    multiLineFlag=False
 
     function = line[4:line.index('(')]
     parameters = line[line.index('(') + 1:line.index(')')]
@@ -99,7 +103,7 @@ def writeCSV(sourceCSV, commentsCSV, file, line, outOfFunctionLines, fileName):
 
     line = readLine(file)
     while line != chr(255) and not line.startswith('def '):
-        clasifyLine(sourceCSV, commentsCSV, file, line)
+        multiLineFlag = clasifyLine(sourceCSV, commentsCSV, file, line, multiLineFlag)
         line = readLine(file)
 
     sourceCSV.write('\n')
