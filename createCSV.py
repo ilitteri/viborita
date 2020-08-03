@@ -38,18 +38,23 @@ def readFirstLines(openedFiles):
     return lines
 
 def getTripleLineComment(file, line):
+
     comment = ''
+
     while not line.rstrip().endswith("'''"):
         comment += line.lstrip()
         line = readLine(file)
+
     comment += line.lstrip()
-    print(comment)
+
     return comment
 
 def analyzeMultiLineComment(comentsCSV, file, line, multiLineFlag=True):
+
     comment = getTripleLineComment(file, line)
     authorIndex = comment.find('Autor:')
     helpIndex = comment.find('Ayuda:')
+
     if authorIndex != -1:
         author = comment[authorIndex:comment.index(']')]
     else:
@@ -58,10 +63,16 @@ def analyzeMultiLineComment(comentsCSV, file, line, multiLineFlag=True):
         help = comment[helpIndex:comment.index(']', helpIndex)]
     else:
         help = ''
+    if authorIndex == helpIndex == -1:
+        otherComment = comment
+    else:
+        otherComment = ''
     
-    return author, help
+    return author, help, otherComment
 
 def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines, fileName):
+
+    multiLineFlag = False
 
     function = line[4:line.index('(')]
     parameters = line[line.index('(') + 1:line.index(')')]
@@ -74,8 +85,12 @@ def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines, fileName):
     line = readLine(file)
     while line != chr(255) and not line.startswith('def '):
         if line.lstrip().startswith("'''"):
-            author, help = analyzeMultiLineComment(comentsCSV, file, line)
-            comentsCSV.write(f',"{author}","{help}"')
+            multiLineFlag = True
+            author, help, otherComment = analyzeMultiLineComment(comentsCSV, file, line)
+            comentsCSV.write(f',"{author}","{help}","{otherComment}"')
+        elif not multiLineFlag:
+            multiLineFlag = True
+            comentsCSV.write(',"","",""')
         elif line.lstrip().startswith('#'):
             comentsCSV.write(f',"{line.rstrip()}"')
         elif '#' in line and not ('"#"' in line and '#todo' in line):
