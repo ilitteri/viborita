@@ -66,14 +66,15 @@ def analyzeComment(comentsCSV, file, line, multiLineFlag=False):
 
     return line
 
-def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
+def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines, fileName):
 
     function = line[4:line.index('(')]
     parameters = line[line.index('(') + 1:line.index(')')]
+    module = fileName
     if line[4:line.index(')') + 1] in outOfFunctionLines:
-        sourceCSV.write(f'"*{function}","{parameters}"')
+        sourceCSV.write(f'"*{function}","{parameters}","{module}"')
     else:
-        sourceCSV.write(f'"{function}","{parameters}"')
+        sourceCSV.write(f'"{function}","{parameters}","{module}"')
     comentsCSV.write(f'"{function}"')
 
     line = readLine(file)
@@ -94,7 +95,7 @@ def writeCSV(sourceCSV, comentsCSV, file, line, outOfFunctionLines):
     
     return line
 
-def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
+def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines, modules):
 
     getMinLine = lambda x: min(x)
 
@@ -102,17 +103,17 @@ def merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines):
     minLine = getMinLine(firstLines)
     while minLine != chr(255):
         minLineIndex = firstLines.index(minLine)
-        firstLines[minLineIndex] = writeCSV(sourceCSV, comentsCSV, openedFiles[minLineIndex], minLine, outOfFunctionLines)
+        firstLines[minLineIndex] = writeCSV(sourceCSV, comentsCSV, openedFiles[minLineIndex], minLine, outOfFunctionLines, modules[minLineIndex])
         minLine = getMinLine(firstLines)
 
 def createCSV():
 
-    outOfFunctionLines, sortedCodesFileNames = sortFunctions.sortCodes('programas_ejemplo.txt')
+    outOfFunctionLines, sortedCodesFileNames, modules = sortFunctions.sortCodes('programas_ejemplo.txt')
     openedFiles = openSortedCodes(sortedCodesFileNames)
     sourceCSV = open('fuente_unico.csv', 'w')
     comentsCSV = open('comentarios.csv', 'w')
 
-    merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines)
+    merge(sourceCSV, comentsCSV, openedFiles, outOfFunctionLines, modules)
 
     closeFiles(openedFiles, sourceCSV, comentsCSV)
 

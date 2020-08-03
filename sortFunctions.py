@@ -59,4 +59,4 @@ def sortCodes(pathsContainer):
                 functions, _ = readCode(code, mainFunctionFlag=False)
                 writeSortedCodes(sortedCode, functions)
     
-    return outOfFunctionLines, sortedCodesFileNames
+    return outOfFunctionLines, sortedCodesFileNames, list(zip(*pathsData))[1]
