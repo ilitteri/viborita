@@ -1,13 +1,6 @@
 import sortFunctions
 import os
 
-'''def getSortedCodesPaths():    
-    files = os.listdir('functions/')
-    if 'desktop.ini' in files:
-        files.remove('desktop.ini')
-
-    return files'''
-
 def openSortedCodes(fileNames):
 
     openedFiles = []
