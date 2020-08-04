@@ -51,7 +51,7 @@ def sortCodes(pathsContainer):
     for path, fileName in pathsData:
         sortedCodeFileName = f'sorted_{fileName}'
         sortedCodesFileNames.append(sortedCodeFileName)
-        with open(path, 'r') as code, open(f'{sortedCodeFileName}', 'w') as sortedCode:
+        with open(path, 'r', encoding='utf-8') as code, open(f'{sortedCodeFileName}', 'w') as sortedCode:
             if path == pathsData[0][0]:
                 functions, outOfFunctionLines = readCode(code, mainFunctionFlag=True)
                 writeSortedCodes(sortedCode, functions)
