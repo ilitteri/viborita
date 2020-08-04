@@ -1,4 +1,5 @@
 import sortFunctions
+import os
 
 '''def getSortedCodesPaths():    
     files = os.listdir('functions/')
@@ -122,9 +123,13 @@ def merge(sourceCSV, commentsCSV, openedFiles, outOfFunctionLines, modules):
         firstLines[minLineIndex] = writeCSV(sourceCSV, commentsCSV, openedFiles[minLineIndex], minLine, outOfFunctionLines, modules[minLineIndex])
         minLine = getMinLine(firstLines)
 
+def deleteFiles(sortedCodesFilePaths):
+    for path in sortedCodesFilePaths:
+        os.remove(path)
+
 def createCSV():
 
-    outOfFunctionLines, sortedCodesFileNames, modules = sortFunctions.sortCodes('programas_ejemplo.txt')
+    outOfFunctionLines, sortedCodesFileNames, modules = sortFunctions.sortCodes('programas.txt')
     openedFiles = openSortedCodes(sortedCodesFileNames)
     sourceCSV = open('fuente_unico.csv', 'w')
     commentsCSV = open('comentarios.csv', 'w')
@@ -132,5 +137,8 @@ def createCSV():
     merge(sourceCSV, commentsCSV, openedFiles, outOfFunctionLines, modules)
 
     closeFiles(openedFiles, sourceCSV, commentsCSV)
+
+    sortedCodesFilePaths = [os.path.abspath(fileName) for fileName in sortedCodesFileNames]
+    deleteFiles(sortedCodesFilePaths)
 
 createCSV()
