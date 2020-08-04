@@ -1,4 +1,4 @@
-import sortFunctions
+import function_ordering
 import os
 
 def openSortedCodes(fileNames):
@@ -122,7 +122,7 @@ def deleteFiles(sortedCodesFilePaths):
 
 def createCSV():
 
-    outOfFunctionLines, sortedCodesFileNames, modules = sortFunctions.sortCodes('programas.txt')
+    outOfFunctionLines, sortedCodesFileNames, modules = function_ordering.sortCodes('programas.txt')
     openedFiles = openSortedCodes(sortedCodesFileNames)
     sourceCSV = open('fuente_unico.csv', 'w')
     commentsCSV = open('comentarios.csv', 'w')

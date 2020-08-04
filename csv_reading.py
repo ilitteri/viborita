@@ -2,6 +2,7 @@ class Function:
     def __init__(self, sourceSplitedLine: str, commentSplittedLine: str):
         self.name = sourceSplitedLine[0][2:] if '*' in sourceSplitedLine[0] else sourceSplitedLine[0][1:]
         self.parameters = sourceSplitedLine[1].split(',')
+        self.module = sourceSplitedLine[2]
         self.lines = sourceSplitedLine[3:]
         self.author = commentSplittedLine[1]
         self.help = commentSplittedLine[2]
@@ -13,26 +14,26 @@ class Function:
 
 class Statements:
     def __init__(self, lines: list):
-        self.forCounter = 0
-        self.returnCounter = 0
-        self.ifElifCounter = 0
-        self.whileCounter = 0
-        self.breakCounter = 0
-        self.exitCounter = 0
+        self.forCount = 0
+        self.returnCount = 0
+        self.ifElifCount = 0
+        self.whileCount = 0
+        self.breakCount = 0
+        self.exitCount = 0
 
         for line in self.lines:
             if "for " in line:
-                self.forCounter += line.count("for")
+                self.forCount += line.count("for")
             if "return " in line:
-                self.returnCounter += 1
+                self.returnCount += 1
             if "if " in line: 
-                self.ifElifCounter += 1
+                self.ifElifCount += 1
             if "while " in line:
-                self.whileCounter += 1
+                self.whileCount += 1
             if "break" in line:
-                self.breakCounter += 1
+                self.breakCount += 1
             if "exit" in line:
-                self.exitCounter += 1
+                self.exitCount += 1
 
 def getFunctions():
     functions = []
