@@ -32,7 +32,7 @@ def formatear_arbol_invocacion(diccionario_informacion, funcion = None, string =
     este en funcionamiento imprime las invocaciones con sus respectivas cantidades de lineas]'''
 
     #Se fija si la funcion es vacia
-    if (funcion == None):
+    if funcion == None:
         #Busca la funcion main/principal en el diccionario
         funcion = encontrar_main_archivo(diccionario_informacion)
         #Crea una variable string con la información de la funcion main/principal y el contenido anterior a ella
@@ -45,16 +45,19 @@ def formatear_arbol_invocacion(diccionario_informacion, funcion = None, string =
     invocaciones = diccionario_informacion[funcion]["invocaciones"]
 
     #Se fija si la funcion no tiene invocaciones, e imprime el string
-    if (len(invocaciones) == 0):
+    if len(invocaciones) == 0:
         print(str_invocacion)
     #Si la funcion recorrida tiene invocaciones las recorre
     else:
         for invocacion_de_funcion in range(len(invocaciones)):
+            #Si la invocación recorrida es la misma que la funcion analizada (recursividad), y es la únicaa invocación, la imprime
+            if invocaciones[invocacion_de_funcion] == funcion and len(invocaciones) == 1:
+                print(f'{str_invocacion} ---> {invocaciones[invocacion_de_funcion]}({diccionario_informacion[funcion]["cantidad_lineas"]})')
             #Si la invocación recorrida es la misma que la funcion analizada (recursividad), la imprime
-            if (invocaciones[invocacion_de_funcion] == funcion):
+            elif invocaciones[invocacion_de_funcion] == funcion:
                 print(f'{" " * len(str_invocacion)} ---> {invocaciones[invocacion_de_funcion]}({diccionario_informacion[funcion]["cantidad_lineas"]})')
             #Si la invocacion recorrida es la primera de las invocaciones, la función se llama a si misma y pasa el string como variable
-            elif (invocacion_de_funcion == 0):
+            elif invocacion_de_funcion == 0:
                 formatear_arbol_invocacion(diccionario_informacion, invocaciones[invocacion_de_funcion], str_invocacion)
             #Sino es la primera, se llama a si misma y pasa la longitud del string pero en espacios
             else:
