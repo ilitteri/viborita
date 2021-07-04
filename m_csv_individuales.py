@@ -2,7 +2,7 @@ import m_analizar_linea as analizar_linea
 
 def grabar_csv_individual(archivo, lineas):
     '''[Autor: Ivan Litteri]'''
-    lineas_ordenadas = sorted(lineas)
+    lineas_ordenadas = sorted(lineas, key=lambda x: x.lower())
     for linea in lineas_ordenadas:
         archivo.write(linea)
 
